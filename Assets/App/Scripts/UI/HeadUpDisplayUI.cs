@@ -12,13 +12,9 @@ namespace App.Scripts.UI
         [SerializeField] private Text _workerText;
         [SerializeField] private Text _plotText;
 
-        [Header("Buttons")]
-        [SerializeField] private Button _shopButton;
-
 
         private void Awake()
         {
-            _shopButton.onClick.AddListener(()=>{});
             this.Subscribe<ShareData.HeadUpDisplayData>(OnDataUpdated);
         }
 

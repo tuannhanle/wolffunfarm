@@ -11,5 +11,10 @@ namespace App.Scripts.Mics
             public Currency Plot { get; set; }
 
         }
+        
+        public class OpenShop
+        {
+            
+        }
     }
 }
