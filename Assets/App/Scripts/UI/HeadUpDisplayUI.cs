@@ -1,11 +1,10 @@
-using System;
-using App.Scripts.Domains.Models;
+using App.Scripts.Mics;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace App.Scripts.UI
 {
-    public class HeadUpDisplayUI : MonoBehaviour
+    public class HeadUpDisplayUI : MiddlewareBehaviour
     {
         
         [Header("Texts")]
@@ -20,23 +19,16 @@ namespace App.Scripts.UI
         private void Awake()
         {
             _shopButton.onClick.AddListener(()=>{});
+            this.Subscribe<ShareData.HeadUpDisplayData>(OnDataUpdated);
         }
 
-        private void UpdateTexts(HeadUpDisplayData headUpDisplayData)
+        private void OnDataUpdated(ShareData.HeadUpDisplayData headUpDisplayData)
         {
             _goldText.text = $"{headUpDisplayData.Golden.Name}: {headUpDisplayData.Golden.Amount}";
             _workerText.text = $"{headUpDisplayData.Workder.Name}: {headUpDisplayData.Workder.Amount}/{headUpDisplayData.Workder.Capacity}";
             _plotText.text = $"{headUpDisplayData.Plot.Name}: {headUpDisplayData.Plot.Amount}/{headUpDisplayData.Plot.Capacity}";
 
         }
-        
-        
-        public class HeadUpDisplayData
-        {
-            public Currency Golden { get; set; }
-            public Currency Workder { get; set; }
-            public Currency Plot { get; set; }
 
-        }
     }
 }

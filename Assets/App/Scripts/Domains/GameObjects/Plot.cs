@@ -1,9 +1,10 @@
 using App.Scripts.Domains.Models;
+using App.Scripts.Mics;
 using UnityEngine;
 
 namespace App.Scripts.Domains.GameObjects
 {
-    public class Plot : MonoBehaviour
+    public class Plot : MiddlewareBehaviour
     {
         public Crop Crop { get; set; }
         public bool IsWatered { get; set; }

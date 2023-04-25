@@ -12,11 +12,6 @@ namespace App.Scripts.Domains.Models
         
     }
 
-    public class Worker : Currency
-    {
-        
-    }
-
     public class Plot : Currency
     {
         

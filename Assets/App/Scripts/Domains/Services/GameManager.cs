@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using App.Scripts.Domains.Models;
+using App.Scripts.Mics;
 using Plot = App.Scripts.Domains.GameObjects.Plot;
 
 namespace App.Scripts.Domains.Services
 {
-    public class GameManager : MonoBehaviour
+    public class GameManager : MiddlewareBehaviour
     {
         public int money;
         public int day;
@@ -17,9 +18,14 @@ namespace App.Scripts.Domains.Services
 
         private List<Plot> plots = new List<Plot>();
 
+        
+        private LazyDataInlet<string> _showIntroInlet;
+
         // Start is called before the first frame update
         void Start()
         {
+            _showIntroInlet.UpdateValue("");
+            
             money = 1000;
             day = 1;
 
@@ -29,12 +35,7 @@ namespace App.Scripts.Domains.Services
                 CreatePlot();
             }
         }
-
-        // Update is called once per frame
-        void Update()
-        {
         
-        }
 
         public void CreatePlot()
         {
