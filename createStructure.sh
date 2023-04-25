@@ -1,8 +1,9 @@
 mkdir -p Assets/App/Scripts/Domains
+mkdir -p Assets/App/Scripts/Domains/Models
+mkdir -p Assets/App/Scripts/Domains/Services
 mkdir -p Assets/App/Scripts/GameControllers
 mkdir -p Assets/App/Scripts/Infrastructures
 mkdir -p Assets/App/Scripts/UI
-mkdir -p Assets/App/Scripts/Models
 mkdir -p Assets/App/Scripts/Mics
 mkdir -p Assets/App/Resources
 mkdir -p Assets/App/UI
