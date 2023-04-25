@@ -16,15 +16,27 @@ namespace App.Scripts.Domains.Services
         public Plot[] plotPrefabs;
         public Transform plotsParent;
 
-        private List<Plot> plots = new List<Plot>();
-
-        
-        private LazyDataInlet<string> _showIntroInlet;
+        private List<Plot> _plots = new List<Plot>();
+        private List<Worker> _workers = new List<Worker>();
+        private List<Item> _items = new List<Item>();
+        private Tool _tool = new Tool();
 
         // Start is called before the first frame update
         void Start()
         {
-            _showIntroInlet.UpdateValue("");
+
+            // add init resource
+            _tool = new Tool();
+            _plots.AddRange(new List<Plot>(){new Plot(), new Plot(), new Plot()});
+            _workers.Add(new Worker());
+            _items.AddRange(new List<Item>()
+            {
+                new Item(){Name = "Tomato"},new Item(){Name = "Tomato"},new Item(){Name = "Tomato"},new Item(){Name = "Tomato"},new Item(){Name = "Tomato"},new Item(){Name = "Tomato"},new Item(){Name = "Tomato"},new Item(){Name = "Tomato"},new Item(){Name = "Tomato"},new Item(){Name = "Tomato"},
+                new Item(){Name = "Blueberry"},new Item(){Name = "Blueberry"},new Item(){Name = "Blueberry"},new Item(){Name = "Blueberry"},new Item(){Name = "Blueberry"},new Item(){Name = "Blueberry"},new Item(){Name = "Blueberry"},new Item(){Name = "Blueberry"},new Item(){Name = "Blueberry"},new Item(){Name = "Blueberry"},
+                new Item(){Name = "Cow"},new Item(){Name = "Cow"}
+            });
+            
+            
             
             money = 1000;
             day = 1;
@@ -46,7 +58,7 @@ namespace App.Scripts.Domains.Services
             Plot plot = Instantiate(plotPrefab, plotsParent) ;
 
             // Add the plot to the list of plots
-            plots.Add(plot);
+            _plots.Add(plot);
 
             // Set the plot's crop
             Crop crop = GetRandomCrop();
@@ -62,7 +74,7 @@ namespace App.Scripts.Domains.Services
             day++;
 
             // Update each plot's crop
-            foreach (Plot plot in plots)
+            foreach (Plot plot in _plots)
             {
                 plot.UpdateCrop();
             }
