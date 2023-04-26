@@ -535,9 +535,9 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 291438213}
   m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
+  m_Alpha: 0
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
 --- !u!1 &312703414
 GameObject:
@@ -1442,7 +1442,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 873264921}
-  - component: {fileID: 873264920}
+  - component: {fileID: 873264922}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1450,21 +1450,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &873264920
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 873264919}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0260a7f9d07bb47ebae5404acf821d98, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  money: 0
-  day: 0
-  plotsOfLand: 0
 --- !u!4 &873264921
 Transform:
   m_ObjectHideFlags: 0
@@ -1480,6 +1465,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &873264922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 873264919}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 424dc9c8c74e41ad93142a1824c3894f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &935594545
 GameObject:
   m_ObjectHideFlags: 0
@@ -3887,7 +3884,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _shopButton: {fileID: 485778175}
   _upgradeToolButton: {fileID: 0}
-  _rentWorkerButton: {fileID: 0}
+  _rentWorkerButton: {fileID: 2124915029}
   _getMilkButton: {fileID: 0}
   _sellButton: {fileID: 0}
   _seedBlueBerry: {fileID: 0}

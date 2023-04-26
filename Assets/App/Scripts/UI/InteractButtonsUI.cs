@@ -21,21 +21,23 @@ namespace App.Scripts.UI
         [SerializeField] private Button _collectStrawBerry;
         [SerializeField] private Button _collectTomato;
 
-        private LazyDataInlet<ShareData.OpenShop> _openShopEvent = new LazyDataInlet<ShareData.OpenShop>();
+        private LazyDataInlet<ShareData.InteractButtonsUIEvent> _interactEventInlet = new LazyDataInlet<ShareData.InteractButtonsUIEvent>();
 
         private void Awake()
         {
-            if(_upgradeToolButton) _shopButton.onClick.AddListener(OnUIshopButtonClicked);
-            if(_upgradeToolButton) _upgradeToolButton.onClick.AddListener(()=>{});
-            if(_rentWorkerButton) _rentWorkerButton.onClick.AddListener(()=>{});
-            if(_getMilkButton) _getMilkButton.onClick.AddListener(()=>{});
-            if(_sellButton) _sellButton.onClick.AddListener(()=>{});
+            if(_shopButton) _shopButton.onClick.AddListener(delegate { OnUIButtonClicked(ShareData.InteractEventType.OpenShop); });
+            if(_upgradeToolButton) _upgradeToolButton.onClick.AddListener(delegate { OnUIButtonClicked(ShareData.InteractEventType.UpgradeTool); });
+            if(_rentWorkerButton) _rentWorkerButton.onClick.AddListener(delegate { OnUIButtonClicked(ShareData.InteractEventType.RentWorker); });
+            if(_getMilkButton) _getMilkButton.onClick.AddListener(delegate { OnUIButtonClicked(ShareData.InteractEventType.GetMilk); });
+            if(_sellButton) _sellButton.onClick.AddListener(delegate { OnUIButtonClicked(ShareData.InteractEventType.Sell); });
 
         }
 
-        private void OnUIshopButtonClicked()
+        private void OnUIButtonClicked(ShareData.InteractEventType interactEvent)
         {
-            _openShopEvent.UpdateValue(new ShareData.OpenShop());
+            _interactEventInlet.UpdateValue(new ShareData.InteractButtonsUIEvent(){ EInteractEvent = interactEvent});
         }
+        
+
     }
 }

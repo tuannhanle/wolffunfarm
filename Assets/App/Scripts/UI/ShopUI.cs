@@ -22,20 +22,23 @@ namespace App.Scripts.UI
         
         private void Awake()
         {
-            OnUIOpenStateUpdate();
-            if(_closeButton) _closeButton.onClick.AddListener(OnUIOpenStateUpdate);
+            OnUIOpenStateUpdate(ShareData.InteractEventType.OpenShop);
+            if(_closeButton) _closeButton.onClick.AddListener(()=>OnUIOpenStateUpdate(ShareData.InteractEventType.OpenShop));
             if(_buyBlueberryButton)_buyBlueberryButton.onClick.AddListener(()=>{});
             if(_buyTomatoButton)_buyTomatoButton.onClick.AddListener(()=>{});
             if(_buyStrawberry)_buyStrawberry.onClick.AddListener(()=>{});
             if(_buyCowButton)_buyCowButton.onClick.AddListener(()=>{});
             if(_buyPlot)_buyPlot.onClick.AddListener(()=>{});
             
-            this.Subscribe<ShareData.OpenShop>(_ => OnUIOpenStateUpdate());
+            this.Subscribe<ShareData.InteractButtonsUIEvent>(e => OnUIOpenStateUpdate(e.EInteractEvent));
 
         }
 
-        private void OnUIOpenStateUpdate()
+        private void OnUIOpenStateUpdate(ShareData.InteractEventType? interactEventType)
         {
+            if (interactEventType != ShareData.InteractEventType.OpenShop) 
+                return;
+            
             _isClose = !_isClose;
             _canvasGroup.alpha = _isClose ? 1 : 0;
             _canvasGroup.interactable = _isClose;

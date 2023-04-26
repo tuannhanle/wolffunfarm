@@ -1,3 +1,4 @@
+using System;
 using App.Scripts.Domains.Models;
 
 namespace App.Scripts.Mics
@@ -11,10 +12,15 @@ namespace App.Scripts.Mics
             public Currency Plot { get; set; }
 
         }
-        
-        public class OpenShop
+
+        public enum InteractEventType
         {
-            
+            OpenShop, RentWorker, UpgradeTool, GetMilk, Sell
+        }
+
+        public class InteractButtonsUIEvent
+        {
+            public InteractEventType? EInteractEvent { get; set; } = null;
         }
     }
 }
