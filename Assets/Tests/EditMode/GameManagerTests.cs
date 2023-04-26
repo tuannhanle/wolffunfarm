@@ -1,6 +1,6 @@
 
 using App.Scripts.Domains.Models;
-using App.Scripts.Domains.Services;
+using App.Scripts.Domains.Core;
 using NUnit.Framework;
 
 [TestFixture]

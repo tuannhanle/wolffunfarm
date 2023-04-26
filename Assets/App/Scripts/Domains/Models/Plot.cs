@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace App.Scripts.Domains.GameObjects
 {
-    public class Plot : MiddlewareBehaviour
+    public class Plot 
     {
         public Crop Crop { get; set; }
         public bool IsWatered { get; set; }

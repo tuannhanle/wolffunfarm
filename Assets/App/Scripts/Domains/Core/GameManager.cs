@@ -5,7 +5,7 @@ using App.Scripts.Domains.Models;
 using App.Scripts.Mics;
 using Plot = App.Scripts.Domains.GameObjects.Plot;
 
-namespace App.Scripts.Domains.Services
+namespace App.Scripts.Domains.Core
 {
     public class GameManager : MiddlewareBehaviour
     {
@@ -14,29 +14,35 @@ namespace App.Scripts.Domains.Services
         public int plotsOfLand = 3;
         public Crop[] crops;
         public Plot[] plotPrefabs;
-        public Transform plotsParent;
 
         private List<Plot> _plots = new List<Plot>();
-        private List<Worker> _workers = new List<Worker>();
         private List<Item> _items = new List<Item>();
         private Tool _tool = new Tool();
 
+        private Progress _progress = new Progress();
+
+        private WorkerProgress _workerProgress = new WorkerProgress();
+        
         // Start is called before the first frame update
         void Start()
         {
-
+            
             // add init resource
             _tool = new Tool();
             _plots.AddRange(new List<Plot>(){new Plot(), new Plot(), new Plot()});
-            _workers.Add(new Worker());
             _items.AddRange(new List<Item>()
             {
                 new Item(){Name = "Tomato"},new Item(){Name = "Tomato"},new Item(){Name = "Tomato"},new Item(){Name = "Tomato"},new Item(){Name = "Tomato"},new Item(){Name = "Tomato"},new Item(){Name = "Tomato"},new Item(){Name = "Tomato"},new Item(){Name = "Tomato"},new Item(){Name = "Tomato"},
                 new Item(){Name = "Blueberry"},new Item(){Name = "Blueberry"},new Item(){Name = "Blueberry"},new Item(){Name = "Blueberry"},new Item(){Name = "Blueberry"},new Item(){Name = "Blueberry"},new Item(){Name = "Blueberry"},new Item(){Name = "Blueberry"},new Item(){Name = "Blueberry"},new Item(){Name = "Blueberry"},
                 new Item(){Name = "Cow"},new Item(){Name = "Cow"}
             });
-            
-            
+
+            _progress.datas.Push(new Proceeding(){EProceeding = ProceedingType.Seeding});
+            _progress.datas.Push(new Proceeding(){EProceeding = ProceedingType.Seeding});
+            _progress.datas.Push(new Proceeding(){EProceeding = ProceedingType.Seeding});
+
+            _workerProgress.Init();
+            _workerProgress.GetProgress(_progress);
             
             money = 1000;
             day = 1;
@@ -44,29 +50,23 @@ namespace App.Scripts.Domains.Services
             // Create starting plots of land
             for (int i = 0; i < plotsOfLand; i++)
             {
-                CreatePlot();
+                // CreatePlot();
             }
         }
         
 
-        public void CreatePlot()
-        {
-            // Choose a random plot prefab
-            Plot plotPrefab = plotPrefabs[Random.Range(0, plotPrefabs.Length)];
-
-            // Instantiate the plot
-            Plot plot = Instantiate(plotPrefab, plotsParent) ;
-
-            // Add the plot to the list of plots
-            _plots.Add(plot);
-
-            // Set the plot's crop
-            Crop crop = GetRandomCrop();
-            plot.PlantCrop(crop);
-
-            // Subtract the plot's cost from the player's money
-            money -= plot.Crop.SellPrice;
-        }
+        // public void CreatePlot()
+        // {
+        //
+        //
+        //     // Set the plot's crop
+        //     Crop crop = GetRandomCrop();
+        //     
+        //     plot.PlantCrop(crop);
+        //
+        //     // Subtract the plot's cost from the player's money
+        //     money -= plot.Crop.SellPrice;
+        // }
 
         public void EndDay()
         {
