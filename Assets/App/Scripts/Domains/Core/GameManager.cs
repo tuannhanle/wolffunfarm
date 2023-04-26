@@ -4,6 +4,8 @@ using UnityEngine;
 using App.Scripts.Domains.Models;
 using App.Scripts.Mics;
 using Plot = App.Scripts.Domains.GameObjects.Plot;
+using Progress = App.Scripts.Domains.Models.Progress;
+using Cysharp.Threading.Tasks;
 
 namespace App.Scripts.Domains.Core
 {
@@ -42,7 +44,7 @@ namespace App.Scripts.Domains.Core
             _progress.datas.Push(new Proceeding(){EProceeding = ProceedingType.Seeding});
 
             _workerProgress.Init();
-            _workerProgress.GetProgress(_progress);
+            _workerProgress.TakeProgressAsync(_progress).Forget();
             
             money = 1000;
             day = 1;
