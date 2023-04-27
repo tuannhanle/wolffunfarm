@@ -20,23 +20,32 @@ namespace App.Scripts.UI
         // State
         private bool _isClose = true;
         
+        private LazyDataInlet<ShareData.ShopUIEvent> _shopEventInlet = new();
+
+        private ShareData.InteractButtonsUIEvent _openShopEvent = new() { EInteractEvent = ShareData.InteractEventType.OpenShop };
         private void Awake()
         {
-            OnUIOpenStateUpdate(ShareData.InteractEventType.OpenShop);
-            if(_closeButton) _closeButton.onClick.AddListener(()=>OnUIOpenStateUpdate(ShareData.InteractEventType.OpenShop));
-            if(_buyBlueberryButton)_buyBlueberryButton.onClick.AddListener(()=>{});
-            if(_buyTomatoButton)_buyTomatoButton.onClick.AddListener(()=>{});
-            if(_buyStrawberry)_buyStrawberry.onClick.AddListener(()=>{});
-            if(_buyCowButton)_buyCowButton.onClick.AddListener(()=>{});
-            if(_buyPlot)_buyPlot.onClick.AddListener(()=>{});
+            OnUIOpenStateUpdate(_openShopEvent);
+            if(_closeButton) _closeButton.onClick.AddListener(()=>OnUIOpenStateUpdate(_openShopEvent));
+            if(_buyBlueberryButton)_buyBlueberryButton.onClick.AddListener(delegate { OnUIButtonClicked(ShareData.ShopEventType.BBlueBerry); });
+            if(_buyTomatoButton)_buyTomatoButton.onClick.AddListener(delegate { OnUIButtonClicked(ShareData.ShopEventType.BTomato); });
+            if(_buyStrawberry)_buyStrawberry.onClick.AddListener(delegate { OnUIButtonClicked(ShareData.ShopEventType.BStrawBerry); });
+            if(_buyCowButton)_buyCowButton.onClick.AddListener(delegate { OnUIButtonClicked(ShareData.ShopEventType.BCow); });
+            if(_buyPlot)_buyPlot.onClick.AddListener(delegate { OnUIButtonClicked(ShareData.ShopEventType.BPlot); });
             
-            this.Subscribe<ShareData.InteractButtonsUIEvent>(e => OnUIOpenStateUpdate(e.EInteractEvent));
+            this.Subscribe<ShareData.InteractButtonsUIEvent>(OnUIOpenStateUpdate);
 
         }
-
-        private void OnUIOpenStateUpdate(ShareData.InteractEventType? interactEventType)
+        
+        
+        private void OnUIButtonClicked(ShareData.ShopEventType shopEvent)
         {
-            if (interactEventType != ShareData.InteractEventType.OpenShop) 
+            _shopEventInlet.UpdateValue(new(){ EShopUIEvent = shopEvent});
+        }
+
+        private void OnUIOpenStateUpdate(ShareData.InteractButtonsUIEvent interactButtonsUIEvent)
+        {
+            if (interactButtonsUIEvent.EInteractEvent != ShareData.InteractEventType.OpenShop) 
                 return;
             
             _isClose = !_isClose;

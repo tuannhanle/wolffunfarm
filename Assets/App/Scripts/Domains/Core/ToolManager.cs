@@ -5,8 +5,9 @@ namespace App.Scripts.Domains.Core
 {
     public class ToolManager
     {
-        private Tool _tool = new Tool();
-
+        private Tool _tool = new();
+        
+        
         // TODO: get it from DB
         private int _amountMoney = 1000;
         public int AmountMoney => _amountMoney;

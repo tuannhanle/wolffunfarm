@@ -6,7 +6,7 @@ namespace App.Scripts.Domains.Core
 {
     public class PlotManager
     {
-        private List<Plot> _plots = new List<Plot>();
+        private List<Plot> _plots = new();
         
 
         public void InitVeryFirstLogin()
@@ -19,9 +19,9 @@ namespace App.Scripts.Domains.Core
         private int _amountMoney = 1000;
         public int AmountMoney => _amountMoney;
         
-        public void ExtendPlot(ShareData.InteractEventType? uiEventEInteractEvent)
+        public void ExtendPlot(ShareData.ShopEventType? uiEventEInteractEvent)
         {
-            if (uiEventEInteractEvent != ShareData.InteractEventType.ExtendPlot)
+            if (uiEventEInteractEvent != ShareData.ShopEventType.BPlot)
                 return;
             if (_amountMoney < Plot.Price)
                 return;

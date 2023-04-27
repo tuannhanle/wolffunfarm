@@ -11,27 +11,32 @@ namespace App.Scripts.Domains.Core
         public Crop[] crops;
         public Plot[] plotPrefabs;
 
-        private List<Item> _items = new List<Item>();
+        private List<Item> _items = new();
 
-        private WorkerManager _workerManager= new WorkerManager();
-        private ToolManager _toolManager = new ToolManager();
-        private PlotManager _plotManager = new PlotManager();
+        private WorkerManager _workerManager= new();
+        private ToolManager _toolManager = new();
+        private PlotManager _plotManager = new();
+        private ShopManager _shopManager;
+        
         private void Awake()
         {
+            
             _plotManager.InitVeryFirstLogin();
+            _shopManager = new(_plotManager);
             _workerManager.InitVeryFirstLogin();
+            
             // add init resource
             _items.AddRange(new List<Item>()
             {
-                new Item(){Name = "Tomato"},new Item(){Name = "Tomato"},new Item(){Name = "Tomato"},new Item(){Name = "Tomato"},new Item(){Name = "Tomato"},new Item(){Name = "Tomato"},new Item(){Name = "Tomato"},new Item(){Name = "Tomato"},new Item(){Name = "Tomato"},new Item(){Name = "Tomato"},
-                new Item(){Name = "Blueberry"},new Item(){Name = "Blueberry"},new Item(){Name = "Blueberry"},new Item(){Name = "Blueberry"},new Item(){Name = "Blueberry"},new Item(){Name = "Blueberry"},new Item(){Name = "Blueberry"},new Item(){Name = "Blueberry"},new Item(){Name = "Blueberry"},new Item(){Name = "Blueberry"},
-                new Item(){Name = "Cow"},new Item(){Name = "Cow"}
+                // new (){Name = "Tomato"},new (){Name = "Tomato"},new (){Name = "Tomato"},new (){Name = "Tomato"},new (){Name = "Tomato"},new (){Name = "Tomato"},new (){Name = "Tomato"},new (){Name = "Tomato"},new (){Name = "Tomato"},new (){Name = "Tomato"},
+                // new (){Name = "Blueberry"},new (){Name = "Blueberry"},new (){Name = "Blueberry"},new (){Name = "Blueberry"},new (){Name = "Blueberry"},new (){Name = "Blueberry"},new (){Name = "Blueberry"},new (){Name = "Blueberry"},new (){Name = "Blueberry"},new (){Name = "Blueberry"},
+                // new (){Name = "Cow"},new (){Name = "Cow"}
             });
 
 
 
             this.Subscribe<ShareData.InteractButtonsUIEvent>(OnInteractButtonsUIEventRaised);
-            
+            this.Subscribe<ShareData.ShopUIEvent>(_shopManager.OnShopUIEventRaised);
             
         }
 
@@ -48,12 +53,16 @@ namespace App.Scripts.Domains.Core
                 case ShareData.InteractEventType.UpgradeTool:
                     _toolManager.UpgradeTool(uiEvent.EInteractEvent);
                     break;
-                case ShareData.InteractEventType.ExtendPlot:
-                    _plotManager.ExtendPlot(uiEvent.EInteractEvent);
+                case ShareData.InteractEventType.GetMilk:
                     break;
+                case ShareData.InteractEventType.Sell:
+                    break;
+           
                 default:
                     break;
             }
         }
+
+
     }
 }

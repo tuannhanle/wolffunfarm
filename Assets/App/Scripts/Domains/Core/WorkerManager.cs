@@ -9,8 +9,8 @@ namespace App.Scripts.Domains.Core
 {
     public class WorkerManager
     {
-        private Queue<Worker> _idleWorkers = new Queue<Worker>();
-        private Queue<Worker> _workingWorkers = new Queue<Worker>();
+        private Queue<Worker> _idleWorkers = new();
+        private Queue<Worker> _workingWorkers = new();
 
         private Progress _progress;
 
@@ -35,7 +35,7 @@ namespace App.Scripts.Domains.Core
         {
             for (int i = 0; i < amount; i++)
             {
-                _idleWorkers.Enqueue(new Worker());
+                _idleWorkers.Enqueue(new ());
             }
         }
         
@@ -98,9 +98,9 @@ namespace App.Scripts.Domains.Core
 
         public void InitVeryFirstLogin()
         {
-            TakeProceedingAsync(new Proceeding() { EProceeding = ProceedingType.Seeding }).Forget();
-            TakeProceedingAsync(new Proceeding() { EProceeding = ProceedingType.Seeding }).Forget();
-            TakeProceedingAsync(new Proceeding() { EProceeding = ProceedingType.Seeding }).Forget();
+            TakeProceedingAsync(new () { EProceeding = ProceedingType.Seeding }).Forget();
+            TakeProceedingAsync(new () { EProceeding = ProceedingType.Seeding }).Forget();
+            TakeProceedingAsync(new () { EProceeding = ProceedingType.Seeding }).Forget();
         }
     }
     

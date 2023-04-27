@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace App.Scripts.UI
 {
-    public class InteractButtonsUI : MonoBehaviour
+    public class InteractButtonsUI : MiddlewareBehaviour
     {
         [Header("Buttons")]
         [SerializeField] private Button _shopButton;
@@ -12,7 +12,6 @@ namespace App.Scripts.UI
         [SerializeField] private Button _rentWorkerButton;
         [SerializeField] private Button _getMilkButton;
         [SerializeField] private Button _sellButton;
-        [SerializeField] private Button _extendPlotButton;
 
         [Header("Seed Buttons")]
         [SerializeField] private Button _seedBlueBerry;
@@ -23,7 +22,7 @@ namespace App.Scripts.UI
         [SerializeField] private Button _collectStrawBerry;
         [SerializeField] private Button _collectTomato;
 
-        private LazyDataInlet<ShareData.InteractButtonsUIEvent> _interactEventInlet = new LazyDataInlet<ShareData.InteractButtonsUIEvent>();
+        private LazyDataInlet<ShareData.InteractButtonsUIEvent> _interactEventInlet = new();
 
         private void Awake()
         {
@@ -32,12 +31,11 @@ namespace App.Scripts.UI
             if(_rentWorkerButton) _rentWorkerButton.onClick.AddListener(delegate { OnUIButtonClicked(ShareData.InteractEventType.RentWorker); });
             if(_getMilkButton) _getMilkButton.onClick.AddListener(delegate { OnUIButtonClicked(ShareData.InteractEventType.GetMilk); });
             if(_sellButton) _sellButton.onClick.AddListener(delegate { OnUIButtonClicked(ShareData.InteractEventType.Sell); });
-            if(_extendPlotButton) _extendPlotButton.onClick.AddListener(delegate { OnUIButtonClicked(ShareData.InteractEventType.ExtendPlot); });
         }
 
         private void OnUIButtonClicked(ShareData.InteractEventType interactEvent)
         {
-            _interactEventInlet.UpdateValue(new ShareData.InteractButtonsUIEvent(){ EInteractEvent = interactEvent});
+            _interactEventInlet.UpdateValue(new(){ EInteractEvent = interactEvent});
         }
         
 
