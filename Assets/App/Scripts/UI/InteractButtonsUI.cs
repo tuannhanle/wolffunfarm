@@ -12,6 +12,8 @@ namespace App.Scripts.UI
         [SerializeField] private Button _rentWorkerButton;
         [SerializeField] private Button _getMilkButton;
         [SerializeField] private Button _sellButton;
+        [SerializeField] private Button _extendPlotButton;
+
         [Header("Seed Buttons")]
         [SerializeField] private Button _seedBlueBerry;
         [SerializeField] private Button _seedStrawBerry;
@@ -30,7 +32,7 @@ namespace App.Scripts.UI
             if(_rentWorkerButton) _rentWorkerButton.onClick.AddListener(delegate { OnUIButtonClicked(ShareData.InteractEventType.RentWorker); });
             if(_getMilkButton) _getMilkButton.onClick.AddListener(delegate { OnUIButtonClicked(ShareData.InteractEventType.GetMilk); });
             if(_sellButton) _sellButton.onClick.AddListener(delegate { OnUIButtonClicked(ShareData.InteractEventType.Sell); });
-
+            if(_extendPlotButton) _extendPlotButton.onClick.AddListener(delegate { OnUIButtonClicked(ShareData.InteractEventType.ExtendPlot); });
         }
 
         private void OnUIButtonClicked(ShareData.InteractEventType interactEvent)

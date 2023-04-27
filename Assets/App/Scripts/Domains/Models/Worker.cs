@@ -1,9 +1,9 @@
 namespace App.Scripts.Domains.Models
 {
-    public class Worker 
+    public class Worker : IBuyable
     {
         public string Name = "Worker";
-        public const int PRICE = 500;
+        public static int Price { get; private set; } = 500;
 
     }
 }

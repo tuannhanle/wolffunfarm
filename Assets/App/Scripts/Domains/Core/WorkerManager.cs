@@ -39,7 +39,7 @@ namespace App.Scripts.Domains.Core
             }
         }
         
-        public async UniTask TakeProceedingAsync(Proceeding proceeding)
+        private async UniTask TakeProceedingAsync(Proceeding proceeding)
         {
             _progress.datas.Push(proceeding);
             TakeProgressAsync(_progress).Forget();
@@ -55,17 +55,18 @@ namespace App.Scripts.Domains.Core
             }
             
         }
-
-        private float GetDuration()
-        {
-            var toolLevel = 1f;
-            var toolPercent = 100f + (toolLevel - 1f) * 10f;
-            return DURATION_WORKER + DURATION_WORKER*(toolPercent/100f);
-        }
         
+        // private float GetDuration()
+        // {
+        //     var toolLevel = 1f;
+        //     var toolPercent = 100f + (toolLevel - 1f) * 10f;
+        //     return DURATION_WORKER + DURATION_WORKER*(toolPercent/100f);
+        // }
+        
+        //TODO: worker has still not execute the proceed
         private async UniTask WorkerExecuteAsync(Proceeding proceeding)
         {
-            var timeSpanDuration = TimeSpan.FromSeconds(GetDuration());
+            var timeSpanDuration = TimeSpan.FromSeconds(DURATION_WORKER);
             if (_idleWorkers.Count > 0)
             {
                 var executableWorker = _idleWorkers.Dequeue();
@@ -87,12 +88,20 @@ namespace App.Scripts.Domains.Core
         {
             if (EInteractEvent != ShareData.InteractEventType.RentWorker)
                 return;
-            if (_amountMoney < Worker.PRICE)
+            if (_amountMoney < Worker.Price)
                 return;
-            _amountMoney -= Worker.PRICE;
-            //TODO: save new worker to storage
+            _amountMoney -= Worker.Price;
+            //TODO: save new <worker> to storage
             GainWorker(1);
             
         }
+
+        public void InitVeryFirstLogin()
+        {
+            TakeProceedingAsync(new Proceeding() { EProceeding = ProceedingType.Seeding }).Forget();
+            TakeProceedingAsync(new Proceeding() { EProceeding = ProceedingType.Seeding }).Forget();
+            TakeProceedingAsync(new Proceeding() { EProceeding = ProceedingType.Seeding }).Forget();
+        }
     }
+    
 }

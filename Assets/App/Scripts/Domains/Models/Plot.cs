@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace App.Scripts.Domains.GameObjects
 {
-    public class Plot 
+    public class Plot : IBuyable
     {
         public Crop Crop { get; set; }
         public bool IsWatered { get; set; }
@@ -13,6 +13,8 @@ namespace App.Scripts.Domains.GameObjects
         public int WaterLevel { get; set; }
         public int FertilizerLevel { get; set; }
         
+        public static int Price { get; private set; } = 500;
+
         public Plot()
         {
             Crop = null;

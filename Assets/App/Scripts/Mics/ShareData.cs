@@ -15,7 +15,7 @@ namespace App.Scripts.Mics
 
         public enum InteractEventType
         {
-            OpenShop, RentWorker, UpgradeTool, GetMilk, Sell
+            OpenShop, RentWorker, UpgradeTool, GetMilk, Sell, ExtendPlot
         }
 
         public class InteractButtonsUIEvent

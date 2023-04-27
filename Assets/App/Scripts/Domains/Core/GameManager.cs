@@ -11,17 +11,16 @@ namespace App.Scripts.Domains.Core
         public Crop[] crops;
         public Plot[] plotPrefabs;
 
-        private List<Plot> _plots = new List<Plot>();
         private List<Item> _items = new List<Item>();
-        private Tool _tool = new Tool();
-
 
         private WorkerManager _workerManager= new WorkerManager();
-        
+        private ToolManager _toolManager = new ToolManager();
+        private PlotManager _plotManager = new PlotManager();
         private void Awake()
         {
+            _plotManager.InitVeryFirstLogin();
+            _workerManager.InitVeryFirstLogin();
             // add init resource
-            _plots.AddRange(new List<Plot>(){new Plot(), new Plot(), new Plot()});
             _items.AddRange(new List<Item>()
             {
                 new Item(){Name = "Tomato"},new Item(){Name = "Tomato"},new Item(){Name = "Tomato"},new Item(){Name = "Tomato"},new Item(){Name = "Tomato"},new Item(){Name = "Tomato"},new Item(){Name = "Tomato"},new Item(){Name = "Tomato"},new Item(){Name = "Tomato"},new Item(){Name = "Tomato"},
@@ -29,13 +28,32 @@ namespace App.Scripts.Domains.Core
                 new Item(){Name = "Cow"},new Item(){Name = "Cow"}
             });
 
-            _workerManager.TakeProceedingAsync(new Proceeding(){EProceeding = ProceedingType.Seeding}).Forget();
-            _workerManager.TakeProceedingAsync(new Proceeding(){EProceeding = ProceedingType.Seeding}).Forget();
-            _workerManager.TakeProceedingAsync(new Proceeding(){EProceeding = ProceedingType.Seeding}).Forget();
-            
-            this.Subscribe<ShareData.InteractButtonsUIEvent>(
-                e => _workerManager.RentWorker(e.EInteractEvent));
 
+
+            this.Subscribe<ShareData.InteractButtonsUIEvent>(OnInteractButtonsUIEventRaised);
+            
+            
+        }
+
+        private void OnInteractButtonsUIEventRaised(ShareData.InteractButtonsUIEvent uiEvent)
+        {
+            if (uiEvent.EInteractEvent == null)
+                return;
+
+            switch (uiEvent.EInteractEvent)
+            {
+                case ShareData.InteractEventType.RentWorker:
+                    _workerManager.RentWorker(uiEvent.EInteractEvent);
+                    break;
+                case ShareData.InteractEventType.UpgradeTool:
+                    _toolManager.UpgradeTool(uiEvent.EInteractEvent);
+                    break;
+                case ShareData.InteractEventType.ExtendPlot:
+                    _plotManager.ExtendPlot(uiEvent.EInteractEvent);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }
