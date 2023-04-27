@@ -22,7 +22,7 @@ namespace App.Scripts.UI
         [SerializeField] private Button _collectStrawBerry;
         [SerializeField] private Button _collectTomato;
 
-        private LazyDataInlet<ShareData.InteractButtonsUIEvent> _interactEventInlet = new();
+        private readonly LazyDataInlet<ShareData.InteractButtonsUIEvent> _interactEventInlet = new();
 
         private void Awake()
         {

@@ -7,64 +7,107 @@ namespace App.Scripts.Domains.Core
 {
     public class ShopManager
     {
-        private PlotManager _plotManager;
+        private readonly PlotManager _plotManager;
+        private readonly StatManager _statManager;
+
+        private readonly Item _blueBerry = new (){ItemType = ItemType.BlueBerry, Price = 50 };
+        private readonly Item _tomato = new (){ItemType = ItemType.Tomato, Price = 30};
+        private readonly Item _strawBerry = new (){ItemType = ItemType.StrawBerry , Price= 40};
+        private readonly Item _cow = new (){ItemType = ItemType.Cow , Price= 100};
+        
+        private List<Item> _cart = new();
+        
         private int _amountSeedOrder = 0;
 
-        private Item _blueBerry = new (){Name = ItemType.BlueBerry, Price = 50 };
-        private Item _tomato = new (){Name = ItemType.Tomato, Price = 30};
-        private Item _strawBerry = new (){Name = ItemType.StrawBerry , Price= 40};
-        private Item _cow = new (){Name = ItemType.Cow , Price= 100};
-        private List<Item> _items;
-        private Dictionary<ItemType, int> _priceMap = new();
-        public ShopManager(PlotManager plotManager)
+        public bool IsCartBuyable => _amountSeedOrder == 10;
+
+        public ShopManager(StatManager statManager, PlotManager plotManager)
         {
+            _statManager = statManager;
             _plotManager = plotManager;
-            _items = new List<Item>(){_blueBerry, _tomato, _strawBerry, _cow};
-            foreach (var item in _items)
-            {
-                _priceMap.Add(item.Name, item.Price);
-            }
+
         }
         
         private bool IsPickSeedable(int amount)
         {
             return amount + _amountSeedOrder <= 10;
         }
+
+        
         public void OnShopUIEventRaised(ShareData.ShopUIEvent shopUIEvent)
         {
-            if (shopUIEvent.EShopUIEvent == null)
-                return;
-            
             switch (shopUIEvent.EShopUIEvent)
             {
                 case ShareData.ShopEventType.BBlueBerry:
-                    this.PickSeed(shopUIEvent.EShopUIEvent,1);
+                    this.PickSeed(_blueBerry,1);
                     break;
                 case ShareData.ShopEventType.BTomato:
-                    this.PickSeed(shopUIEvent.EShopUIEvent,1);
+                    this.PickSeed(_tomato,1);
                     break;
                 case ShareData.ShopEventType.BStrawBerry:
-                    this.PickSeed(shopUIEvent.EShopUIEvent,10);
+                    this.PickSeed(_strawBerry,10);
                     break;
                 case ShareData.ShopEventType.BCow:
-                    // this.BuySeed(shopUIEvent.EShopUIEvent);
+                    this.BuyCow();
                     break;
                 case ShareData.ShopEventType.BPlot:
                     _plotManager.ExtendPlot(shopUIEvent.EShopUIEvent);
+                    _statManager.GainItem(ItemType.Plot);
                     break;
-                default:
+                case ShareData.ShopEventType.BuySeedInCart:
+                    this.BuySeedInCart();
+                    break;
+                case ShareData.ShopEventType.ReleaseSeedInCart:
+                    this.ReleaseSeedInCart();
                     break;
             }
         }
-        
-        public void PickSeed(ShareData.ShopEventType shopEvent, int amount)
+
+        private void ReleaseSeedInCart()
+        {
+            _cart = new();
+            _amountSeedOrder = 0;
+        }
+
+        private void PickSeed(Item item, int amount)
         {
             if (IsPickSeedable(amount) == false)
                 return;
-            if (shopEvent == ShareData.ShopEventType.BBlueBerry)
+            _amountSeedOrder += amount;
+            for (int i = 0; i < amount; i++)
             {
-                
+                _cart.Add(item);
             }
+
+        }
+
+        private void BuyCow()
+        {
+            if( _statManager.Gold.IsPayable(_cow.Price) == false)
+                return;
+            _statManager.Gold.Pay(_cow.Price);
+            _statManager.GainItem(ItemType.Cow);
+        }
+
+        private void BuySeedInCart()
+        {
+            if (IsCartBuyable == false)
+                return; //TODO: notify
+            var sumPrice = 0;
+            foreach (var item in _cart)
+            {
+                sumPrice += item.Price;
+            }
+            if( _statManager.Gold.IsPayable(sumPrice) == false)
+                return;
+            _statManager.Gold.Pay(sumPrice);
+            foreach (var item in _cart)
+            {
+                _statManager.GainItem(item.ItemType);
+            }
+            _cart = new();
+            _amountSeedOrder = 0;
+
         }
     }
 }

@@ -1,5 +1,6 @@
 using App.Scripts.Mics;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace App.Scripts.UI
@@ -16,11 +17,13 @@ namespace App.Scripts.UI
         [SerializeField] private Button _buyStrawberry;
         [SerializeField] private Button _buyCowButton;
         [SerializeField] private Button _buyPlot;
-        
+        [SerializeField] private Button _buySeedInCart;
+        [SerializeField] private Button _releaseSeedInCart;
+
         // State
         private bool _isClose = true;
         
-        private LazyDataInlet<ShareData.ShopUIEvent> _shopEventInlet = new();
+        private readonly LazyDataInlet<ShareData.ShopUIEvent> _shopEventInlet = new();
 
         private ShareData.InteractButtonsUIEvent _openShopEvent = new() { EInteractEvent = ShareData.InteractEventType.OpenShop };
         private void Awake()
@@ -32,7 +35,9 @@ namespace App.Scripts.UI
             if(_buyStrawberry)_buyStrawberry.onClick.AddListener(delegate { OnUIButtonClicked(ShareData.ShopEventType.BStrawBerry); });
             if(_buyCowButton)_buyCowButton.onClick.AddListener(delegate { OnUIButtonClicked(ShareData.ShopEventType.BCow); });
             if(_buyPlot)_buyPlot.onClick.AddListener(delegate { OnUIButtonClicked(ShareData.ShopEventType.BPlot); });
-            
+            if(_buySeedInCart)_buyPlot.onClick.AddListener(delegate { OnUIButtonClicked(ShareData.ShopEventType.BuySeedInCart); });
+            if(_releaseSeedInCart)_buyPlot.onClick.AddListener(delegate { OnUIButtonClicked(ShareData.ShopEventType.ReleaseSeedInCart); });
+
             this.Subscribe<ShareData.InteractButtonsUIEvent>(OnUIOpenStateUpdate);
 
         }

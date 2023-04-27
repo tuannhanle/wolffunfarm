@@ -8,8 +8,8 @@ namespace App.Scripts.Domains.Core
     public class PlotManager
     {
 
-        private StatManager _statManager;
-        private List<Plot> _plots = new();
+        private readonly StatManager _statManager;
+        private readonly List<Plot> _plots = new();
         
         public PlotManager(StatManager statManager)
         {

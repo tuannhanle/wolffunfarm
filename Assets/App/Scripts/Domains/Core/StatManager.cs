@@ -36,6 +36,18 @@ namespace App.Scripts.Domains.Core
             TomotoProductAmount = 0;
             MilkProductAmount = 0;
         }
+
+        public void GainItem(ItemType itemType)
+        {
+            switch (itemType)
+            {
+                case ItemType.Cow: UnusedCowAmount++; break;
+                case ItemType.StrawBerry: UnusedStrawberryAmount++; break;
+                case ItemType.BlueBerry: UnusedBlueberryAmount++; break;
+                case ItemType.Tomato: UnusedTomatoAmount++; break;
+                case ItemType.Plot: UnusedPlotAmount++; break;
+            }
+        }
         
         
     }   

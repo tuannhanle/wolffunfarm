@@ -5,8 +5,8 @@ namespace App.Scripts.Domains.Core
 {
     public class ToolManager
     {
-        private StatManager _statManager;
-        private Tool _tool = new();
+        private readonly StatManager _statManager;
+        private readonly Tool _tool = new();
 
 
 

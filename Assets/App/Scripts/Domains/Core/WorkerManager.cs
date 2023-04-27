@@ -10,21 +10,17 @@ namespace App.Scripts.Domains.Core
     public class WorkerManager
     {
 
-        private StatManager _statManager;
+        private readonly StatManager _statManager;
+        private readonly Queue<Worker> _idleWorkers = new();
+        private readonly Queue<Worker> _workingWorkers = new();
+        private readonly Progress _progress = new();
+        private readonly Worker _worker = new();
 
-        private Queue<Worker> _idleWorkers = new();
-        private Queue<Worker> _workingWorkers = new();
-
-        private Progress _progress = new();
-        private Worker _worker = new();
-
-        private bool _isInit = false;
         private const float DURATION_WORKER = 120f;
 
         public WorkerManager(StatManager statManager)
         {
             _statManager = statManager;
-            _isInit = true;
             for (int i = 0; i < _statManager.IdleWorkerAmount; i++)
             {
                 _idleWorkers.Enqueue(new ());

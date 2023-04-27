@@ -34,7 +34,9 @@ namespace App.Scripts.Mics
             BTomato,
             BStrawBerry,
             BCow,
-            BPlot
+            BPlot,
+            BuySeedInCart,
+            ReleaseSeedInCart
         }
         
         public class ShopUIEvent

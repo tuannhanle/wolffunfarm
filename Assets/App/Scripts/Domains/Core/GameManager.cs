@@ -24,7 +24,7 @@ namespace App.Scripts.Domains.Core
             _plotManager = new(_statManager);
             _toolManager = new(_statManager);
             _workerManager = new(_statManager);
-            _shopManager = new(_plotManager);
+            _shopManager = new(_statManager, _plotManager);
 
             // add init resource
             _items.AddRange(new List<Item>()
