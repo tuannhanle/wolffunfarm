@@ -21,21 +21,11 @@ namespace App.Scripts.Domains.Core
         private void Awake()
         {
             _statManager.SyncFromLocalDB();
-            _plotManager = new()
-            {
-                UsingPlotAmount = _statManager.UsingPlotAmount,
-                UnusedPlotAmount = _statManager.UnusedPlotAmount,
-            };
-            _plotManager.Init();
-            _toolManager = new() { ToolLevel = _statManager.ToolLevel };
+            _plotManager = new(_statManager);
+            _toolManager = new(_statManager);
+            _workerManager = new(_statManager);
             _shopManager = new(_plotManager);
-            _workerManager = new()
-            {
-                IdleWorkerAmount = _statManager.IdleWorkerAmount,
-                WorkingWorkerAmount = _statManager.WorkingWorkerAmount
-            };
-            _workerManager.Init();
-            
+
             // add init resource
             _items.AddRange(new List<Item>()
             {

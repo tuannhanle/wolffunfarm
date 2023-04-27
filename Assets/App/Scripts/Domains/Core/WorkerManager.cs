@@ -9,25 +9,27 @@ namespace App.Scripts.Domains.Core
 {
     public class WorkerManager
     {
-        public int IdleWorkerAmount { get; set; }
-        public int WorkingWorkerAmount { get; set; }
-        
+
+        private StatManager _statManager;
+
         private Queue<Worker> _idleWorkers = new();
         private Queue<Worker> _workingWorkers = new();
 
         private Progress _progress = new();
+        private Worker _worker = new();
 
         private bool _isInit = false;
         private const float DURATION_WORKER = 120f;
 
-        public void Init()
+        public WorkerManager(StatManager statManager)
         {
+            _statManager = statManager;
             _isInit = true;
-            for (int i = 0; i < IdleWorkerAmount; i++)
+            for (int i = 0; i < _statManager.IdleWorkerAmount; i++)
             {
                 _idleWorkers.Enqueue(new ());
             }
-            for (int i = 0; i < WorkingWorkerAmount; i++)
+            for (int i = 0; i < _statManager.WorkingWorkerAmount; i++)
             {
                 _workingWorkers.Enqueue(new ());
             } 
@@ -77,17 +79,13 @@ namespace App.Scripts.Domains.Core
             
         }
 
-        // TODO: get it from DB
-        private int _amountMoney = 1000;
-        public int AmountMoney => _amountMoney;
-        
         public void RentWorker(ShareData.InteractEventType? EInteractEvent)
         {
             if (EInteractEvent != ShareData.InteractEventType.RentWorker)
                 return;
-            if (_amountMoney < Worker.Price)
+            if(_statManager.Gold.IsPayable(_worker.Price) == false)
                 return;
-            _amountMoney -= Worker.Price;
+            _statManager.Gold.Pay(_worker.Price);
             //TODO: save new <worker> to storage
             _idleWorkers.Enqueue(new ());
             

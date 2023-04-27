@@ -1,22 +1,20 @@
 using System.Collections.Generic;
-using App.Scripts.Domains.GameObjects;
+using App.Scripts.Domains.Models;
 using App.Scripts.Mics;
+using Plot = App.Scripts.Domains.GameObjects.Plot;
 
 namespace App.Scripts.Domains.Core
 {
     public class PlotManager
     {
-        public int UsingPlotAmount { get; set; }
-        public int UnusedPlotAmount { get; set; }
+
+        private StatManager _statManager;
         private List<Plot> _plots = new();
-
-        // TODO: get it from DB
-        private int _amountMoney = 1000;
-        public int AmountMoney => _amountMoney;
-
-        public void Init()
+        
+        public PlotManager(StatManager statManager)
         {
-            for (int i = 0; i < UnusedPlotAmount + UsingPlotAmount ; i++)
+            _statManager = statManager;
+            for (int i = 0; i < _statManager.UnusedPlotAmount + _statManager.UsingPlotAmount ; i++)
             {
                 _plots.Add(new());
             }
@@ -26,9 +24,9 @@ namespace App.Scripts.Domains.Core
         {
             if (uiEventEInteractEvent != ShareData.ShopEventType.BPlot)
                 return;
-            if (_amountMoney < Plot.Price)
+            if(_statManager.Gold.IsPayable(Plot.Price) == false)
                 return;
-            _amountMoney -= Plot.Price;
+            _statManager.Gold.Pay(Plot.Price);
             //TODO: save new <plot amount> to storage
             _plots.Add(new Plot());
         }

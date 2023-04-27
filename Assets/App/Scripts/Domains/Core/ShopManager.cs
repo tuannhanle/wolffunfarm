@@ -7,7 +7,7 @@ namespace App.Scripts.Domains.Core
 {
     public class ShopManager
     {
-        public PlotManager _plotManager;
+        private PlotManager _plotManager;
         private int _amountSeedOrder = 0;
 
         private Item _blueBerry = new (){Name = ItemType.BlueBerry, Price = 50 };

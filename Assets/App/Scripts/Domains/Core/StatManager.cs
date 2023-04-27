@@ -37,5 +37,6 @@ namespace App.Scripts.Domains.Core
             MilkProductAmount = 0;
         }
         
+        
     }   
 }
