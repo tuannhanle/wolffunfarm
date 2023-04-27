@@ -9,34 +9,31 @@ namespace App.Scripts.Domains.Core
 {
     public class WorkerManager
     {
+        public int IdleWorkerAmount { get; set; }
+        public int WorkingWorkerAmount { get; set; }
+        
         private Queue<Worker> _idleWorkers = new();
         private Queue<Worker> _workingWorkers = new();
 
-        private Progress _progress;
+        private Progress _progress = new();
 
         private bool _isInit = false;
-        private int _amountWorker = 0;
         private const float DURATION_WORKER = 120f;
-        
-        // TODO: Get amount of worker from db
-        public int GetAmountWorkerDB { get { return 1; } }
 
-        public WorkerManager()
+        public void Init()
         {
-            _idleWorkers = new Queue<Worker>();
-            _workingWorkers = new Queue<Worker>();
-            _progress = new Progress();
             _isInit = true;
-            _amountWorker = _amountWorker == 0 ? GetAmountWorkerDB : _amountWorker;
-            GainWorker(_amountWorker);            
-        }
-
-        private void GainWorker(int amount)
-        {
-            for (int i = 0; i < amount; i++)
+            for (int i = 0; i < IdleWorkerAmount; i++)
             {
                 _idleWorkers.Enqueue(new ());
             }
+            for (int i = 0; i < WorkingWorkerAmount; i++)
+            {
+                _workingWorkers.Enqueue(new ());
+            } 
+            TakeProceedingAsync(new () { EProceeding = ProceedingType.Seeding }).Forget();
+            TakeProceedingAsync(new () { EProceeding = ProceedingType.Seeding }).Forget();
+            TakeProceedingAsync(new () { EProceeding = ProceedingType.Seeding }).Forget();
         }
         
         private async UniTask TakeProceedingAsync(Proceeding proceeding)
@@ -92,16 +89,11 @@ namespace App.Scripts.Domains.Core
                 return;
             _amountMoney -= Worker.Price;
             //TODO: save new <worker> to storage
-            GainWorker(1);
+            _idleWorkers.Enqueue(new ());
             
         }
 
-        public void InitVeryFirstLogin()
-        {
-            TakeProceedingAsync(new () { EProceeding = ProceedingType.Seeding }).Forget();
-            TakeProceedingAsync(new () { EProceeding = ProceedingType.Seeding }).Forget();
-            TakeProceedingAsync(new () { EProceeding = ProceedingType.Seeding }).Forget();
-        }
+
     }
     
 }

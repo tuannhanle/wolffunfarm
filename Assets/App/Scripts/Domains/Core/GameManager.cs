@@ -8,22 +8,33 @@ namespace App.Scripts.Domains.Core
 {
     public class GameManager : MiddlewareBehaviour
     {
-        public Crop[] crops;
-        public Plot[] plotPrefabs;
-
+        
         private List<Item> _items = new();
 
-        private WorkerManager _workerManager= new();
-        private ToolManager _toolManager = new();
-        private PlotManager _plotManager = new();
+        private WorkerManager _workerManager;
+        private ToolManager _toolManager;
+        private PlotManager _plotManager;
         private ShopManager _shopManager;
+        private StatManager _statManager = new();
+        
         
         private void Awake()
         {
-            
-            _plotManager.InitVeryFirstLogin();
+            _statManager.SyncFromLocalDB();
+            _plotManager = new()
+            {
+                UsingPlotAmount = _statManager.UsingPlotAmount,
+                UnusedPlotAmount = _statManager.UnusedPlotAmount,
+            };
+            _plotManager.Init();
+            _toolManager = new() { ToolLevel = _statManager.ToolLevel };
             _shopManager = new(_plotManager);
-            _workerManager.InitVeryFirstLogin();
+            _workerManager = new()
+            {
+                IdleWorkerAmount = _statManager.IdleWorkerAmount,
+                WorkingWorkerAmount = _statManager.WorkingWorkerAmount
+            };
+            _workerManager.Init();
             
             // add init resource
             _items.AddRange(new List<Item>()

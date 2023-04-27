@@ -6,18 +6,21 @@ namespace App.Scripts.Domains.Core
 {
     public class PlotManager
     {
+        public int UsingPlotAmount { get; set; }
+        public int UnusedPlotAmount { get; set; }
         private List<Plot> _plots = new();
-        
 
-        public void InitVeryFirstLogin()
-        {
-            _plots.AddRange(new List<Plot>(){new Plot(), new Plot(), new Plot()});
-
-        }
-        
         // TODO: get it from DB
         private int _amountMoney = 1000;
         public int AmountMoney => _amountMoney;
+
+        public void Init()
+        {
+            for (int i = 0; i < UnusedPlotAmount + UsingPlotAmount ; i++)
+            {
+                _plots.Add(new());
+            }
+        }
         
         public void ExtendPlot(ShareData.ShopEventType? uiEventEInteractEvent)
         {
