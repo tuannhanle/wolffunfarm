@@ -1,6 +1,5 @@
 using App.Scripts.Mics;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace App.Scripts.UI

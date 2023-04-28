@@ -2,17 +2,21 @@ namespace App.Scripts.Domains.Models
 {
     public class Crop
     {
-        public string Name { get; set; }
+        public Item Item { get; set; }
         public int DaysToHarvest { get; set; }
         public int SellPrice { get; set; }
         public int BuyPrice { get; set; }
 
-        public Crop(string name, int daysToHarvest, int sellPrice, int buyPrice)
+        public Crop(Item item, int daysToHarvest, int sellPrice, int buyPrice)
         {
-            Name = name;
+            Item = item;
             DaysToHarvest = daysToHarvest;
             SellPrice = sellPrice;
             BuyPrice = buyPrice;
+        }
+
+        public Crop()
+        {
         }
     }
 }

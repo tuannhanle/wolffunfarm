@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using App.Scripts.Domains.Models;
 using App.Scripts.Mics;
+using Cysharp.Threading.Tasks;
 using Plot = App.Scripts.Domains.GameObjects.Plot;
 
 namespace App.Scripts.Domains.Core
@@ -9,14 +10,22 @@ namespace App.Scripts.Domains.Core
     {
 
         private readonly StatManager _statManager;
-        private readonly List<Plot> _plots = new();
+        private readonly Queue<Plot> _unusedPlots = new();
+        private readonly Queue<Plot> _usingPlots = new();
+
+        private bool isSeedable => _unusedPlots.Count > 0;
         
         public PlotManager(StatManager statManager)
         {
             _statManager = statManager;
-            for (int i = 0; i < _statManager.UnusedPlotAmount + _statManager.UsingPlotAmount ; i++)
+            for (int i = 0; i < _statManager.UnusedPlotAmount   ; i++)
             {
-                _plots.Add(new());
+                _unusedPlots.Enqueue(new());
+            }
+
+            for (int i = 0; i < _statManager.UsingPlotAmount; i++)
+            {
+                _usingPlots.Enqueue(new());
             }
         }
         
@@ -28,7 +37,19 @@ namespace App.Scripts.Domains.Core
                 return;
             _statManager.Gold.Pay(Plot.Price);
             //TODO: save new <plot amount> to storage
-            _plots.Add(new Plot());
+            _unusedPlots.Enqueue(new Plot());
         }
+
+        public void Seeding(ItemType itemType)
+        {
+            if (isSeedable == false)
+                return;
+            var unusedPlot = _unusedPlots.Dequeue();
+            unusedPlot.Crop = new Crop() { Item = new Item(){ItemType = itemType}};
+            _usingPlots.Enqueue(unusedPlot);
+            
+        }
+        
+        
     }
 }

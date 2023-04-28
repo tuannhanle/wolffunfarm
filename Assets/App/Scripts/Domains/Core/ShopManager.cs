@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using App.Scripts.Domains.Models;
 using App.Scripts.Mics;
-using UnityEditor.Experimental.GraphView;
 
 namespace App.Scripts.Domains.Core
 {

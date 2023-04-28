@@ -1,16 +1,12 @@
 using App.Scripts.Domains.Models;
-using App.Scripts.Mics;
-using UnityEngine;
 
 namespace App.Scripts.Domains.GameObjects
 {
     public class Plot : IBuyable
     {
         public Crop Crop { get; set; }
-        public bool IsWatered { get; set; }
         public bool IsFertilized { get; set; }
-        public int DaysUntilHarvest { get; set; }
-        public int WaterLevel { get; set; }
+        public int TimeUntilHarvest { get; set; }
         public int FertilizerLevel { get; set; }
         
         public static int Price { get; private set; } = 500;
@@ -18,10 +14,8 @@ namespace App.Scripts.Domains.GameObjects
         public Plot()
         {
             Crop = null;
-            IsWatered = false;
             IsFertilized = false;
-            DaysUntilHarvest = 0;
-            WaterLevel = 0;
+            TimeUntilHarvest = 0;
             FertilizerLevel = 0;
         }
 
@@ -30,22 +24,13 @@ namespace App.Scripts.Domains.GameObjects
             if (Crop == null)
             {
                 Crop = crop;
-                DaysUntilHarvest = crop.DaysToHarvest;
+                TimeUntilHarvest = crop.DaysToHarvest;
                 return true;
             }
             return false;
         }
 
-        public bool Water()
-        {
-            if (!IsWatered)
-            {
-                IsWatered = true;
-                WaterLevel++;
-                return true;
-            }
-            return false;
-        }
+
 
         public bool Fertilize()
         {
@@ -60,13 +45,11 @@ namespace App.Scripts.Domains.GameObjects
 
         public bool Harvest()
         {
-            if (Crop != null && DaysUntilHarvest == 0)
+            if (Crop != null && TimeUntilHarvest == 0)
             {
                 Crop = null;
-                IsWatered = false;
                 IsFertilized = false;
-                DaysUntilHarvest = 0;
-                WaterLevel = 0;
+                TimeUntilHarvest = 0;
                 FertilizerLevel = 0;
                 return true;
             }
@@ -75,12 +58,12 @@ namespace App.Scripts.Domains.GameObjects
 
         public void UpdateCrop()
         {
-            if (DaysUntilHarvest > 0)
+            if (TimeUntilHarvest > 0)
             {
-                DaysUntilHarvest--;
-                if (IsWatered && IsFertilized)
+                TimeUntilHarvest--;
+                if (IsFertilized)
                 {
-                    DaysUntilHarvest--;
+                    TimeUntilHarvest--;
                 }
             }
         }

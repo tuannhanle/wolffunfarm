@@ -18,6 +18,7 @@ namespace App.Scripts.Domains.Core
 
         private const float DURATION_WORKER = 120f;
 
+        private bool isWorkerExecutable => _idleWorkers.Count > 0;
         public WorkerManager(StatManager statManager)
         {
             _statManager = statManager;
@@ -62,7 +63,7 @@ namespace App.Scripts.Domains.Core
         private async UniTask WorkerExecuteAsync(Proceeding proceeding)
         {
             var timeSpanDuration = TimeSpan.FromSeconds(DURATION_WORKER);
-            if (_idleWorkers.Count > 0)
+            if (isWorkerExecutable)
             {
                 var executableWorker = _idleWorkers.Dequeue();
                 _workingWorkers.Enqueue(executableWorker);
