@@ -19,7 +19,13 @@ namespace App.Scripts.Domains.Core
         public int TomotoProductAmount { get; private set; }
         public int MilkProductAmount { get; private set; }
 
-        public void SyncFromLocalDB()
+        public StatManager()
+        {
+            DependencyProvider.Instance.RegisterDependency(typeof(StatManager), this);
+            SyncFromLocalDB();
+        }
+
+        private void SyncFromLocalDB()
         {
             Gold = new() { Amount = 0, Name = "Gold" };
             ToolLevel = 1;

@@ -20,10 +20,12 @@ namespace App.Scripts.Domains.Core
 
         public bool IsCartBuyable => _amountSeedOrder == 10;
 
-        public ShopManager(StatManager statManager, PlotManager plotManager)
+        public ShopManager()
         {
-            _statManager = statManager;
-            _plotManager = plotManager;
+            DependencyProvider.Instance.RegisterDependency(typeof(ShopManager), this);
+
+            _statManager = DependencyProvider.Instance.GetDependency<StatManager>();
+            _plotManager = DependencyProvider.Instance.GetDependency<PlotManager>();
 
         }
         

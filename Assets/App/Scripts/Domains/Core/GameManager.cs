@@ -4,23 +4,22 @@ namespace App.Scripts.Domains.Core
 {
     public class GameManager : MiddlewareBehaviour
     {
-        
+        private DependencyProvider _dependencyProvider = new();
 
         private WorkerManager _workerManager;
         private ToolManager _toolManager;
         private PlotManager _plotManager;
         private ShopManager _shopManager;
-        private StatManager _statManager = new();
+        private StatManager _statManager;
         
         
         private void Awake()
         {
-            _statManager.SyncFromLocalDB();
-            _plotManager = new(_statManager);
-            _toolManager = new(_statManager);
-            _workerManager = new(_statManager);
-            _shopManager = new(_statManager, _plotManager);
-            
+            _statManager = new();
+            _workerManager = new();
+            _toolManager= new();
+            _plotManager= new();
+            _shopManager= new();
 
             this.Subscribe<ShareData.InteractButtonsUIEvent>(OnInteractButtonsUIEventRaised);
             this.Subscribe<ShareData.ShopUIEvent>(_shopManager.OnShopUIEventRaised);

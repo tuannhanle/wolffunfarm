@@ -19,9 +19,11 @@ namespace App.Scripts.Domains.Core
         private const float DURATION_WORKER = 120f;
 
         private bool isWorkerExecutable => _idleWorkers.Count > 0;
-        public WorkerManager(StatManager statManager)
+        public WorkerManager()
         {
-            _statManager = statManager;
+            _statManager = DependencyProvider.Instance.GetDependency<StatManager>();
+            DependencyProvider.Instance.RegisterDependency(typeof(WorkerManager), this);
+
             for (int i = 0; i < _statManager.IdleWorkerAmount; i++)
             {
                 _idleWorkers.Enqueue(new ());

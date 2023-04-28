@@ -15,9 +15,11 @@ namespace App.Scripts.Domains.Core
 
         private bool isSeedable => _unusedPlots.Count > 0;
         
-        public PlotManager(StatManager statManager)
+        public PlotManager()
         {
-            _statManager = statManager;
+            _statManager = DependencyProvider.Instance.GetDependency<StatManager>();
+            DependencyProvider.Instance.RegisterDependency(typeof(PlotManager), this);
+
             for (int i = 0; i < _statManager.UnusedPlotAmount   ; i++)
             {
                 _unusedPlots.Enqueue(new());

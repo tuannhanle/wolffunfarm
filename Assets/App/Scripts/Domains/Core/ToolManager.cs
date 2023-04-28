@@ -10,10 +10,11 @@ namespace App.Scripts.Domains.Core
 
 
 
-        public ToolManager(StatManager statManager)
+        public ToolManager()
         {
-            _statManager = statManager;
-            _tool.Level = statManager.ToolLevel;
+            DependencyProvider.Instance.RegisterDependency(typeof(ToolManager), this);
+            _statManager = DependencyProvider.Instance.GetDependency<StatManager>();
+            _tool.Level = _statManager.ToolLevel;
         }
 
         
