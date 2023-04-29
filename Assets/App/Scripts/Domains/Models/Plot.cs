@@ -1,71 +1,46 @@
+using App.Scripts.Domains.Core;
 using App.Scripts.Domains.Models;
 
 namespace App.Scripts.Domains.GameObjects
 {
     public class Plot : IBuyable
     {
-        public Crop Crop { get; set; }
-        public bool IsFertilized { get; set; }
-        public int TimeUntilHarvest { get; set; }
-        public int FertilizerLevel { get; set; }
+        public Crop Crop { get; private set; }
+        public int TimeUntilHarvest { get; set; } // millisecond
         
         public static int Price { get; private set; } = 500;
+        private bool _isGrowable => Crop == null;
 
+        private int _extendTimeToSelfDestroy = 3600; // millisecond
         public Plot()
         {
             Crop = null;
-            IsFertilized = false;
             TimeUntilHarvest = 0;
-            FertilizerLevel = 0;
         }
 
-        public bool PlantCrop(Crop crop)
+        public bool PlantCrop(ItemType itemType)
         {
-            if (Crop == null)
+            if (_isGrowable && TimeUntilHarvest == 0)
             {
-                Crop = crop;
-                TimeUntilHarvest = crop.DaysToHarvest;
+                var item = Item.ConvertItemType(itemType);
+                Crop = new Crop(item);
+                TimeUntilHarvest = item.TimePerProduct * item.ProductCapacity + _extendTimeToSelfDestroy;
                 return true;
             }
             return false;
         }
 
-
-
-        public bool Fertilize()
-        {
-            if (!IsFertilized)
-            {
-                IsFertilized = true;
-                FertilizerLevel++;
-                return true;
-            }
-            return false;
-        }
-
+        
         public bool Harvest()
         {
-            if (Crop != null && TimeUntilHarvest == 0)
+            if (!_isGrowable && TimeUntilHarvest == 0)
             {
                 Crop = null;
-                IsFertilized = false;
                 TimeUntilHarvest = 0;
-                FertilizerLevel = 0;
                 return true;
             }
             return false;
         }
-
-        public void UpdateCrop()
-        {
-            if (TimeUntilHarvest > 0)
-            {
-                TimeUntilHarvest--;
-                if (IsFertilized)
-                {
-                    TimeUntilHarvest--;
-                }
-            }
-        }
+        
     }
 }

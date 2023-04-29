@@ -10,25 +10,22 @@ namespace App.Scripts.Domains.Core
     {
 
         private readonly StatManager _statManager;
-        private readonly Queue<Plot> _unusedPlots = new();
-        private readonly Queue<Plot> _usingPlots = new();
-
-        private bool isSeedable => _unusedPlots.Count > 0;
+        private readonly List<Plot> _plots = new();
         
         public PlotManager()
         {
             _statManager = DependencyProvider.Instance.GetDependency<StatManager>();
             DependencyProvider.Instance.RegisterDependency(typeof(PlotManager), this);
 
-            for (int i = 0; i < _statManager.UnusedPlotAmount   ; i++)
+            for (int i = 0; i < _statManager.UnusedPlotAmount  ; i++)
             {
-                _unusedPlots.Enqueue(new());
+                _plots.Add(new());
+            }
+            for (int i = 0; i < _statManager.UsingPlotAmount ; i++)
+            {
+                _plots.Add(new());
             }
 
-            for (int i = 0; i < _statManager.UsingPlotAmount; i++)
-            {
-                _usingPlots.Enqueue(new());
-            }
         }
         
         public void ExtendPlot(ShareData.ShopEventType? uiEventEInteractEvent)
@@ -39,19 +36,21 @@ namespace App.Scripts.Domains.Core
                 return;
             _statManager.Gold.Pay(Plot.Price);
             //TODO: save new <plot amount> to storage
-            _unusedPlots.Enqueue(new Plot());
+            _plots.Add(new ());
         }
 
-        public void Seeding(ItemType itemType)
+        public bool Attach(ItemType itemType)
         {
-            if (isSeedable == false)
-                return;
-            var unusedPlot = _unusedPlots.Dequeue();
-            unusedPlot.Crop = new Crop() { Item = new Item(){ItemType = itemType}};
-            _usingPlots.Enqueue(unusedPlot);
-            
+            foreach (var plot in _plots)
+            {
+                return plot.PlantCrop(itemType);
+            }
+            return false;
         }
-        
-        
+
+
+
+
+
     }
 }

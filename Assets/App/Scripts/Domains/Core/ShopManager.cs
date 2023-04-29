@@ -8,11 +8,6 @@ namespace App.Scripts.Domains.Core
     {
         private readonly PlotManager _plotManager;
         private readonly StatManager _statManager;
-
-        private readonly Item _blueBerry = new (){ItemType = ItemType.BlueBerry, Price = 50 };
-        private readonly Item _tomato = new (){ItemType = ItemType.Tomato, Price = 30};
-        private readonly Item _strawBerry = new (){ItemType = ItemType.StrawBerry , Price= 40};
-        private readonly Item _cow = new (){ItemType = ItemType.Cow , Price= 100};
         
         private List<Item> _cart = new();
         
@@ -23,33 +18,29 @@ namespace App.Scripts.Domains.Core
         public ShopManager()
         {
             DependencyProvider.Instance.RegisterDependency(typeof(ShopManager), this);
-
             _statManager = DependencyProvider.Instance.GetDependency<StatManager>();
             _plotManager = DependencyProvider.Instance.GetDependency<PlotManager>();
 
         }
-        
-        private bool IsPickSeedable(int amount)
-        {
-            return amount + _amountSeedOrder <= 10;
-        }
 
+        private bool IsPickSeedable(int amount) => amount + _amountSeedOrder <= 10;
+        
         
         public void OnShopUIEventRaised(ShareData.ShopUIEvent shopUIEvent)
         {
             switch (shopUIEvent.EShopUIEvent)
             {
                 case ShareData.ShopEventType.BBlueBerry:
-                    this.PickSeed(_blueBerry,1);
+                    this.PickSeed(Item.ConvertItemType(shopUIEvent.EShopUIEvent),1);
                     break;
                 case ShareData.ShopEventType.BTomato:
-                    this.PickSeed(_tomato,1);
+                    this.PickSeed(Item.ConvertItemType(shopUIEvent.EShopUIEvent),1);
                     break;
                 case ShareData.ShopEventType.BStrawBerry:
-                    this.PickSeed(_strawBerry,10);
+                    this.PickSeed(Item.ConvertItemType(shopUIEvent.EShopUIEvent),10);
                     break;
                 case ShareData.ShopEventType.BCow:
-                    this.BuyCow();
+                    this.BuyCow(Item.ConvertItemType(shopUIEvent.EShopUIEvent));
                     break;
                 case ShareData.ShopEventType.BPlot:
                     _plotManager.ExtendPlot(shopUIEvent.EShopUIEvent);
@@ -82,12 +73,12 @@ namespace App.Scripts.Domains.Core
 
         }
 
-        private void BuyCow()
+        private void BuyCow(Item item)
         {
-            if( _statManager.Gold.IsPayable(_cow.Price) == false)
+            if( _statManager.Gold.IsPayable(item.Price) == false)
                 return;
-            _statManager.Gold.Pay(_cow.Price);
-            _statManager.GainItem(ItemType.Cow);
+            _statManager.Gold.Pay(item.Price);
+            _statManager.GainItem(item.ItemType);
         }
 
         private void BuySeedInCart()

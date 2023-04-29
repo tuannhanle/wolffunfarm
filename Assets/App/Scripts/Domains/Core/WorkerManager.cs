@@ -11,6 +11,7 @@ namespace App.Scripts.Domains.Core
     {
 
         private readonly StatManager _statManager;
+        private readonly PlotManager _plotManager;
         private readonly Queue<Worker> _idleWorkers = new();
         private readonly Queue<Worker> _workingWorkers = new();
         private readonly Progress _progress = new();
@@ -22,6 +23,8 @@ namespace App.Scripts.Domains.Core
         public WorkerManager()
         {
             _statManager = DependencyProvider.Instance.GetDependency<StatManager>();
+            _plotManager = DependencyProvider.Instance.GetDependency<PlotManager>();
+
             DependencyProvider.Instance.RegisterDependency(typeof(WorkerManager), this);
 
             for (int i = 0; i < _statManager.IdleWorkerAmount; i++)
@@ -48,7 +51,10 @@ namespace App.Scripts.Domains.Core
             while (progress.datas.Count > 0)
             {
                 var proceeding = progress.datas.Pop();
-                WorkerExecuteAsync(proceeding).Forget();
+                if (await WorkerExecuteAsync(proceeding) == false)
+                {
+                    progress.datas.Push(proceeding);
+                }
                 await UniTask.Yield();
             }
             
@@ -62,20 +68,25 @@ namespace App.Scripts.Domains.Core
         // }
         
         //TODO: worker has still not execute the proceed
-        private async UniTask WorkerExecuteAsync(Proceeding proceeding)
+        private async UniTask<bool> WorkerExecuteAsync(Proceeding proceeding)
         {
             var timeSpanDuration = TimeSpan.FromSeconds(DURATION_WORKER);
-            if (isWorkerExecutable)
+            if (isWorkerExecutable == false)
+                return false;
+            var executableWorker = _idleWorkers.Dequeue();
+            var isProceedExecutable = false;
+            if (proceeding.EProceeding == ProceedingType.Seeding)
             {
-                var executableWorker = _idleWorkers.Dequeue();
-                _workingWorkers.Enqueue(executableWorker);
-                await UniTask.Delay(timeSpanDuration);
-                executableWorker = _workingWorkers.Dequeue();
-                _idleWorkers.Enqueue(executableWorker);
-                return;
+                isProceedExecutable = _plotManager.Attach(proceeding.EItemType);
             }
+
+            if (isProceedExecutable == false)   
+                return false;
+            _workingWorkers.Enqueue(executableWorker);
             await UniTask.Delay(timeSpanDuration);
-            
+            executableWorker = _workingWorkers.Dequeue();
+            _idleWorkers.Enqueue(executableWorker);
+            return true;
         }
 
         public void RentWorker(ShareData.InteractEventType? EInteractEvent)

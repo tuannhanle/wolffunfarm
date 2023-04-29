@@ -6,6 +6,7 @@ namespace App.Scripts.Domains.Models
     public class Proceeding
     {
         public ProceedingType EProceeding { get; set; }
+        public ItemType EItemType { get; set; }
 
     }
 
