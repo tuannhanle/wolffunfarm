@@ -1,26 +1,31 @@
 using System;
 using App.Scripts.Domains.Core;
 using App.Scripts.Domains.Models;
+using UnityEditor.Experimental.GraphView;
 
 namespace App.Scripts.Domains.GameObjects
 {
-    public class Plot : IBuyable
+    public class Plot : Stuff
     {
         public Crop Crop { get; private set; }
         public long TimeUntilHarvest { get; set; } // millisecond
         
-        public static int Price { get; private set; } = 500;
+        // override int Price { get; private set; } = 500;
+
+
         private bool _isGrowable => Crop == null;
 
         private const int EXTEND_TIME_TO_SELF_DESTROY = 3600; // second
-        public Plot()
+        public Plot(int amount = 500) : base(amount)
         {
+            Price = amount;
             Crop = null;
             TimeUntilHarvest = 0;
         }
 
-        public Plot(Crop crop)
+        public Plot(Crop crop, int amount = 500) : base(amount)
         {
+            Price = amount;
             Crop = crop;
         }
         

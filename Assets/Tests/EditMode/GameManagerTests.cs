@@ -8,6 +8,12 @@ using NUnit.Framework;
 public class GameManagerTests
 {
 
+    [SetUp]
+    public void SetUp()
+    {
+        
+    }
+    
     [Test]
     public void RentOneWorker()
     {
