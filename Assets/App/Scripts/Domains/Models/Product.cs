@@ -4,12 +4,11 @@ namespace App.Scripts.Domains.Models
 {
     public class Product
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
+        public ItemType ItemType { get; set; }
+        public int Amount { get; set; }
         public decimal Price { get; set; }
         public int Stock { get; set; }
-        public bool IsActive { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime? UpdatedAt { get; set; }
+        public bool IsActive => Amount > 0;
+
     }
 }

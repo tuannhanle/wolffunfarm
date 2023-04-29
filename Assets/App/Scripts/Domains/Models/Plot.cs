@@ -1,3 +1,4 @@
+using System;
 using App.Scripts.Domains.Core;
 using App.Scripts.Domains.Models;
 
@@ -6,16 +7,37 @@ namespace App.Scripts.Domains.GameObjects
     public class Plot : IBuyable
     {
         public Crop Crop { get; private set; }
-        public int TimeUntilHarvest { get; set; } // millisecond
+        public long TimeUntilHarvest { get; set; } // millisecond
         
         public static int Price { get; private set; } = 500;
         private bool _isGrowable => Crop == null;
 
-        private const int EXTEND_TIME_TO_SELF_DESTROY = 3600; // millisecond
+        private const int EXTEND_TIME_TO_SELF_DESTROY = 3600; // second
         public Plot()
         {
             Crop = null;
             TimeUntilHarvest = 0;
+        }
+
+        public Plot(Crop crop)
+        {
+            Crop = crop;
+        }
+        
+        public void TakeAmountProduct()
+        {
+            var item = Crop.Item;
+            var deltaTime = TimeStamp.Second(DateTime.UtcNow) - TimeStamp.Second(Crop.UpdatedAt??Crop.CreateAt);
+            var productHasBeenCollectable = (int) (deltaTime / item.TimePerProduct);
+            var realProductAmount = productHasBeenCollectable > item.ProductCapacity
+                ? item.ProductCapacity
+                : productHasBeenCollectable;
+            this.Crop.Product = new Product()
+            {
+                ItemType = item.ItemType, 
+                Amount = realProductAmount
+            };
+            Crop.UpdatedAt = DateTime.UtcNow;
         }
 
         public bool PlantCrop(ItemType itemType)

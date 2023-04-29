@@ -1,3 +1,4 @@
+using System;
 using App.Scripts.Mics;
 
 namespace App.Scripts.Domains.Models
@@ -10,8 +11,10 @@ namespace App.Scripts.Domains.Models
         public int Price { get; set; }
         public int Stock { get; set; }
         public Category Category { get; set; }
-        public int TimePerProduct { get; set; } // (millisecond) time for each product
-        public int ProductCapacity { get; set; } // (millisecond) total product for each item could be collected
+
+
+        public long TimePerProduct { get; set; } // (second) time for each product
+        public int ProductCapacity { get; set; } // (second) total product for each item could be collected
 
         private static ItemType ConvertShopEventType(ShareData.ShopEventType shopEventType)
         {
