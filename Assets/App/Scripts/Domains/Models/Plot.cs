@@ -11,7 +11,7 @@ namespace App.Scripts.Domains.GameObjects
         public static int Price { get; private set; } = 500;
         private bool _isGrowable => Crop == null;
 
-        private int _extendTimeToSelfDestroy = 3600; // millisecond
+        private const int EXTEND_TIME_TO_SELF_DESTROY = 3600; // millisecond
         public Plot()
         {
             Crop = null;
@@ -24,7 +24,7 @@ namespace App.Scripts.Domains.GameObjects
             {
                 var item = Item.ConvertItemType(itemType);
                 Crop = new Crop(item);
-                TimeUntilHarvest = item.TimePerProduct * item.ProductCapacity + _extendTimeToSelfDestroy;
+                TimeUntilHarvest = item.TimePerProduct * item.ProductCapacity + EXTEND_TIME_TO_SELF_DESTROY;
                 return true;
             }
             return false;
