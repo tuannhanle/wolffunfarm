@@ -43,7 +43,7 @@ namespace App.Scripts.Domains.Core
                     this.BuyCow(Item.ConvertItemType(shopUIEvent.EShopUIEvent));
                     break;
                 case ShareData.ShopEventType.BPlot:
-                    _plotManager.ExtendPlot(shopUIEvent.EShopUIEvent);
+                    _plotManager.ExtendPlot();
                     _statManager.GainItem(ItemType.Plot);
                     break;
                 case ShareData.ShopEventType.BuySeedInCart:

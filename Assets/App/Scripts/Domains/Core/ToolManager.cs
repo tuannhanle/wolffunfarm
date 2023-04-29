@@ -18,15 +18,15 @@ namespace App.Scripts.Domains.Core
         }
 
         
-        public void UpgradeTool(ShareData.InteractEventType? uiEventEInteractEvent)
+        public void UpgradeTool()
         {
-            if (uiEventEInteractEvent != ShareData.InteractEventType.UpgradeTool)
+            var result = _tool.BeBoughtBy<Plot>(_statManager.Gold);
+            if (result == null)
                 return;
-            if(_statManager.Gold.IsPayable(_tool.Price) == false)
-                return;
-            _statManager.Gold.Pay(_tool.Price);
             //TODO: save new <tool level> to storage
             _tool.UpLevel();
         }
+
+        public int? GetToolLevel => _tool.Level;
     }
 }

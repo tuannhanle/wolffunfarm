@@ -15,7 +15,6 @@ namespace App.Scripts.Domains.Core
         private readonly Queue<Worker> _idleWorkers = new();
         private readonly Queue<Worker> _workingWorkers = new();
         private readonly Progress _progress = new();
-        private readonly Worker _worker = new();
 
         private const float DURATION_WORKER = 120f;
 
@@ -89,16 +88,14 @@ namespace App.Scripts.Domains.Core
             return true;
         }
 
-        public void RentWorker(ShareData.InteractEventType? EInteractEvent)
+        public void RentWorker()
         {
-            if (EInteractEvent != ShareData.InteractEventType.RentWorker)
+            var worker = new Worker().BeBoughtBy<Worker>(_statManager.Gold);
+            if (worker == null)
                 return;
-            if(_statManager.Gold.IsPayable(_worker.Price) == false)
-                return;
-            _statManager.Gold.Pay(_worker.Price);
+            _idleWorkers.Enqueue(worker);
             //TODO: save new <worker> to storage
-            _idleWorkers.Enqueue(new ());
-            
+
         }
 
 

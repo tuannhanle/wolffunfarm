@@ -25,6 +25,11 @@ namespace App.Scripts.Domains.Core
             SyncFromLocalDB();
         }
 
+        public void CheatGoldAmount(ICheat iCheat)
+        {
+            Gold =  new() { Amount = iCheat.GoldAmount, Name = "Gold" };
+        }
+
         private void SyncFromLocalDB()
         {
             Gold = new() { Amount = 0, Name = "Gold" };
@@ -56,5 +61,10 @@ namespace App.Scripts.Domains.Core
         }
         
         
-    }   
+    }
+
+    public interface ICheat
+    {
+        int GoldAmount { get; set; }
+    }
 }

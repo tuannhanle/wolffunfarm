@@ -28,15 +28,14 @@ namespace App.Scripts.Domains.Core
 
         }
         
-        public void ExtendPlot(ShareData.ShopEventType? uiEventEInteractEvent)
+        public void ExtendPlot()
         {
-            if (uiEventEInteractEvent != ShareData.ShopEventType.BPlot)
+            var plot = new Plot().BeBoughtBy<Plot>(_statManager.Gold);
+            if (plot == null)
                 return;
-            if(_statManager.Gold.IsPayable(Plot.Price) == false)
-                return;
-            _statManager.Gold.Pay(Plot.Price);
+            _plots.Add(plot);
             //TODO: save new <plot amount> to storage
-            _plots.Add(new ());
+            
         }
 
         public bool Attach(ItemType itemType)

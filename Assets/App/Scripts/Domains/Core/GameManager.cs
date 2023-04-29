@@ -1,10 +1,10 @@
+using App.Scripts.Domains.Models;
 using App.Scripts.Mics;
 
 namespace App.Scripts.Domains.Core
 {
     public class GameManager : MiddlewareBehaviour
     {
-        private DependencyProvider _dependencyProvider = new();
 
         private WorkerManager _workerManager;
         private ToolManager _toolManager;
@@ -16,9 +16,9 @@ namespace App.Scripts.Domains.Core
         private void Awake()
         {
             _statManager = new();
+            _plotManager= new();
             _workerManager = new();
             _toolManager= new();
-            _plotManager= new();
             _shopManager= new();
 
             this.Subscribe<ShareData.InteractButtonsUIEvent>(OnInteractButtonsUIEventRaised);
@@ -32,10 +32,10 @@ namespace App.Scripts.Domains.Core
             switch (uiEvent.EInteractEvent)
             {
                 case ShareData.InteractEventType.RentWorker:
-                    _workerManager.RentWorker(uiEvent.EInteractEvent);
+                    _workerManager.RentWorker( );
                     break;
                 case ShareData.InteractEventType.UpgradeTool:
-                    _toolManager.UpgradeTool(uiEvent.EInteractEvent);
+                    _toolManager.UpgradeTool();
                     break;
                 case ShareData.InteractEventType.GetMilk:
                     break;

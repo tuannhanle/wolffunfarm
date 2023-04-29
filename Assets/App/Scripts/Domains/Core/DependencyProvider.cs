@@ -42,9 +42,8 @@ namespace App.Scripts.Domains.Core
 
     public class MissingDependencyException : Exception
     {
-        public MissingDependencyException(Type type)
-        {
-            throw new NotImplementedException();
-        }
+        public MissingDependencyException(Type requestedDependency) : 
+            base("Unable to fetch dependency of type: " + requestedDependency.Name + ".")
+        { }
     }
 }
