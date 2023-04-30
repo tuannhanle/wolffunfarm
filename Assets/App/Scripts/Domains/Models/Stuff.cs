@@ -6,12 +6,12 @@ namespace App.Scripts.Domains.Models
     {
         protected int Price { get; set;}
 
-        protected Stuff(int amount)
+        public Stuff(int amount)
         {
             Price = amount;
         }
 
-        public T BeBoughtBy<T>(Gold gold) where T : class
+        public Stuff BeBoughtBy(Gold gold)
         {
             if (gold == null)
                 throw new ArgumentNullException(nameof(gold)); // input validation
@@ -20,7 +20,7 @@ namespace App.Scripts.Domains.Models
                 return null;
         
             gold.Pay(Price);
-            return this as T;
+            return this;
         }
         
     }

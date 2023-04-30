@@ -16,33 +16,33 @@ namespace App.Scripts.Domains.Models
         public long TimePerProduct { get; set; } // (second) time for each product
         public int ProductCapacity { get; set; } // (second) total product for each item could be collected
 
-        private static ItemType ConvertShopEventType(ShareData.ShopEventType shopEventType)
-        {
-            return shopEventType switch
-            {
-                ShareData.ShopEventType.BBlueBerry => ItemType.BlueBerry,
-                ShareData.ShopEventType.BTomato => ItemType.Tomato,
-                ShareData.ShopEventType.BStrawBerry => ItemType.StrawBerry,
-                ShareData.ShopEventType.BCow => ItemType.Cow,
-            };
-        }
+        // private static ItemType ConvertShopEventType(ShareData.ShopEventType shopEventType)
+        // {
+        //     return shopEventType switch
+        //     {
+        //         ShareData.ShopEventType.Buy => ItemType.BlueBerry,
+        //         ShareData.ShopEventType.BTomato => ItemType.Tomato,
+        //         ShareData.ShopEventType.BStrawBerry => ItemType.StrawBerry,
+        //         ShareData.ShopEventType.BCow => ItemType.Cow,
+        //     };
+        // }
 
-        public static Item ConvertItemType(ItemType itemType)
+        public static Item ConvertItemType(ItemType? eItemType)
         {
-            return itemType switch
+            return eItemType switch
             {
                 ItemType.BlueBerry => Define.BlueBerryItem,
                 ItemType.Tomato => Define.TomatoItem,
                 ItemType.StrawBerry => Define.StrawBerryItem,
-                ItemType.Cow => Define.CowItem,
+                ItemType.Cow => Define.CowItem
             };
         }
 
-        public static Item ConvertItemType(ShareData.ShopEventType shopEventType)
-        {
-            var itemType = ConvertShopEventType(shopEventType);
-            return ConvertItemType(itemType);
-        }
+        // public static Item ConvertItemType(ShareData.ShopEventType shopEventType)
+        // {
+        //     var itemType = ConvertShopEventType(shopEventType);
+        //     return ConvertItemType(itemType);
+        // }
     }
     
 }

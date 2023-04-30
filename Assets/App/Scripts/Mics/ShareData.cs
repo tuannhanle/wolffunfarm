@@ -12,36 +12,10 @@ namespace App.Scripts.Mics
             public Currency Plot { get; set; }
 
         }
-
-        public enum InteractEventType
-        {
-            OpenShop, 
-            RentWorker, 
-            UpgradeTool, 
-            GetMilk, 
-            Sell
-            
-        }
-
-        public class InteractButtonsUIEvent
-        {
-            public InteractEventType EInteractEvent { get; set; }
-        }
-
-        public enum ShopEventType
-        {
-            BBlueBerry,
-            BTomato,
-            BStrawBerry,
-            BCow,
-            BPlot,
-            BuySeedInCart,
-            ReleaseSeedInCart
-        }
         
-        public class ShopUIEvent
-        {
-            public ShopEventType EShopUIEvent { get; set; } 
-        }
+
+        
+        public class OpenShopEvent
+        { }
     }
 }

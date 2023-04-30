@@ -2,7 +2,7 @@ using App.Scripts.Domains.Models;
 
 namespace App.Scripts.Domains.Core
 {
-    public class StatManager
+    public class StatManager : Dependency<StatManager>
     {
         public Gold Gold { get; private set; }
         public int ToolLevel { get; private set; }
@@ -19,12 +19,11 @@ namespace App.Scripts.Domains.Core
         public int TomotoProductAmount { get; private set; }
         public int MilkProductAmount { get; private set; }
 
-        public StatManager()
+        public StatManager() : base()
         {
-            DependencyProvider.Instance.RegisterDependency(typeof(StatManager), this);
             SyncFromLocalDB();
         }
-
+        
         public void CheatGoldAmount(ICheat iCheat)
         {
             Gold =  new() { Amount = iCheat.GoldAmount, Name = "Gold" };

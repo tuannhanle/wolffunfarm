@@ -1,30 +1,29 @@
 using App.Scripts.Domains.Models;
 using App.Scripts.Mics;
+using UnityEngine;
 
 namespace App.Scripts.Domains.Core
 {
-    public class ToolManager
+    public class ToolManager : Dependency<ToolManager>
     {
-        private readonly StatManager _statManager;
-        private readonly Tool _tool = new();
-
-
-
-        public ToolManager()
+        private Tool _tool = new();
+        
+        public void Init()
         {
-            DependencyProvider.Instance.RegisterDependency(typeof(ToolManager), this);
-            _statManager = DependencyProvider.Instance.GetDependency<StatManager>();
+            base.Init();
             _tool.Level = _statManager.ToolLevel;
         }
-
         
-        public void UpgradeTool()
+        
+        public bool UpgradeTool()
         {
-            var result = _tool.BeBoughtBy<Plot>(_statManager.Gold);
+            var gold = _statManager.Gold;
+            var result = _tool.BeBoughtBy(gold);
             if (result == null)
-                return;
+                return false;
             //TODO: save new <tool level> to storage
             _tool.UpLevel();
+            return true;
         }
 
         public int? GetToolLevel => _tool.Level;

@@ -1,55 +1,33 @@
 using System.Collections.Generic;
 using App.Scripts.Domains.Models;
 using App.Scripts.Mics;
+using App.Scripts.UI;
 
 namespace App.Scripts.Domains.Core
 {
-    public class ShopManager
+    public class ShopManager : Dependency<ShopManager>
     {
-        private readonly PlotManager _plotManager;
-        private readonly StatManager _statManager;
-        
+
         private List<Item> _cart = new();
         
         private int _amountSeedOrder = 0;
 
         public bool IsCartBuyable => _amountSeedOrder == 10;
 
-        public ShopManager()
-        {
-            DependencyProvider.Instance.RegisterDependency(typeof(ShopManager), this);
-            _statManager = DependencyProvider.Instance.GetDependency<StatManager>();
-            _plotManager = DependencyProvider.Instance.GetDependency<PlotManager>();
-
-        }
-
         private bool IsPickSeedable(int amount) => amount + _amountSeedOrder <= 10;
         
         
-        public void OnShopUIEventRaised(ShareData.ShopUIEvent shopUIEvent)
+        public void OnShopUIEventRaised(ShopEventType eShopEvent, ItemType? eItemType =null)
         {
-            switch (shopUIEvent.EShopUIEvent)
+            switch (eShopEvent)
             {
-                case ShareData.ShopEventType.BBlueBerry:
-                    this.PickSeed(Item.ConvertItemType(shopUIEvent.EShopUIEvent),1);
+                case ShopEventType.Buy:
+                    this.PickItem(eItemType);
                     break;
-                case ShareData.ShopEventType.BTomato:
-                    this.PickSeed(Item.ConvertItemType(shopUIEvent.EShopUIEvent),1);
-                    break;
-                case ShareData.ShopEventType.BStrawBerry:
-                    this.PickSeed(Item.ConvertItemType(shopUIEvent.EShopUIEvent),10);
-                    break;
-                case ShareData.ShopEventType.BCow:
-                    this.BuyCow(Item.ConvertItemType(shopUIEvent.EShopUIEvent));
-                    break;
-                case ShareData.ShopEventType.BPlot:
-                    _plotManager.ExtendPlot();
-                    _statManager.GainItem(ItemType.Plot);
-                    break;
-                case ShareData.ShopEventType.BuySeedInCart:
+                case ShopEventType.BuySeedInCart:
                     this.BuySeedInCart();
                     break;
-                case ShareData.ShopEventType.ReleaseSeedInCart:
+                case ShopEventType.ReleaseSeedInCart:
                     this.ReleaseSeedInCart();
                     break;
             }
@@ -61,8 +39,28 @@ namespace App.Scripts.Domains.Core
             _amountSeedOrder = 0;
         }
 
-        private void PickSeed(Item item, int amount)
+        private void PickItem(ItemType? eItemType)
         {
+            if (eItemType == ItemType.Plot)
+            {
+                _plotManager.ExtendPlot();
+            }
+            else if (eItemType == ItemType.Cow)
+            {
+                this.BuyCow();
+            }
+            else
+            {
+                this.PickSeed(eItemType);
+            }
+        }
+        
+        private void PickSeed(ItemType? eItemType)
+        {
+            if (eItemType == null)
+                return;
+            var amount = eItemType == ItemType.BlueBerry ? 10 : 1;
+            var item = Item.ConvertItemType(eItemType);
             if (IsPickSeedable(amount) == false)
                 return;
             _amountSeedOrder += amount;
@@ -73,12 +71,13 @@ namespace App.Scripts.Domains.Core
 
         }
 
-        private void BuyCow(Item item)
+        private void BuyCow()
         {
-            if( _statManager.Gold.IsPayable(item.Price) == false)
+            var cowItem = Define.CowItem;
+            if( _statManager.Gold.IsPayable(cowItem.Price) == false)
                 return;
-            _statManager.Gold.Pay(item.Price);
-            _statManager.GainItem(item.ItemType);
+            _statManager.Gold.Pay(cowItem.Price);
+            _statManager.GainItem(cowItem.ItemType);
         }
 
         private void BuySeedInCart()
@@ -100,6 +99,11 @@ namespace App.Scripts.Domains.Core
             _cart = new();
             _amountSeedOrder = 0;
 
+        }
+
+        public void Init()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

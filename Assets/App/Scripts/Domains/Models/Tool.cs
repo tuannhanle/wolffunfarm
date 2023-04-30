@@ -4,7 +4,7 @@ namespace App.Scripts.Domains.Models
 {
     public class Tool : Stuff
     {
-        public int? Level { get;  set; }
+        public int? Level { get; set; } = 1;
         public float Percent { get; private set; } = 10;
         public void UpLevel() => Level++;
         public float GetPercentPerLevel => 100f + (Level??1 - 1f) * Percent;

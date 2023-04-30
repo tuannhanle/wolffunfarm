@@ -7,11 +7,8 @@ using Progress = App.Scripts.Domains.Models.Progress;
 
 namespace App.Scripts.Domains.Core
 {
-    public class WorkerManager
+    public class WorkerManager : Dependency<WorkerManager>
     {
-
-        private readonly StatManager _statManager;
-        private readonly PlotManager _plotManager;
         private readonly Queue<Worker> _idleWorkers = new();
         private readonly Queue<Worker> _workingWorkers = new();
         private readonly Progress _progress = new();
@@ -19,13 +16,12 @@ namespace App.Scripts.Domains.Core
         private const float DURATION_WORKER = 120f;
 
         private bool isWorkerExecutable => _idleWorkers.Count > 0;
-        public WorkerManager()
+        
+
+
+        public void Init()
         {
-            _statManager = DependencyProvider.Instance.GetDependency<StatManager>();
-            _plotManager = DependencyProvider.Instance.GetDependency<PlotManager>();
-
-            DependencyProvider.Instance.RegisterDependency(typeof(WorkerManager), this);
-
+            base.Init();
             for (int i = 0; i < _statManager.IdleWorkerAmount; i++)
             {
                 _idleWorkers.Enqueue(new ());

@@ -6,17 +6,13 @@ using Plot = App.Scripts.Domains.GameObjects.Plot;
 
 namespace App.Scripts.Domains.Core
 {
-    public class PlotManager
+    public class PlotManager : Dependency<PlotManager>
     {
-
-        private readonly StatManager _statManager;
         private readonly List<Plot> _plots = new();
-        
-        public PlotManager()
-        {
-            _statManager = DependencyProvider.Instance.GetDependency<StatManager>();
-            DependencyProvider.Instance.RegisterDependency(typeof(PlotManager), this);
 
+        public void Init()
+        {
+            base.Init();
             for (int i = 0; i < _statManager.UnusedPlotAmount  ; i++)
             {
                 _plots.Add(new());
@@ -25,15 +21,15 @@ namespace App.Scripts.Domains.Core
             {
                 _plots.Add(new());
             }
-
         }
         
         public void ExtendPlot()
         {
-            var plot = new Plot().BeBoughtBy<Plot>(_statManager.Gold);
+            var plot = new Stuff(500).BeBoughtBy(_statManager.Gold) as Plot;
             if (plot == null)
                 return;
             _plots.Add(plot);
+            _statManager.GainItem(ItemType.Plot);
             //TODO: save new <plot amount> to storage
             
         }

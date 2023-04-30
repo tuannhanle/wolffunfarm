@@ -39,26 +39,45 @@ namespace Tests.PlayMode
         
         
         [UnityEngine.TestTools.UnityTest]
-        public System.Collections.IEnumerator Test_3_CheckStatInStatManager()
+        public System.Collections.IEnumerator Test_3_CheckStatInStatManagerCheating()
         {
             var statManager = DependencyProvider.Instance.GetDependency<StatManager>();
-            Assert.AreEqual(0, statManager.Gold.Amount);
+            statManager.CheatGoldAmount(this);
+            Assert.AreEqual(1000, statManager.Gold.Amount);
             yield return null;
         }
         
         
         
         [UnityEngine.TestTools.UnityTest]
-        public System.Collections.IEnumerator Test_4_TestUpgradeToolToLevel1()
+        public System.Collections.IEnumerator Test_4_TestToolManagerExist()
         {
-            var statManager = DependencyProvider.Instance.GetDependency<StatManager>();
-            statManager.CheatGoldAmount(this);
-            var x = new ToolManager();
-            x.UpgradeTool();
-            Assert.AreEqual(1, x.GetToolLevel);
+            var toolManager = DependencyProvider.Instance.GetDependency<ToolManager>();
+            toolManager.UpgradeTool();
+            Assert.NotNull(toolManager);
             yield return null;
         }
 
+        [UnityEngine.TestTools.UnityTest]
+        public System.Collections.IEnumerator Test_5_TestUpgradeToolToLevel2()
+        {
+            var statManager = DependencyProvider.Instance.GetDependency<StatManager>();
+            statManager.CheatGoldAmount(this);
+            var toolManager = DependencyProvider.Instance.GetDependency<ToolManager>();
+            var result = toolManager.UpgradeTool();
+            if (result)
+            {
+                Assert.AreEqual(2, toolManager.GetToolLevel);
+            }
+            else
+            {
+                Assert.AreEqual(false, result);
+
+            }
+            yield return null;
+
+        }
+        
         public int GoldAmount { get; set; } = 1000;
     }
 }

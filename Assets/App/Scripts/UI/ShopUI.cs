@@ -1,9 +1,20 @@
+using System;
+using App.Scripts.Domains.Core;
+using App.Scripts.Domains.Models;
 using App.Scripts.Mics;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace App.Scripts.UI
 {
+    
+    public enum ShopEventType
+    {
+        Buy,
+        BuySeedInCart,
+        ReleaseSeedInCart
+    }
+    
     public class ShopUI : MiddlewareBehaviour
     {
         [Header("Refs")]
@@ -22,36 +33,47 @@ namespace App.Scripts.UI
         // State
         private bool _isClose = true;
         
-        private readonly LazyDataInlet<ShareData.ShopUIEvent> _shopEventInlet = new();
+        private ShareData.OpenShopEvent _openShopEvent = new() { };
+        
+        private ShopManager _shopManager;
 
-        private ShareData.InteractButtonsUIEvent _openShopEvent = new() { EInteractEvent = ShareData.InteractEventType.OpenShop };
         private void Awake()
         {
             OnUIOpenStateUpdate(_openShopEvent);
-            if(_closeButton) _closeButton.onClick.AddListener(()=>OnUIOpenStateUpdate(_openShopEvent));
-            if(_buyBlueberryButton)_buyBlueberryButton.onClick.AddListener(delegate { OnUIButtonClicked(ShareData.ShopEventType.BBlueBerry); });
-            if(_buyTomatoButton)_buyTomatoButton.onClick.AddListener(delegate { OnUIButtonClicked(ShareData.ShopEventType.BTomato); });
-            if(_buyStrawberry)_buyStrawberry.onClick.AddListener(delegate { OnUIButtonClicked(ShareData.ShopEventType.BStrawBerry); });
-            if(_buyCowButton)_buyCowButton.onClick.AddListener(delegate { OnUIButtonClicked(ShareData.ShopEventType.BCow); });
-            if(_buyPlot)_buyPlot.onClick.AddListener(delegate { OnUIButtonClicked(ShareData.ShopEventType.BPlot); });
-            if(_buySeedInCart)_buyPlot.onClick.AddListener(delegate { OnUIButtonClicked(ShareData.ShopEventType.BuySeedInCart); });
-            if(_releaseSeedInCart)_buyPlot.onClick.AddListener(delegate { OnUIButtonClicked(ShareData.ShopEventType.ReleaseSeedInCart); });
-
-            this.Subscribe<ShareData.InteractButtonsUIEvent>(OnUIOpenStateUpdate);
-
-        }
-        
-        
-        private void OnUIButtonClicked(ShareData.ShopEventType shopEvent)
-        {
-            _shopEventInlet.UpdateValue(new(){ EShopUIEvent = shopEvent});
-        }
-
-        private void OnUIOpenStateUpdate(ShareData.InteractButtonsUIEvent interactButtonsUIEvent)
-        {
-            if (interactButtonsUIEvent.EInteractEvent != ShareData.InteractEventType.OpenShop) 
-                return;
             
+            if(_closeButton) _closeButton.onClick.AddListener(()=>OnUIOpenStateUpdate(_openShopEvent));
+            
+            if(_buyBlueberryButton)_buyBlueberryButton.onClick.AddListener(
+                delegate { OnUIButtonClicked(ShopEventType.Buy, ItemType.BlueBerry); });
+            if(_buyTomatoButton)_buyTomatoButton.onClick.AddListener(
+                delegate { OnUIButtonClicked(ShopEventType.Buy, ItemType.Tomato); });
+            if(_buyStrawberry)_buyStrawberry.onClick.AddListener(
+                delegate { OnUIButtonClicked(ShopEventType.Buy, ItemType.StrawBerry); });
+            if(_buyCowButton)_buyCowButton.onClick.AddListener(
+                delegate { OnUIButtonClicked(ShopEventType.Buy, ItemType.Cow); });
+            if(_buyPlot)_buyPlot.onClick.AddListener(
+                delegate { OnUIButtonClicked(ShopEventType.Buy, ItemType.Plot); });
+            if(_buySeedInCart)_buyPlot.onClick.AddListener(
+                delegate { OnUIButtonClicked(ShopEventType.BuySeedInCart); });
+            if(_releaseSeedInCart)_buyPlot.onClick.AddListener(
+                delegate { OnUIButtonClicked(ShopEventType.ReleaseSeedInCart); });
+
+            this.Subscribe<ShareData.OpenShopEvent>(OnUIOpenStateUpdate);
+
+        }
+
+        private void Start()
+        {
+            _shopManager = DependencyProvider.Instance.GetDependency<ShopManager>();
+        }
+        
+        private void OnUIButtonClicked(ShopEventType eShopEvent, ItemType? eItemType =null)
+        {
+            _shopManager.OnShopUIEventRaised(eShopEvent, eItemType);
+        }
+
+        private void OnUIOpenStateUpdate(ShareData.OpenShopEvent openShopEvent)
+        {
             _isClose = !_isClose;
             _canvasGroup.alpha = _isClose ? 1 : 0;
             _canvasGroup.interactable = _isClose;
