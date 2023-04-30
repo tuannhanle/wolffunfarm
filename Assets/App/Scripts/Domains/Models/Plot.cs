@@ -1,13 +1,15 @@
 using System;
 using App.Scripts.Domains.Core;
 using App.Scripts.Domains.Models;
+using App.Scripts.Domains.Services;
 using UnityEditor.Experimental.GraphView;
 
 namespace App.Scripts.Domains.GameObjects
 {
-    public class Plot : Stuff
+    public class Plot : Unit, IBuyable
     {
         public Crop Crop { get; private set; }
+        public int Price { get; set; }
         public long TimeUntilHarvest { get; set; } // millisecond
         
         // override int Price { get; private set; } = 500;
@@ -16,16 +18,16 @@ namespace App.Scripts.Domains.GameObjects
         private bool _isGrowable => Crop == null;
 
         private const int EXTEND_TIME_TO_SELF_DESTROY = 3600; // second
-        public Plot(int amount = 500) : base(amount)
+        public Plot(int priceAmount) : base(priceAmount)
         {
-            Price = amount;
+            Price = priceAmount;
             Crop = null;
             TimeUntilHarvest = 0;
         }
 
-        public Plot(Crop crop, int amount = 500) : base(amount)
+        public Plot(Crop crop, int priceAmount = 500) : base(priceAmount)
         {
-            Price = amount;
+            Price = priceAmount;
             Crop = crop;
         }
         
@@ -72,6 +74,6 @@ namespace App.Scripts.Domains.GameObjects
             }
             return false;
         }
-        
+
     }
 }

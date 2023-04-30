@@ -48,7 +48,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 200}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 64
+  controlID: 86
 --- !u!114 &3
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -64,18 +64,17 @@ MonoBehaviour:
   m_Children: []
   m_Position:
     serializedVersion: 2
-    x: 1371.5
+    x: 1365.5
     y: 0
-    width: 308.5
+    width: 314.5
     height: 972
-  m_MinSize: {x: 276, y: 71}
-  m_MaxSize: {x: 4001, y: 4021}
+  m_MinSize: {x: 275, y: 50}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 14}
   m_Panes:
   - {fileID: 14}
-  - {fileID: 12}
   m_Selected: 0
-  m_LastSelected: 1
+  m_LastSelected: 0
 --- !u!114 &4
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -93,10 +92,10 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 335
-    height: 576.5
-  m_MinSize: {x: 201, y: 221}
-  m_MaxSize: {x: 4001, y: 4021}
+    width: 331.5
+    height: 593.5
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 15}
   m_Panes:
   - {fileID: 15}
@@ -118,17 +117,17 @@ MonoBehaviour:
   m_Position:
     serializedVersion: 2
     x: 0
-    y: 576.5
-    width: 1371.5
-    height: 395.5
-  m_MinSize: {x: 101, y: 121}
-  m_MaxSize: {x: 4001, y: 4021}
+    y: 593.5
+    width: 1365.5
+    height: 378.5
+  m_MinSize: {x: 100, y: 100}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 18}
   m_Panes:
   - {fileID: 13}
   - {fileID: 18}
   m_Selected: 1
-  m_LastSelected: 0
+  m_LastSelected: 1
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -219,12 +218,12 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 1371.5
+    width: 1365.5
     height: 972
   m_MinSize: {x: 200, y: 200}
   m_MaxSize: {x: 16192, y: 16192}
   vertical: 1
-  controlID: 65
+  controlID: 87
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -244,12 +243,12 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 1371.5
-    height: 576.5
+    width: 1365.5
+    height: 593.5
   m_MinSize: {x: 200, y: 100}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 66
+  controlID: 88
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -265,18 +264,19 @@ MonoBehaviour:
   m_Children: []
   m_Position:
     serializedVersion: 2
-    x: 335
+    x: 331.5
     y: 0
-    width: 1036.5
-    height: 576.5
+    width: 1034
+    height: 593.5
   m_MinSize: {x: 202, y: 221}
   m_MaxSize: {x: 4002, y: 4021}
   m_ActualView: {fileID: 17}
   m_Panes:
   - {fileID: 16}
   - {fileID: 17}
+  - {fileID: 12}
   m_Selected: 1
-  m_LastSelected: 0
+  m_LastSelected: 2
 --- !u!114 &12
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -297,21 +297,21 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 1046
-    y: 30
-    width: 633
-    height: 951
+    x: 331.5
+    y: 58
+    width: 1032
+    height: 572.5
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
     m_SaveData: []
   m_Spl:
-    ID: 265
+    ID: 664
     splitterInitialOffset: 171
     currentActiveSplitter: -1
     realSizes:
-    - 366
-    - 515
+    - 208.5
+    - 293.5
     relativeSizes:
     - 0.41563785
     - 0.58436215
@@ -321,7 +321,7 @@ MonoBehaviour:
     maxSizes:
     - 0
     - 0
-    lastTotalSize: 881
+    lastTotalSize: 502
     splitSize: 6
     xOffset: 0
     m_Version: 1
@@ -337,9 +337,9 @@ MonoBehaviour:
       uniqueId: '[game][suite]'
       name: game
       fullName: game
-      resultStatus: 2
-      duration: 1.3775868
-      messages: One or more child tests had errors
+      resultStatus: 1
+      duration: 0.0608207
+      messages: 
       output: 
       stacktrace: 
       notRunnable: 0
@@ -353,9 +353,9 @@ MonoBehaviour:
       uniqueId: '[PlayMode.dll][suite]'
       name: PlayMode.dll
       fullName: /Users/lemarc/Git/wolffunfarm/Library/ScriptAssemblies/PlayMode.dll
-      resultStatus: 2
-      duration: 1.1460674
-      messages: One or more child tests had errors
+      resultStatus: 1
+      duration: 0.0471718
+      messages: 
       output: 
       stacktrace: 
       notRunnable: 0
@@ -369,9 +369,9 @@ MonoBehaviour:
       uniqueId: PlayMode.dll/[Tests][suite]
       name: Tests
       fullName: Tests
-      resultStatus: 2
-      duration: 1.1436075
-      messages: One or more child tests had errors
+      resultStatus: 1
+      duration: 0.0435271
+      messages: 
       output: 
       stacktrace: 
       notRunnable: 0
@@ -385,9 +385,9 @@ MonoBehaviour:
       uniqueId: PlayMode.dll/Tests/[PlayMode][suite]
       name: PlayMode
       fullName: Tests.PlayMode
-      resultStatus: 2
-      duration: 1.1425866
-      messages: One or more child tests had errors
+      resultStatus: 1
+      duration: 0.0425508
+      messages: 
       output: 
       stacktrace: 
       notRunnable: 0
@@ -401,9 +401,9 @@ MonoBehaviour:
       uniqueId: PlayMode.dll/Tests/PlayMode/[PlayMode][Tests.PlayMode.GameTest][suite]
       name: GameTest
       fullName: Tests.PlayMode.GameTest
-      resultStatus: 2
-      duration: 1.141044
-      messages: One or more child tests had errors
+      resultStatus: 1
+      duration: 0.0410442
+      messages: 
       output: 
       stacktrace: 
       notRunnable: 0
@@ -418,9 +418,37 @@ MonoBehaviour:
       name: Test_1_CheckDependencyProviderExist
       fullName: Tests.PlayMode.GameTest.Test_1_CheckDependencyProviderExist
       resultStatus: 1
-      duration: 0.0521578
+      duration: 0.0289485
       messages: 
-      output: 
+      output: '[App.Scripts.Domains.Core.WorkerManager] has been RegisterDependency
+
+        [App.Scripts.Domains.Core.ToolManager]
+        has been RegisterDependency
+
+        [App.Scripts.Domains.Core.PlotManager]
+        has been RegisterDependency
+
+        [App.Scripts.Domains.Core.ShopManager]
+        has been RegisterDependency
+
+        [App.Scripts.Domains.Core.StatManager]
+        has been RegisterDependency
+
+        [App.Scripts.Domains.Core.WorkerManager]
+        has been Initialized
+
+        [App.Scripts.Domains.Core.ToolManager] has
+        been Initialized
+
+        [App.Scripts.Domains.Core.PlotManager] has been
+        Initialized
+
+        [App.Scripts.Domains.Core.ShopManager] has been Initialized
+
+        [App.Scripts.Domains.Core.StatManager]
+        has been Initialized
+
+'
       stacktrace: 
       notRunnable: 0
       ignoredOrSkipped: 0
@@ -435,9 +463,37 @@ MonoBehaviour:
       name: Test_2_CheckStatManagerExist
       fullName: Tests.PlayMode.GameTest.Test_2_CheckStatManagerExist
       resultStatus: 1
-      duration: 0.00653
+      duration: 0.008193
       messages: 
-      output: 
+      output: '[App.Scripts.Domains.Core.WorkerManager] has been RegisterDependency
+
+        [App.Scripts.Domains.Core.ToolManager]
+        has been RegisterDependency
+
+        [App.Scripts.Domains.Core.PlotManager]
+        has been RegisterDependency
+
+        [App.Scripts.Domains.Core.ShopManager]
+        has been RegisterDependency
+
+        [App.Scripts.Domains.Core.StatManager]
+        has been RegisterDependency
+
+        [App.Scripts.Domains.Core.WorkerManager]
+        has been Initialized
+
+        [App.Scripts.Domains.Core.ToolManager] has
+        been Initialized
+
+        [App.Scripts.Domains.Core.PlotManager] has been
+        Initialized
+
+        [App.Scripts.Domains.Core.ShopManager] has been Initialized
+
+        [App.Scripts.Domains.Core.StatManager]
+        has been Initialized
+
+'
       stacktrace: 
       notRunnable: 0
       ignoredOrSkipped: 0
@@ -448,13 +504,41 @@ MonoBehaviour:
       parentId: 1001
       parentUniqueId: PlayMode.dll/Tests/PlayMode/[PlayMode][Tests.PlayMode.GameTest][suite]
     - id: 1004
-      uniqueId: PlayMode.dll/Tests/PlayMode/GameTest/[PlayMode][Tests.PlayMode.GameTest.Test_3_CheckStatInStatManager]
-      name: Test_3_CheckStatInStatManager
-      fullName: Tests.PlayMode.GameTest.Test_3_CheckStatInStatManager
+      uniqueId: PlayMode.dll/Tests/PlayMode/GameTest/[PlayMode][Tests.PlayMode.GameTest.Test_3_CheckStatInStatManagerCheating]
+      name: Test_3_CheckStatInStatManagerCheating
+      fullName: Tests.PlayMode.GameTest.Test_3_CheckStatInStatManagerCheating
       resultStatus: 1
-      duration: 0.030025
+      duration: 0.0107426
       messages: 
-      output: 
+      output: '[App.Scripts.Domains.Core.WorkerManager] has been RegisterDependency
+
+        [App.Scripts.Domains.Core.ToolManager]
+        has been RegisterDependency
+
+        [App.Scripts.Domains.Core.PlotManager]
+        has been RegisterDependency
+
+        [App.Scripts.Domains.Core.ShopManager]
+        has been RegisterDependency
+
+        [App.Scripts.Domains.Core.StatManager]
+        has been RegisterDependency
+
+        [App.Scripts.Domains.Core.WorkerManager]
+        has been Initialized
+
+        [App.Scripts.Domains.Core.ToolManager] has
+        been Initialized
+
+        [App.Scripts.Domains.Core.PlotManager] has been
+        Initialized
+
+        [App.Scripts.Domains.Core.ShopManager] has been Initialized
+
+        [App.Scripts.Domains.Core.StatManager]
+        has been Initialized
+
+'
       stacktrace: 
       notRunnable: 0
       ignoredOrSkipped: 0
@@ -465,20 +549,44 @@ MonoBehaviour:
       parentId: 1001
       parentUniqueId: PlayMode.dll/Tests/PlayMode/[PlayMode][Tests.PlayMode.GameTest][suite]
     - id: 1005
-      uniqueId: PlayMode.dll/Tests/PlayMode/GameTest/[PlayMode][Tests.PlayMode.GameTest.Test_4_TestUpgradeToolToLevel1]
-      name: Test_4_TestUpgradeToolToLevel1
-      fullName: Tests.PlayMode.GameTest.Test_4_TestUpgradeToolToLevel1
-      resultStatus: 2
-      duration: 1.0946776
-      messages: 'System.NullReferenceException : Object reference not set to an instance
-        of an object'
-      output: 
-      stacktrace: "  at App.Scripts.Domains.Core.ToolManager.UpgradeTool () [0x00001]
-        in /Users/lemarc/Git/wolffunfarm/Assets/App/Scripts/Domains/Core/ToolManager.cs:19
-        \n  at Tests.PlayMode.GameTest+<Test_4_TestUpgradeToolToLevel1>d__6.MoveNext
-        () [0x0007b] in /Users/lemarc/Git/wolffunfarm/Assets/Tests/PlayMode/GameTest.cs:59
-        \n  at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0004e]
-        in /Users/lemarc/Git/wolffunfarm/Library/PackageCache/com.unity.test-framework@1.1.31/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:46 "
+      uniqueId: PlayMode.dll/Tests/PlayMode/GameTest/[PlayMode][Tests.PlayMode.GameTest.Test_4_TestToolManagerExist]
+      name: Test_4_TestToolManagerExist
+      fullName: Tests.PlayMode.GameTest.Test_4_TestToolManagerExist
+      resultStatus: 1
+      duration: 0.0071532
+      messages: 
+      output: '[App.Scripts.Domains.Core.WorkerManager] has been RegisterDependency
+
+        [App.Scripts.Domains.Core.ToolManager]
+        has been RegisterDependency
+
+        [App.Scripts.Domains.Core.PlotManager]
+        has been RegisterDependency
+
+        [App.Scripts.Domains.Core.ShopManager]
+        has been RegisterDependency
+
+        [App.Scripts.Domains.Core.StatManager]
+        has been RegisterDependency
+
+        [App.Scripts.Domains.Core.WorkerManager]
+        has been Initialized
+
+        [App.Scripts.Domains.Core.ToolManager] has
+        been Initialized
+
+        [App.Scripts.Domains.Core.PlotManager] has been
+        Initialized
+
+        [App.Scripts.Domains.Core.ShopManager] has been Initialized
+
+        [App.Scripts.Domains.Core.StatManager]
+        has been Initialized
+
+        GOLD: 0
+
+'
+      stacktrace: 
       notRunnable: 0
       ignoredOrSkipped: 0
       description: 
@@ -487,23 +595,87 @@ MonoBehaviour:
       - Uncategorized
       parentId: 1001
       parentUniqueId: PlayMode.dll/Tests/PlayMode/[PlayMode][Tests.PlayMode.GameTest][suite]
-    m_ResultText: "Test_4_TestUpgradeToolToLevel1 (1.095s)\n---\nSystem.NullReferenceException
-      : Object reference not set to an instance of an object\n---\nat App.Scripts.Domains.Core.ToolManager.UpgradeTool
-      () [0x00001] in /Users/lemarc/Git/wolffunfarm/Assets/App/Scripts/Domains/Core/ToolManager.cs:19
-      \n  at Tests.PlayMode.GameTest+<Test_4_TestUpgradeToolToLevel1>d__6.MoveNext
-      () [0x0007b] in /Users/lemarc/Git/wolffunfarm/Assets/Tests/PlayMode/GameTest.cs:59
-      \n  at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0004e]
-      in /Users/lemarc/Git/wolffunfarm/Library/PackageCache/com.unity.test-framework@1.1.31/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:46"
-    m_ResultStacktrace: "  at App.Scripts.Domains.Core.ToolManager.UpgradeTool ()
-      [0x00001] in /Users/lemarc/Git/wolffunfarm/Assets/App/Scripts/Domains/Core/ToolManager.cs:19
-      \n  at Tests.PlayMode.GameTest+<Test_4_TestUpgradeToolToLevel1>d__6.MoveNext
-      () [0x0007b] in /Users/lemarc/Git/wolffunfarm/Assets/Tests/PlayMode/GameTest.cs:59
-      \n  at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0004e]
-      in /Users/lemarc/Git/wolffunfarm/Library/PackageCache/com.unity.test-framework@1.1.31/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:46 "
+    - id: 1006
+      uniqueId: PlayMode.dll/Tests/PlayMode/GameTest/[PlayMode][Tests.PlayMode.GameTest.Test_5_TestUpgradeToolToLevel2]
+      name: Test_5_TestUpgradeToolToLevel2
+      fullName: Tests.PlayMode.GameTest.Test_5_TestUpgradeToolToLevel2
+      resultStatus: 1
+      duration: 0.0290341
+      messages: 
+      output: '[App.Scripts.Domains.Core.WorkerManager] has been RegisterDependency
+
+        [App.Scripts.Domains.Core.ToolManager]
+        has been RegisterDependency
+
+        [App.Scripts.Domains.Core.PlotManager]
+        has been RegisterDependency
+
+        [App.Scripts.Domains.Core.ShopManager]
+        has been RegisterDependency
+
+        [App.Scripts.Domains.Core.StatManager]
+        has been RegisterDependency
+
+        [App.Scripts.Domains.Core.WorkerManager]
+        has been Initialized
+
+        [App.Scripts.Domains.Core.ToolManager] has
+        been Initialized
+
+        [App.Scripts.Domains.Core.PlotManager] has been
+        Initialized
+
+        [App.Scripts.Domains.Core.ShopManager] has been Initialized
+
+        [App.Scripts.Domains.Core.StatManager]
+        has been Initialized
+
+'
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1001
+      parentUniqueId: PlayMode.dll/Tests/PlayMode/[PlayMode][Tests.PlayMode.GameTest][suite]
+    m_ResultText: 'Test_5_TestUpgradeToolToLevel2 (0.029s)
+
+      ---
+
+      [App.Scripts.Domains.Core.WorkerManager]
+      has been RegisterDependency
+
+      [App.Scripts.Domains.Core.ToolManager] has
+      been RegisterDependency
+
+      [App.Scripts.Domains.Core.PlotManager] has been
+      RegisterDependency
+
+      [App.Scripts.Domains.Core.ShopManager] has been RegisterDependency
+
+      [App.Scripts.Domains.Core.StatManager]
+      has been RegisterDependency
+
+      [App.Scripts.Domains.Core.WorkerManager]
+      has been Initialized
+
+      [App.Scripts.Domains.Core.ToolManager] has been
+      Initialized
+
+      [App.Scripts.Domains.Core.PlotManager] has been Initialized
+
+      [App.Scripts.Domains.Core.ShopManager]
+      has been Initialized
+
+      [App.Scripts.Domains.Core.StatManager] has been
+      Initialized'
+    m_ResultStacktrace: 
     m_TestListState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 0a3b8065
-      m_LastClickedID: 1702902538
+      m_SelectedIDs: 14408cef
+      m_LastClickedID: -276021228
       m_ExpandedIDs: 9f5c62b61e2461b7956d57cacd3ce90545d21e3f27c15264ffffff7f
       m_RenameOverlay:
         m_UserAcceptedRename: 0
@@ -718,7 +890,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 634.5
-    width: 879
+    width: 1114.5
     height: 374.5
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
@@ -750,9 +922,9 @@ MonoBehaviour:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 114.99939}
-    m_SelectedIDs: 7c600000
-    m_LastClickedID: 24700
-    m_ExpandedIDs: 00000000426000004460000046600000486000004a60000000ca9a3bffffff7f
+    m_SelectedIDs: 6a600000
+    m_LastClickedID: 24682
+    m_ExpandedIDs: 00000000386000003a6000003c6000003e6000004060000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -780,7 +952,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000426000004460000046600000486000004a600000
+    m_ExpandedIDs: 00000000386000003a6000003c6000003e60000040600000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -856,9 +1028,9 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 1371.5
-    y: 30
-    width: 307.5
+    x: 1365.5
+    y: 58
+    width: 313.5
     height: 951
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
@@ -871,7 +1043,7 @@ MonoBehaviour:
     m_ControlHash: -371814159
     m_PrefName: Preview_InspectorPreview
   m_LastInspectedObjectInstanceID: -1
-  m_LastVerticalScrollValue: 139
+  m_LastVerticalScrollValue: 0
   m_GlobalObjectId: 
   m_InspectorMode: 0
   m_LockTracker:
@@ -898,9 +1070,9 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 0
-    y: 30
-    width: 334
-    height: 555.5
+    y: 58
+    width: 330.5
+    height: 572.5
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
@@ -908,9 +1080,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: d0e30000
-      m_LastClickedID: 58320
-      m_ExpandedIDs: 6e4effff9e4effffb84fffff6650ffff9650ffffb051ffff4253ffff7253ffff8c54ffff3a55ffff6a55ffff8456ffff3257ffff6257ffffb658ffffd858ffff0859ffff225affff5c7cffff2682ffff6682ffffb883ffffa084ffffe084ffff6e86ffff5487ffff9487ffff2289ffff068affff468affffd48bffff688dffffa88dffff348fffff6a8fffffaa8ffffffc90ffffe691ffff2692ffffb293ffffec93ffff2c94ffff7c95ffffb695fffff695ffff4897ffffdc98ffff1c99ffff6e9affff549bffff949bffff209dffff589dffff989dffff249fffff5e9fffff9e9fffffeea0ffffeca1ffff2ca2ffff7ca3ffffb2a3fffff2a3ffff42a5ffff7ca5ffffbca5ffff0ca7ffff46a7ffff86a7ffffd6a8ffff0ea9ffff4ea9ffffa0aaffff88abffffc8abffff1aadffffb4aefffff4aeffff46b0ffff32b1ffff72b1ffffc2b2ffffa8b3ffffe8b3ffff32b5ffffd2b6ffff12b7ffff5eb8ffff98b8ffffd8b8ffff26baffffbebbfffffebbffff4cbdffff34beffff74befffff0bfffff32c0ffff72c0ffffeec1ffff24c2ffff64c2ffffe0c3ffff20c4ffff60c4ffffdec5ffff72c7ffffb2c7ffff30c9ffff18caffff58caffffd6cbffffcacdffff0aceffff58cfffff5ed0ffff9ed0fffffed1ffff3cd2ffff7cd2ffffc8d3ffff04d4ffff44d4ffff90d5ffffcad5ffff0ad6ffff56d7ffff40d8ffff80d8ffffcad9ffff46daffff86daffffd0dbffff0adcffff4adcffffd8ddffff1edeffff5edeffffaadfffff00e1ffff40e1ffff84e2ffff42e3ffff82e3ffffbee4fffff4e4ffff34e5ffffb0e6ffff28e9ffff68e9ffffb4eaffffc0ebffff00ecffff42edffff7aedffffbaedfffffceeffff38efffff78efffffb6f0ffff58f2ffff98f2ffffdaf3ffff18f4ffff58f4ffffa4f5ffff92f8ffffd2f8ffff1cfaffff08fbffffb8cf0000f0cf0000d0e30000
+      m_SelectedIDs: 
+      m_LastClickedID: 0
+      m_ExpandedIDs: 8cc8ffffc2c8fffff4c9ffffc4cbfffffacbffff7acdffffa2cdffffd8cdffff0acfffff08d0ffff3ed0ffffbed1ffffe6d1ffff1cd2ffff4ed3ffff08d4ffff3ed4ffffbed5ffffe6d5ffff1cd6ffff4ed7ffff06d8ffff3cd8ffff6ed9ffff28daffff5edaffff90dbffffd6dcffff0cddffff8edeffff46dfffff7cdffffffee0ffff42e2ffff78e2fffffae3ffff1ee5ffff54e5ffffd6e6ffffc8e7fffff8e7ffff0ae9ffff2ce9ffff5ce9ffff6eeaffff82ecffffb2ecffffc6edffff6eeeffff9eeeffffb2effffffcf0ffff2cf1ffff40f2ffff64f4ffff94f4ffffa8f5ffff50f6ffff80f6ffff94f7ffff3cf8ffff6ef8ffff88f9ffff24fbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -1314,10 +1486,10 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 335
-    y: 30
-    width: 1034.5
-    height: 555.5
+    x: 331.5
+    y: 58
+    width: 1032
+    height: 572.5
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
@@ -1328,7 +1500,7 @@ MonoBehaviour:
   m_ShowGizmos: 0
   m_TargetDisplay: 0
   m_ClearColor: {r: 0, g: 0, b: 0, a: 0}
-  m_TargetSize: {x: 1034.5, y: 534.5}
+  m_TargetSize: {x: 1032, y: 551.5}
   m_TextureFilterMode: 0
   m_TextureHideFlags: 61
   m_RenderIMGUI: 1
@@ -1343,10 +1515,10 @@ MonoBehaviour:
     m_VRangeLocked: 0
     hZoomLockedByDefault: 0
     vZoomLockedByDefault: 0
-    m_HBaseRangeMin: -258.625
-    m_HBaseRangeMax: 258.625
-    m_VBaseRangeMin: -133.625
-    m_VBaseRangeMax: 133.625
+    m_HBaseRangeMin: -258
+    m_HBaseRangeMax: 258
+    m_VBaseRangeMin: -137.875
+    m_VBaseRangeMax: 137.875
     m_HAllowExceedBaseRangeMin: 1
     m_HAllowExceedBaseRangeMax: 1
     m_VAllowExceedBaseRangeMin: 1
@@ -1364,23 +1536,23 @@ MonoBehaviour:
       serializedVersion: 2
       x: 0
       y: 21
-      width: 1034.5
-      height: 534.5
+      width: 1032
+      height: 551.5
     m_Scale: {x: 2, y: 2}
-    m_Translation: {x: 517.25, y: 267.25}
+    m_Translation: {x: 516, y: 275.75}
     m_MarginLeft: 0
     m_MarginRight: 0
     m_MarginTop: 0
     m_MarginBottom: 0
     m_LastShownAreaInsideMargins:
       serializedVersion: 2
-      x: -258.625
-      y: -133.625
-      width: 517.25
-      height: 267.25
+      x: -258
+      y: -137.875
+      width: 516
+      height: 275.75
     m_MinimalGUI: 1
   m_defaultScale: 2
-  m_LastWindowPixelSize: {x: 2069, y: 1111}
+  m_LastWindowPixelSize: {x: 2064, y: 1145}
   m_ClearInEditMode: 1
   m_NoCameraWarning: 1
   m_LowResolutionForAspectRatios: 01000000000000000000
@@ -1407,9 +1579,9 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 0
-    y: 606.5
-    width: 1370.5
-    height: 374.5
+    y: 651.5
+    width: 1364.5
+    height: 357.5
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default

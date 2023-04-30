@@ -1,10 +1,12 @@
+using App.Scripts.Domains.GameObjects;
 using App.Scripts.Domains.Models;
+using App.Scripts.Domains.Services;
 
 namespace App.Scripts.Domains.Core
 {
     public class StatManager : Dependency<StatManager>
     {
-        public Gold Gold { get; private set; }
+        public int GoldAmount { get; private set; }
         public int ToolLevel { get; private set; }
         public int IdleWorkerAmount { get; private set; }
         public int WorkingWorkerAmount { get; private set; }
@@ -26,12 +28,14 @@ namespace App.Scripts.Domains.Core
         
         public void CheatGoldAmount(ICheat iCheat)
         {
-            Gold =  new() { Amount = iCheat.GoldAmount, Name = "Gold" };
+            GoldAmount = 0;
+            // Gold =  new() { Amount = iCheat.GoldAmount, Name = "Gold" };
         }
 
         private void SyncFromLocalDB()
         {
-            Gold = new() { Amount = 0, Name = "Gold" };
+            // Gold = new() { Amount = 0, Name = "Gold" };
+            GoldAmount = 0;
             ToolLevel = 1;
             IdleWorkerAmount = 2;
             WorkingWorkerAmount = 0;
@@ -47,7 +51,7 @@ namespace App.Scripts.Domains.Core
             MilkProductAmount = 0;
         }
 
-        public void GainItem(ItemType itemType)
+        public void GainItem(ItemType itemType, bool isUnsed = true)
         {
             switch (itemType)
             {
@@ -57,6 +61,12 @@ namespace App.Scripts.Domains.Core
                 case ItemType.Tomato: UnusedTomatoAmount++; break;
                 case ItemType.Plot: UnusedPlotAmount++; break;
             }
+        }
+
+        public void Gain<T>(bool isUnsed = true) where T : IBuyable
+        {
+            if (typeof(T) == typeof(Worker)) IdleWorkerAmount++;
+            if (typeof(T) == typeof(Tool)) ToolLevel++;
         }
         
         

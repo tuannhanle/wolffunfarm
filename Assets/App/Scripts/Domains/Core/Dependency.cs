@@ -1,3 +1,4 @@
+using App.Scripts.Domains.Services;
 using UnityEngine;
 
 namespace App.Scripts.Domains.Core
@@ -9,6 +10,7 @@ namespace App.Scripts.Domains.Core
         protected PlotManager _plotManager;
         protected ShopManager _shopManager;
         protected StatManager _statManager;
+        protected PaymentService _paymentService;
         
         public Dependency()
         {
@@ -30,6 +32,7 @@ namespace App.Scripts.Domains.Core
             if(_workerManager == null) _workerManager = DependencyProvider.Instance.GetDependency<WorkerManager>();
             if(_toolManager == null) _toolManager = DependencyProvider.Instance.GetDependency<ToolManager>();
             if(_shopManager == null) _shopManager = DependencyProvider.Instance.GetDependency<ShopManager>();
+            if(_paymentService == null) _paymentService = DependencyProvider.Instance.GetDependency<PaymentService>();
 
         }
     }

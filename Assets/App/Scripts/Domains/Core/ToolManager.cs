@@ -17,13 +17,14 @@ namespace App.Scripts.Domains.Core
         
         public bool UpgradeTool()
         {
-            var gold = _statManager.Gold;
-            var result = _tool.BeBoughtBy(gold);
-            if (result == null)
-                return false;
-            //TODO: save new <tool level> to storage
-            _tool.UpLevel();
-            return true;
+            var isPayable = _paymentService.Buy(_tool);
+            if (isPayable)
+            {
+                _tool.UpLevel();
+                _statManager.Gain<Tool>();
+                return true;
+            }
+            return false;
         }
 
         public int? GetToolLevel => _tool.Level;

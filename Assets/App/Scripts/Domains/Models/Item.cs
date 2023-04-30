@@ -1,10 +1,11 @@
 using System;
+using App.Scripts.Domains.Services;
 using App.Scripts.Mics;
 
 namespace App.Scripts.Domains.Models
 {
     public enum ItemType { StrawBerry, BlueBerry, Tomato, Cow, Plot}
-    public class Item
+    public class Item : IBuyable
     {
         public int Id { get; set; }
         public ItemType ItemType { get; set; }

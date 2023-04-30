@@ -76,6 +76,8 @@ namespace App.Scripts.UI
         {
             switch (eInteractEvent)
             {
+                case InteractEventType.Sell:
+                    
                 case InteractEventType.OpenShop:
                     _shopEventInlet.UpdateValue(new());
                     break;

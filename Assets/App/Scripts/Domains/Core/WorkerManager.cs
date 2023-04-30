@@ -83,12 +83,13 @@ namespace App.Scripts.Domains.Core
 
         public void RentWorker()
         {
-            var worker = new Worker().BeBoughtBy<Worker>(_statManager.Gold);
-            if (worker == null)
-                return;
-            _idleWorkers.Enqueue(worker);
-            //TODO: save new <worker> to storage
-
+            var worker = Define.WorkerItem;
+            var isPayable = _paymentService.Buy(worker);
+            if (isPayable)
+            {
+                _idleWorkers.Enqueue(worker);
+                _statManager.Gain<Worker>();
+            }
         }
 
 

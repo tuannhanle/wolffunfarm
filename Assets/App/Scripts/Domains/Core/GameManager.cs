@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using App.Scripts.Domains.Models;
+using App.Scripts.Domains.Services;
 using App.Scripts.Mics;
 
 namespace App.Scripts.Domains.Core
@@ -17,7 +18,8 @@ namespace App.Scripts.Domains.Core
                 new ToolManager(),
                 new PlotManager(),
                 new ShopManager(),
-                new StatManager()
+                new StatManager(),
+                new PaymentService(),
                 // add more at above
             } );
      

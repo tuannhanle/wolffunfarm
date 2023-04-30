@@ -15,23 +15,22 @@ namespace App.Scripts.Domains.Core
             base.Init();
             for (int i = 0; i < _statManager.UnusedPlotAmount  ; i++)
             {
-                _plots.Add(new());
+                _plots.Add(Define.PlotItem);
             }
             for (int i = 0; i < _statManager.UsingPlotAmount ; i++)
             {
-                _plots.Add(new());
+                _plots.Add(Define.PlotItem);
             }
         }
         
         public void ExtendPlot()
         {
-            var plot = new Stuff(500).BeBoughtBy(_statManager.Gold) as Plot;
-            if (plot == null)
+            var plot = Define.PlotItem;
+            var isPayable = _paymentService.Buy(plot);
+            if(isPayable == false)
                 return;
             _plots.Add(plot);
             _statManager.GainItem(ItemType.Plot);
-            //TODO: save new <plot amount> to storage
-            
         }
 
         public bool Attach(ItemType? itemType)
