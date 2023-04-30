@@ -29,19 +29,16 @@ namespace App.Scripts.Domains.Core
             for (int i = 0; i < _statManager.WorkingWorkerAmount; i++)
             {
                 _workingWorkers.Enqueue(new ());
-            } 
-            TakeProceedingAsync(new () { EProceeding = ProceedingType.Seeding }).Forget();
-            TakeProceedingAsync(new () { EProceeding = ProceedingType.Seeding }).Forget();
-            TakeProceedingAsync(new () { EProceeding = ProceedingType.Seeding }).Forget();
+            }
         }
         
-        private async UniTask TakeProceedingAsync(Proceeding proceeding)
+        public async UniTask TakeProceedingAsync(Proceeding proceeding)
         {
             _progress.datas.Push(proceeding);
             TakeProgressAsync(_progress).Forget();
         }
         
-        public async UniTask TakeProgressAsync(Progress progress)
+        private async UniTask TakeProgressAsync(Progress progress)
         {
             while (progress.datas.Count > 0)
             {

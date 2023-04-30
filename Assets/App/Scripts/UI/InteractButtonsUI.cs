@@ -2,6 +2,7 @@ using System;
 using App.Scripts.Domains.Core;
 using App.Scripts.Domains.Models;
 using App.Scripts.Mics;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -28,9 +29,7 @@ namespace App.Scripts.UI
 
         private WorkerManager _workerManager;
         private ToolManager _toolManager;
-        private PlotManager _plotManager;
-        private ShopManager _shopManager;
-        private StatManager _statManager;
+
         
         private readonly LazyDataInlet<ShareData.OpenShopEvent> _shopEventInlet = new();
         
@@ -69,13 +68,8 @@ namespace App.Scripts.UI
 
         private void Start()
         {
-            
-            _statManager = DependencyProvider.Instance.GetDependency<StatManager>();
-            _plotManager = DependencyProvider.Instance.GetDependency<PlotManager>();
             _workerManager = DependencyProvider.Instance.GetDependency<WorkerManager>();
             _toolManager = DependencyProvider.Instance.GetDependency<ToolManager>();
-            _shopManager = DependencyProvider.Instance.GetDependency<ShopManager>();
-
         }
 
         private void OnUIButtonClicked(InteractEventType eInteractEvent, ItemType? eItemType = null)
@@ -95,11 +89,21 @@ namespace App.Scripts.UI
                     if (eItemType == null)
                         break;
                     // execute here
+                    _workerManager.TakeProceedingAsync(new ()
+                    {
+                        EProceeding = ProceedingType.Seeding,
+                        EItemType = eItemType
+                    }).Forget();
                     break;
                 case InteractEventType.CollectProduct:
                     if (eItemType == null)
                         break;
                     // execute here
+                    _workerManager.TakeProceedingAsync(new ()
+                    {
+                        EProceeding = ProceedingType.Collecting,
+                        EItemType = eItemType
+                    }).Forget();
                     break;
             }
         }

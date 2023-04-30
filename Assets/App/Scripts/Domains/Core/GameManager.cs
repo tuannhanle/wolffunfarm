@@ -11,21 +11,21 @@ namespace App.Scripts.Domains.Core
         private void Awake()
         {
             
-            _dependencies.Add(new WorkerManager());
-            _dependencies.Add(new ToolManager());
-            _dependencies.Add(new PlotManager());
-            _dependencies.Add(new ShopManager());
-            _dependencies.Add(new StatManager());
+            _dependencies.AddRange(new List<IDependency>
+            {
+                new WorkerManager(),
+                new ToolManager(),
+                new PlotManager(),
+                new ShopManager(),
+                new StatManager()
+                // add more at above
+            } );
+     
             foreach (var dependency in _dependencies)
             {
                 dependency.Init();
             }
-
         }
 
-        private void Start()
-        {
-
-        }
     }
 }

@@ -29,6 +29,8 @@ namespace App.Scripts.Domains.Models
 
         public static Item ConvertItemType(ItemType? eItemType)
         {
+            if (eItemType == null)
+                return null;
             return eItemType switch
             {
                 ItemType.BlueBerry => Define.BlueBerryItem,

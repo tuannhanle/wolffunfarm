@@ -45,11 +45,15 @@ namespace App.Scripts.Domains.GameObjects
             Crop.UpdatedAt = DateTime.UtcNow;
         }
 
-        public bool PlantCrop(ItemType itemType)
+        public bool PlantCrop(ItemType? itemType)
         {
+            if (itemType == null)
+                return false;
             if (_isGrowable && TimeUntilHarvest == 0)
             {
                 var item = Item.ConvertItemType(itemType);
+                if (itemType == null)
+                    return false;
                 Crop = new Crop(item);
                 TimeUntilHarvest = item.TimePerProduct * item.ProductCapacity + EXTEND_TIME_TO_SELF_DESTROY;
                 return true;

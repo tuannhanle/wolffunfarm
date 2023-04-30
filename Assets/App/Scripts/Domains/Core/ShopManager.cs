@@ -61,6 +61,8 @@ namespace App.Scripts.Domains.Core
                 return;
             var amount = eItemType == ItemType.BlueBerry ? 10 : 1;
             var item = Item.ConvertItemType(eItemType);
+            if (item == null)
+                return;
             if (IsPickSeedable(amount) == false)
                 return;
             _amountSeedOrder += amount;

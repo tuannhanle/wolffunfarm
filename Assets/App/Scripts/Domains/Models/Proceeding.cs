@@ -2,11 +2,11 @@ using System.Collections.Generic;
 
 namespace App.Scripts.Domains.Models
 {
-    public enum ProceedingType { Seeding, Collecting, Milking}
+    public enum ProceedingType { Seeding, Collecting}
     public class Proceeding
     {
         public ProceedingType EProceeding { get; set; }
-        public ItemType EItemType { get; set; }
+        public ItemType? EItemType { get; set; }
 
     }
 

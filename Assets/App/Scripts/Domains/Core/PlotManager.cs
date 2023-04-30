@@ -34,8 +34,10 @@ namespace App.Scripts.Domains.Core
             
         }
 
-        public bool Attach(ItemType itemType)
+        public bool Attach(ItemType? itemType)
         {
+            if (itemType == null)
+                return false;
             foreach (var plot in _plots)
             {
                 return plot.PlantCrop(itemType);
