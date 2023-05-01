@@ -16,17 +16,18 @@ namespace App.Scripts.Domains.Core
         private const float DURATION_WORKER = 120f;
 
         private bool isWorkerExecutable => _idleWorkers.Count > 0;
-        
+        private const int AMOUNT_EACH_WORKER_FOR_RENT = 1;
+
 
 
         public void Init()
         {
             base.Init();
-            for (int i = 0; i < _statManager.IdleWorkerAmount; i++)
+            for (int i = 0; i < _statManager.Stat.IdleWorkerAmount; i++)
             {
                 _idleWorkers.Enqueue(new ());
             }
-            for (int i = 0; i < _statManager.WorkingWorkerAmount; i++)
+            for (int i = 0; i < _statManager.Stat.WorkingWorkerAmount; i++)
             {
                 _workingWorkers.Enqueue(new ());
             }
@@ -55,20 +56,23 @@ namespace App.Scripts.Domains.Core
         //TODO: worker has still not execute the proceed
         private async UniTask<bool> WorkerExecuteAsync(Proceeding proceeding)
         {
-            var timeSpanDuration = TimeSpan.FromSeconds(DURATION_WORKER);
+            var numberOfProceed = 0;
             if (isWorkerExecutable == false)
                 return false;
             var executableWorker = _idleWorkers.Dequeue();
-            var isProceedExecutable = false;
-            if (proceeding.EProceeding == ProceedingType.Seeding)
+            switch (proceeding.EProceeding)
             {
-                isProceedExecutable = _plotManager.Attach(proceeding.EItemType);
+                case ProceedingType.Seeding:
+                    numberOfProceed = _plotManager.Attach(proceeding.EItemType);
+                    break;
+                case ProceedingType.Collecting:
+                    numberOfProceed = _plotManager.Collect(proceeding.EItemType);
+                    break;
             }
-
-            if (isProceedExecutable == false)   
+            if (numberOfProceed == 0)   
                 return false;
             _workingWorkers.Enqueue(executableWorker);
-            await UniTask.Delay(timeSpanDuration);
+            await UniTask.Delay(TimeSpan.FromSeconds(DURATION_WORKER) * numberOfProceed);
             executableWorker = _workingWorkers.Dequeue();
             _idleWorkers.Enqueue(executableWorker);
             return true;
@@ -81,7 +85,7 @@ namespace App.Scripts.Domains.Core
             if (isPayable)
             {
                 _idleWorkers.Enqueue(worker);
-                _statManager.Gain<Worker>();
+                _statManager.Gain<Worker>(AMOUNT_EACH_WORKER_FOR_RENT);
             }
         }
 

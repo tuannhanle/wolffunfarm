@@ -8,7 +8,7 @@ namespace App.Scripts.Domains.Services
     {
         int Price { get; set; }
     }
-    public class PaymentService : Dependency<PaymentService>
+    public class PaymentService : Dependency<PaymentService>, IDependency
     {
         private Gold Gold { get; set; }
 
@@ -19,7 +19,7 @@ namespace App.Scripts.Domains.Services
             base.Init();
             Gold = new Gold()
             {
-                Amount = _statManager.GoldAmount,
+                Amount = _statManager.Stat.GoldAmount,
                 Name = "Gold"
             };
         }

@@ -8,6 +8,8 @@ namespace App.Scripts.Domains.Core
     public class ShopManager : Dependency<ShopManager>
     {
         private Cart _cart = new();
+        private const int AMOUNT_EACH_COW = 1;
+
         
         public void OnShopUIEventRaised(ShopEventType eShopEvent, ItemType? eItemType =null)
         {
@@ -64,7 +66,7 @@ namespace App.Scripts.Domains.Core
         {
             var cowItem = Define.CowItem;
             if(_paymentService.Buy(cowItem))
-                _statManager.GainItem(cowItem.ItemType);
+                _statManager.GainItem(cowItem.ItemType, AMOUNT_EACH_COW);
         }
 
         private void BuySeedInCart()

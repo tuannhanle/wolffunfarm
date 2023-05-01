@@ -7,11 +7,11 @@ namespace App.Scripts.Domains.Core
     public class ToolManager : Dependency<ToolManager>
     {
         private Tool _tool = new();
-        
+        private const int AMOUNT_EACH_UPDATE_TOOL_LEVEL = 1;
         public void Init()
         {
             base.Init();
-            _tool.Level = _statManager.ToolLevel;
+            _tool.Level = _statManager.Stat.ToolLevel;
         }
         
         
@@ -21,7 +21,7 @@ namespace App.Scripts.Domains.Core
             if (isPayable)
             {
                 _tool.UpLevel();
-                _statManager.Gain<Tool>();
+                _statManager.Gain<Tool>(AMOUNT_EACH_UPDATE_TOOL_LEVEL);
                 return true;
             }
             return false;

@@ -14,6 +14,7 @@ namespace App.Scripts.Domains.Models
         private List<Item> _items = new();
         private int _amountSeedOrder = 0;
 
+        private const int AMOUNT_EACH_ITEM = 1;
 
         public void Pick(Item item)
         {
@@ -36,7 +37,7 @@ namespace App.Scripts.Domains.Models
             var statManager = DependencyProvider.Instance.GetDependency<StatManager>();
             foreach (var item in _items)
             {
-                statManager.GainItem(item.ItemType);
+                statManager.GainItem(item.ItemType, AMOUNT_EACH_ITEM );
             }
         }
     }

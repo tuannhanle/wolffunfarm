@@ -16,6 +16,7 @@ namespace App.Scripts.Domains.GameObjects
 
 
         private bool _isGrowable => Crop == null;
+        public bool IsCollectable(ItemType? itemType) => Crop?.Item?.ItemType == itemType;
 
         private const int EXTEND_TIME_TO_SELF_DESTROY = 3600; // second
         public Plot(int priceAmount) : base(priceAmount)
@@ -64,10 +65,11 @@ namespace App.Scripts.Domains.GameObjects
             }
             return false;
         }
-
         
-        public bool Harvest()
+        public bool Harvest(ItemType? itemType)
         {
+            if (itemType == null)
+                return false;
             if (!_isGrowable && TimeUntilHarvest == 0)
             {
                 Crop = null;

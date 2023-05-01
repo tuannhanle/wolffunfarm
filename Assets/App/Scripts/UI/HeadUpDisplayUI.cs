@@ -1,28 +1,47 @@
+using System;
+using System.Text;
+using App.Scripts.Domains.Core;
+using App.Scripts.Domains.Models;
 using App.Scripts.Mics;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace App.Scripts.UI
 {
     public class HeadUpDisplayUI : MiddlewareBehaviour
     {
+        [Header("Refs")] 
+        [SerializeField] private Text _textPrefab;
+        [SerializeField] private Transform _root;
         
-        [Header("Texts")]
-        [SerializeField] private Text _goldText;
-        [SerializeField] private Text _workerText;
-        [SerializeField] private Text _plotText;
-
-
+        // private StringBuilder[] _displayContentSbs = new StringBuilder[12];
+        private Text[] _texts = new Text[11];
+        
         private void Awake()
         {
-            this.Subscribe<ShareData.HeadUpDisplayData>(OnDataUpdated);
+            for (int i = 0; i < _texts.Length; i++)
+            {
+                var textUI = Instantiate(_textPrefab,_root);
+                textUI.gameObject.SetActive(true);
+                _texts[i] = textUI;
+            }
+            this.Subscribe<Stat>(OnDataUpdated);
         }
 
-        private void OnDataUpdated(ShareData.HeadUpDisplayData headUpDisplayData)
+        private void OnDataUpdated(Stat Stat)
         {
-            _goldText.text = $"{headUpDisplayData.Golden.Name}: {headUpDisplayData.Golden.Amount}";
-            _workerText.text = $"{headUpDisplayData.Workder.Name}: {headUpDisplayData.Workder.Amount}/{headUpDisplayData.Workder.Capacity}";
-            _plotText.text = $"{headUpDisplayData.Plot.Name}: {headUpDisplayData.Plot.Amount}/{headUpDisplayData.Plot.Capacity}";
+            _texts[0].text = $"Gold: {Stat.GoldAmount}";
+            _texts[1].text  = $"Tool Lv.{Stat.ToolLevel}";
+            _texts[2].text = $"Idle Worker: {Stat.IdleWorkerAmount}";
+            _texts[3].text = $"Working Worker: {Stat.WorkingWorkerAmount}";
+            _texts[4].text = $"Unused Seeds: {Stat.GetSumUnusedSeeds}";
+            _texts[5].text = $"Unused Plots: {Stat.UnusedPlotAmount}";
+            _texts[6].text = $"Using Plots: {Stat.UsingPlotAmount}";
+            _texts[7].text = $"Blueberries: {Stat.BlueberryProductAmount}";
+            _texts[8].text = $"Tomatoes: {Stat.TomotoProductAmount}";
+            _texts[9].text = $"Strawberries: {Stat.StrawberryProductAmount}";
+            _texts[10].text = $"Milk gallons: {Stat.MilkProductAmount}";
 
         }
 

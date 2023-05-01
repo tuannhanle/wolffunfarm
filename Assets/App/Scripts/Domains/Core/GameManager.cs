@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using App.Scripts.Domains.Models;
 using App.Scripts.Domains.Services;
@@ -29,5 +30,9 @@ namespace App.Scripts.Domains.Core
             }
         }
 
+        private void Start()
+        {
+            DependencyProvider.Instance.GetDependency<StatManager>().PostcastData();
+        }
     }
 }
