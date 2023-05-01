@@ -6,7 +6,7 @@ using Plot = App.Scripts.Domains.GameObjects.Plot;
 
 namespace App.Scripts.Domains.Core
 {
-    public class PlotManager : Dependency<PlotManager>
+    public class PlotManager : Dependency<PlotManager>, IDependency
     {
         private readonly List<Plot> _plots = new();
         private const int AMOUNT_EACH_PLOT = 1;
@@ -30,7 +30,7 @@ namespace App.Scripts.Domains.Core
             if(isPayable == false)
                 return;
             _plots.Add(plot);
-            _statManager.GainItem(ItemType.Plot, AMOUNT_EACH_PLOT);
+            _statManager.Gain(ItemType.UnusedPlot, AMOUNT_EACH_PLOT);
         }
 
         
@@ -45,10 +45,8 @@ namespace App.Scripts.Domains.Core
                 if (isPlanCropable)
                 { 
                     numberOfProceed++;
-                    _statManager.GainItem(itemType, -1);
-                    _statManager.GainItem(ItemType.Plot, -1, true);
-                    _statManager.GainItem(ItemType.Plot, 1, false);
-
+                    _statManager.Gain(itemType, -1);
+                    _statManager.Gain(ItemType.UnusedPlot, -1);
                     break;
                 }
             }

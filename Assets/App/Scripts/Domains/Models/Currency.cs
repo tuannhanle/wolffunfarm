@@ -9,7 +9,7 @@ namespace App.Scripts.Domains.Models
 
     public class Gold : Currency
     {
-
+         
     }
     
 }

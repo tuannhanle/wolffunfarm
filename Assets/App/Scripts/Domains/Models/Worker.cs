@@ -24,6 +24,7 @@ namespace App.Scripts.Domains.Models
 
         public Worker(int priceAmount=500) : base(priceAmount)
         {
+            Price = priceAmount;
         }
 
     }

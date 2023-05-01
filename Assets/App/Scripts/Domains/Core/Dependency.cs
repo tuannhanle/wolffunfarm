@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace App.Scripts.Domains.Core
 {
-    public class Dependency<T> : IDependency  where T : class 
+    public class Dependency<T>  where T : class 
     {
         protected WorkerManager _workerManager;
         protected ToolManager _toolManager;

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace App.Scripts.Domains.Core
 {
-    public class ToolManager : Dependency<ToolManager>
+    public class ToolManager : Dependency<ToolManager>, IDependency
     {
         private Tool _tool = new();
         private const int AMOUNT_EACH_UPDATE_TOOL_LEVEL = 1;

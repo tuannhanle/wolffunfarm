@@ -7,7 +7,7 @@ using Progress = App.Scripts.Domains.Models.Progress;
 
 namespace App.Scripts.Domains.Core
 {
-    public class WorkerManager : Dependency<WorkerManager>
+    public class WorkerManager : Dependency<WorkerManager>, IDependency
     {
         private readonly Queue<Worker> _idleWorkers = new();
         private readonly Queue<Worker> _workingWorkers = new();
@@ -33,10 +33,32 @@ namespace App.Scripts.Domains.Core
             }
         }
         
-        public async UniTask TakeProceedingAsync(Proceeding proceeding)
+        public async UniTask Assign(Job job)
         {
-            _progress.datas.Push(proceeding);
-            TakeProgressAsync(_progress).Forget();
+            if (job.EJob == JobType.Seeding)
+            {
+                var isCow = job.EItemType == ItemType.Cow && _statManager.Stat.UnusedCowAmount > 0;
+                var isTomato = job.EItemType == ItemType.Tomato && _statManager.Stat.UnusedTomatoAmount > 0;
+                var isBlueberry = job.EItemType == ItemType.BlueBerry && _statManager.Stat.UnusedBlueberryAmount > 0;
+                var isStrawberry = job.EItemType == ItemType.StrawBerry && _statManager.Stat.UnusedStrawberryAmount > 0;
+                if (isCow || isTomato || isBlueberry || isStrawberry)
+                {
+                    _progress.datas.Push(job);
+                    TakeProgressAsync(_progress).Forget();
+                }
+            }
+            else if(job.EJob == JobType.Collecting)
+            {
+                var isCow = job.EItemType == ItemType.Cow && _statManager.Stat.MilkProductAmount > 0;
+                var isTomato = job.EItemType == ItemType.Tomato && _statManager.Stat.TomotoProductAmount > 0;
+                var isBlueberry = job.EItemType == ItemType.BlueBerry && _statManager.Stat.BlueberryProductAmount > 0;
+                var isStrawberry = job.EItemType == ItemType.StrawBerry && _statManager.Stat.StrawberryProductAmount > 0;
+                if (isCow || isTomato || isBlueberry || isStrawberry)
+                {
+                    _progress.datas.Push(job);
+                    TakeProgressAsync(_progress).Forget();
+                }
+            }
         }
         
         private async UniTask TakeProgressAsync(Progress progress)
@@ -54,27 +76,24 @@ namespace App.Scripts.Domains.Core
         }
 
         //TODO: worker has still not execute the proceed
-        private async UniTask<bool> WorkerExecuteAsync(Proceeding proceeding)
+        private async UniTask<bool> WorkerExecuteAsync(Job job)
         {
             var numberOfProceed = 0;
             if (isWorkerExecutable == false)
                 return false;
-            var executableWorker = _idleWorkers.Dequeue();
-            switch (proceeding.EProceeding)
+            switch (job.EJob)
             {
-                case ProceedingType.Seeding:
-                    numberOfProceed = _plotManager.Attach(proceeding.EItemType);
+                case JobType.Seeding:
+                    numberOfProceed = _plotManager.Attach(job.EItemType);
                     break;
-                case ProceedingType.Collecting:
-                    numberOfProceed = _plotManager.Collect(proceeding.EItemType);
+                case JobType.Collecting:
+                    numberOfProceed = _plotManager.Collect(job.EItemType);
                     break;
             }
             if (numberOfProceed == 0)   
                 return false;
-            _workingWorkers.Enqueue(executableWorker);
-            await UniTask.Delay(TimeSpan.FromSeconds(DURATION_WORKER) * numberOfProceed);
-            executableWorker = _workingWorkers.Dequeue();
-            _idleWorkers.Enqueue(executableWorker);
+            var delayTime = TimeSpan.FromSeconds(DURATION_WORKER * numberOfProceed) ;
+            await UseWorker(delayTime);
             return true;
         }
 
@@ -87,6 +106,19 @@ namespace App.Scripts.Domains.Core
                 _idleWorkers.Enqueue(worker);
                 _statManager.Gain<Worker>(AMOUNT_EACH_WORKER_FOR_RENT);
             }
+        }
+
+        private async UniTask UseWorker(TimeSpan delayTime)
+        {
+            var worker = _idleWorkers.Dequeue();
+            _workingWorkers.Enqueue(worker);
+            _statManager.Gain<Worker>(-1);
+            await UniTask.Delay(delayTime);
+            worker = _workingWorkers.Dequeue();
+            _idleWorkers.Enqueue(worker);
+            _statManager.Gain<Worker>(1);
+            await UniTask.Yield();
+
         }
 
 

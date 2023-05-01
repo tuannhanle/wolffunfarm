@@ -5,7 +5,7 @@ using App.Scripts.UI;
 
 namespace App.Scripts.Domains.Core
 {
-    public class ShopManager : Dependency<ShopManager>
+    public class ShopManager : Dependency<ShopManager>, IDependency
     {
         private Cart _cart = new();
         private const int AMOUNT_EACH_COW = 1;
@@ -36,7 +36,7 @@ namespace App.Scripts.Domains.Core
         {
             if (eItemType == null)
                 return;
-            if (eItemType == ItemType.Plot)
+            if (eItemType == ItemType.UnusedPlot)
             {
                 _plotManager.ExtendPlot();
             }
@@ -66,7 +66,7 @@ namespace App.Scripts.Domains.Core
         {
             var cowItem = Define.CowItem;
             if(_paymentService.Buy(cowItem))
-                _statManager.GainItem(cowItem.ItemType, AMOUNT_EACH_COW);
+                _statManager.Gain(cowItem.ItemType, AMOUNT_EACH_COW);
         }
 
         private void BuySeedInCart()
@@ -81,11 +81,6 @@ namespace App.Scripts.Domains.Core
                 _cart.StorageItems();
                 _cart = new();
             }
-        }
-
-        public void Init()
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

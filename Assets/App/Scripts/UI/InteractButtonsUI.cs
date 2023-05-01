@@ -1,6 +1,7 @@
 using System;
 using App.Scripts.Domains.Core;
 using App.Scripts.Domains.Models;
+using App.Scripts.Domains.Services;
 using App.Scripts.Mics;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -29,7 +30,7 @@ namespace App.Scripts.UI
 
         private WorkerManager _workerManager;
         private ToolManager _toolManager;
-
+        private PaymentService _paymentService;
         
         private readonly LazyDataInlet<ShareData.OpenShopEvent> _shopEventInlet = new();
         
@@ -70,6 +71,7 @@ namespace App.Scripts.UI
         {
             _workerManager = DependencyProvider.Instance.GetDependency<WorkerManager>();
             _toolManager = DependencyProvider.Instance.GetDependency<ToolManager>();
+            _paymentService = DependencyProvider.Instance.GetDependency<PaymentService>();
         }
 
         private void OnUIButtonClicked(InteractEventType eInteractEvent, ItemType? eItemType = null)
@@ -77,7 +79,8 @@ namespace App.Scripts.UI
             switch (eInteractEvent)
             {
                 case InteractEventType.Sell:
-                    
+                    _paymentService.SellProducts();
+                    break;
                 case InteractEventType.OpenShop:
                     _shopEventInlet.UpdateValue(new());
                     break;
@@ -91,9 +94,9 @@ namespace App.Scripts.UI
                     if (eItemType == null)
                         break;
                     // execute here
-                    _workerManager.TakeProceedingAsync(new ()
+                    _workerManager.Assign(new ()
                     {
-                        EProceeding = ProceedingType.Seeding,
+                        EJob = JobType.Seeding,
                         EItemType = eItemType
                     }).Forget();
                     break;
@@ -101,9 +104,9 @@ namespace App.Scripts.UI
                     if (eItemType == null)
                         break;
                     // execute here
-                    _workerManager.TakeProceedingAsync(new ()
+                    _workerManager.Assign(new ()
                     {
-                        EProceeding = ProceedingType.Collecting,
+                        EJob = JobType.Collecting,
                         EItemType = eItemType
                     }).Forget();
                     break;

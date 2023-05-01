@@ -4,7 +4,7 @@ using App.Scripts.Domains.Services;
 
 namespace App.Scripts.Domains.Core
 {
-    public class StatManager : Dependency<StatManager>
+    public class StatManager : Dependency<StatManager>, IDependency
     {
         private Stat _stat = new Stat();
         public Stat Stat => _stat;
@@ -46,37 +46,49 @@ namespace App.Scripts.Domains.Core
             _stat.MilkProductAmount = 0;
         }
 
-
-
-        public void GainItem(ItemType? itemType, int amount, bool isUnsed = true)
+        public void SellAllProduct(int amountStock)
         {
-            if (isUnsed)
-            {
-                switch (itemType)
-                {
-                    case ItemType.Cow: _stat.UnusedCowAmount+=amount; break;
-                    case ItemType.StrawBerry: _stat.UnusedStrawberryAmount+=amount; break;
-                    case ItemType.BlueBerry: _stat.UnusedBlueberryAmount+=amount; break;
-                    case ItemType.Tomato: _stat.UnusedTomatoAmount+=amount; break;
-                    case ItemType.Plot: _stat.UnusedPlotAmount+=amount; break;
-                } 
-            }
-            else
-            {
-                switch (itemType)
-                {
-                    case ItemType.Plot: _stat.UsingPlotAmount+=amount; break;
-                } 
-            }
+            _stat.BlueberryProductAmount = 0;
+            _stat.TomotoProductAmount = 0;
+            _stat.StrawberryProductAmount = 0;
+            _stat.MilkProductAmount = 0;
+            _stat.GoldAmount += amountStock;
+        }
 
-
+        public void Gain(ItemType? itemType, int amount)
+        {
+            switch (itemType)
+            {
+                case ItemType.Cow: _stat.UnusedCowAmount+=amount; break;
+                case ItemType.StrawBerry: _stat.UnusedStrawberryAmount+=amount; break;
+                case ItemType.BlueBerry: _stat.UnusedBlueberryAmount+=amount; break;
+                case ItemType.Tomato: _stat.UnusedTomatoAmount+=amount; break;
+                case ItemType.UnusedPlot: 
+                    _stat.UnusedPlotAmount+=amount; 
+                    _stat.UsingPlotAmount-=amount;
+                    break;
+            }
             PostcastData();
         }
 
-        public void Gain<T>( int amount, bool isUnsed = true) where T : IBuyable
+        public void Gain<T>( int amount) where T : IBuyable
         {
-            if (typeof(T) == typeof(Worker)) _stat.IdleWorkerAmount+=amount;
-            if (typeof(T) == typeof(Tool)) _stat.ToolLevel+=amount;
+            if (typeof(T) == typeof(Worker))
+            {
+                _stat.IdleWorkerAmount += amount;
+                _stat.WorkingWorkerAmount -= amount;
+            }
+
+            if (typeof(T) == typeof(Tool))
+            {
+                _stat.ToolLevel+=amount;
+            }
+
+            if (typeof(T) == typeof(Gold))
+            {
+                _stat.GoldAmount+=amount;
+            }
+
             PostcastData();
 
         }

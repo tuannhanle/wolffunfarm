@@ -9,6 +9,7 @@ namespace App.Scripts.Mics
         {
             ItemType = ItemType.BlueBerry, 
             Price = 50,
+            Stock = 8,
             TimePerProduct = 15*60,
             ProductCapacity = 40,
         };
@@ -16,6 +17,7 @@ namespace App.Scripts.Mics
         {
             ItemType = ItemType.Tomato, 
             Price = 30,
+            Stock = 5,
             TimePerProduct = 10*60,
             ProductCapacity = 40,
         };
@@ -23,6 +25,7 @@ namespace App.Scripts.Mics
         {
             ItemType = ItemType.StrawBerry , 
             Price= 40,
+            Stock = 6,
             TimePerProduct = 5*60,
             ProductCapacity = 20,
         };
@@ -30,6 +33,7 @@ namespace App.Scripts.Mics
         {
             ItemType = ItemType.Cow , 
             Price= 100,
+            Stock = 15,
             TimePerProduct = 30*60,
             ProductCapacity = 100,
         };

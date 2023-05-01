@@ -52,7 +52,7 @@ namespace App.Scripts.UI
             if(_buyCowButton)_buyCowButton.onClick.AddListener(
                 delegate { OnUIButtonClicked(ShopEventType.Buy, ItemType.Cow); });
             if(_buyPlot)_buyPlot.onClick.AddListener(
-                delegate { OnUIButtonClicked(ShopEventType.Buy, ItemType.Plot); });
+                delegate { OnUIButtonClicked(ShopEventType.Buy, ItemType.UnusedPlot); });
             if(_buySeedInCart)_buyPlot.onClick.AddListener(
                 delegate { OnUIButtonClicked(ShopEventType.BuySeedInCart); });
             if(_releaseSeedInCart)_buyPlot.onClick.AddListener(

@@ -4,7 +4,7 @@ using App.Scripts.Mics;
 
 namespace App.Scripts.Domains.Models
 {
-    public enum ItemType { StrawBerry, BlueBerry, Tomato, Cow, Plot}
+    public enum ItemType { StrawBerry, BlueBerry, Tomato, Cow, UnusedPlot}
     public class Item : IBuyable
     {
         public int Id { get; set; }
