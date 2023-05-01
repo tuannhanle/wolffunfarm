@@ -4,10 +4,13 @@ using App.Scripts.Mics;
 
 namespace App.Scripts.Domains.Models
 {
-    public enum ItemType { StrawBerry, BlueBerry, Tomato, Cow, UnusedPlot}
+    public enum ItemType { 
+        StrawBerry, BlueBerry, Tomato, Cow, 
+        UnusedPlot, UsingPlot
+    }
     public class Item : IBuyable
     {
-        public int Id { get; set; }
+        public int Name { get; set; }
         public ItemType ItemType { get; set; }
         public int Price { get; set; }
         public int Stock { get; set; }
@@ -16,17 +19,7 @@ namespace App.Scripts.Domains.Models
 
         public long TimePerProduct { get; set; } // (second) time for each product
         public int ProductCapacity { get; set; } // (second) total product for each item could be collected
-
-        // private static ItemType ConvertShopEventType(ShareData.ShopEventType shopEventType)
-        // {
-        //     return shopEventType switch
-        //     {
-        //         ShareData.ShopEventType.Buy => ItemType.BlueBerry,
-        //         ShareData.ShopEventType.BTomato => ItemType.Tomato,
-        //         ShareData.ShopEventType.BStrawBerry => ItemType.StrawBerry,
-        //         ShareData.ShopEventType.BCow => ItemType.Cow,
-        //     };
-        // }
+        
 
         public static Item ConvertItemType(ItemType? eItemType)
         {
@@ -40,12 +33,7 @@ namespace App.Scripts.Domains.Models
                 ItemType.Cow => Define.CowItem
             };
         }
-
-        // public static Item ConvertItemType(ShareData.ShopEventType shopEventType)
-        // {
-        //     var itemType = ConvertShopEventType(shopEventType);
-        //     return ConvertItemType(itemType);
-        // }
+        
     }
     
 }

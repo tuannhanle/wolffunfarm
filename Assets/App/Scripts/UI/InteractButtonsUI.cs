@@ -96,7 +96,7 @@ namespace App.Scripts.UI
                     // execute here
                     _workerManager.Assign(new ()
                     {
-                        EJob = JobType.Seeding,
+                        EJob = JobType.PutIn,
                         EItemType = eItemType
                     }).Forget();
                     break;
@@ -106,7 +106,7 @@ namespace App.Scripts.UI
                     // execute here
                     _workerManager.Assign(new ()
                     {
-                        EJob = JobType.Collecting,
+                        EJob = JobType.Harvesting,
                         EItemType = eItemType
                     }).Forget();
                     break;

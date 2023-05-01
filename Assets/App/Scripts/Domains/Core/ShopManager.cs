@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using App.Scripts.Domains.Models;
 using App.Scripts.Mics;
 using App.Scripts.UI;
+using Cysharp.Threading.Tasks;
 
 namespace App.Scripts.Domains.Core
 {
@@ -65,8 +66,15 @@ namespace App.Scripts.Domains.Core
         private void BuyCow()
         {
             var cowItem = Define.CowItem;
-            if(_paymentService.Buy(cowItem))
-                _statManager.Gain(cowItem.ItemType, AMOUNT_EACH_COW);
+            if (_paymentService.Buy(cowItem))
+            {
+                _statManager.GainUsing(cowItem.ItemType, AMOUNT_EACH_COW);
+                _workerManager.Assign(new ()
+                {
+                    EJob = JobType.PutIn,
+                    EItemType = ItemType.Cow
+                }).Forget();
+            }
         }
 
         private void BuySeedInCart()

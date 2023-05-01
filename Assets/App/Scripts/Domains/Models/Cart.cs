@@ -37,7 +37,7 @@ namespace App.Scripts.Domains.Models
             var statManager = DependencyProvider.Instance.GetDependency<StatManager>();
             foreach (var item in _items)
             {
-                statManager.Gain(item.ItemType, AMOUNT_EACH_ITEM );
+                statManager.GainUsing(item.ItemType, AMOUNT_EACH_ITEM );
             }
         }
     }

@@ -55,7 +55,7 @@ namespace App.Scripts.Domains.Core
             _stat.GoldAmount += amountStock;
         }
 
-        public void Gain(ItemType? itemType, int amount)
+        public void GainUnused(ItemType? itemType, int amount)
         {
             switch (itemType)
             {
@@ -65,13 +65,23 @@ namespace App.Scripts.Domains.Core
                 case ItemType.Tomato: _stat.UnusedTomatoAmount+=amount; break;
                 case ItemType.UnusedPlot: 
                     _stat.UnusedPlotAmount+=amount; 
-                    _stat.UsingPlotAmount-=amount;
+                    _stat.UsingPlotAmount+=amount;
                     break;
             }
             PostcastData();
         }
 
-        public void Gain<T>( int amount) where T : IBuyable
+        public void GainUsing(ItemType? itemType, int amount)
+        {
+            switch (itemType)
+            {
+                case ItemType.UsingPlot: _stat.UsingPlotAmount+=amount;
+                    break;
+            }
+            PostcastData();
+        }
+
+        public void Gain<T>(int amount) where T : IBuyable
         {
             if (typeof(T) == typeof(Worker))
             {

@@ -30,27 +30,26 @@ namespace App.Scripts.Domains.Core
             if(isPayable == false)
                 return;
             _plots.Add(plot);
-            _statManager.Gain(ItemType.UnusedPlot, AMOUNT_EACH_PLOT);
+            _statManager.GainUnused(ItemType.UnusedPlot, AMOUNT_EACH_PLOT);
         }
 
         
-        public int Attach(ItemType? itemType)
+        public void Attach(ItemType? itemType)
         {
-            var numberOfProceed = 0;
             if (itemType == null)
-                return 0;
+                return;
             foreach (var plot in _plots)
             {
                 var isPlanCropable = plot.PlantCrop(itemType);
                 if (isPlanCropable)
                 { 
-                    numberOfProceed++;
-                    _statManager.Gain(itemType, -1);
-                    _statManager.Gain(ItemType.UnusedPlot, -1);
+                    _statManager.GainUsing(itemType, -1);
+                    _statManager.GainUsing(ItemType.UnusedPlot, -1);
+                    _workerManager.Assign(new Job() { EItemType = itemType, EJob = JobType.PutIn });
                     break;
+                    
                 }
             }
-            return numberOfProceed;
         }
 
         /// <summary>
@@ -58,21 +57,19 @@ namespace App.Scripts.Domains.Core
          /// </summary>
          /// <param name="itemType"></param>
          /// <returns>Wait a time for each proceed for Worker</returns>
-        public int Collect(ItemType? itemType)
+        public void Collect(ItemType? itemType)
         {
-            var numberOfProceed = 0;
             if (itemType == null)
-                return 0;
+                return;
             foreach (var plot in _plots)
             {
                 var isCollectable = plot.IsCollectable(itemType);
                 if (isCollectable)
                 {
                     plot.Harvest(itemType);
-                    numberOfProceed++;
+                    break;
                 }
             }
-            return numberOfProceed;
         }
     }
 }
