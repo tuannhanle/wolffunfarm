@@ -51,14 +51,7 @@ namespace App.Scripts.Domains.Core
             }
             
         }
-        
-        // private float GetDuration()
-        // {
-        //     var toolLevel = 1f;
-        //     var toolPercent = 100f + (toolLevel - 1f) * 10f;
-        //     return DURATION_WORKER + DURATION_WORKER*(toolPercent/100f);
-        // }
-        
+
         //TODO: worker has still not execute the proceed
         private async UniTask<bool> WorkerExecuteAsync(Proceeding proceeding)
         {

@@ -34,8 +34,9 @@ namespace App.Scripts.Domains.GameObjects
         public void TakeAmountProduct()
         {
             var item = Crop.Item;
+            var timePerProductWasImproved = GetTimePerProductWasImprove();
             var deltaTime = TimeStamp.Second(DateTime.UtcNow) - TimeStamp.Second(Crop.UpdatedAt??Crop.CreateAt);
-            var productHasBeenCollectable = (int) (deltaTime / item.TimePerProduct);
+            var productHasBeenCollectable = (int) ((float)deltaTime / timePerProductWasImproved);
             var realProductAmount = productHasBeenCollectable > item.ProductCapacity
                 ? item.ProductCapacity
                 : productHasBeenCollectable;
@@ -57,7 +58,8 @@ namespace App.Scripts.Domains.GameObjects
                 if (itemType == null)
                     return false;
                 Crop = new Crop(item);
-                TimeUntilHarvest = item.TimePerProduct * item.ProductCapacity + EXTEND_TIME_TO_SELF_DESTROY;
+                var timePerProductWasImproved = GetTimePerProductWasImprove();
+                TimeUntilHarvest = (long)(timePerProductWasImproved * (float)item.ProductCapacity + (float)EXTEND_TIME_TO_SELF_DESTROY);
                 return true;
             }
             return false;
@@ -73,6 +75,12 @@ namespace App.Scripts.Domains.GameObjects
                 return true;
             }
             return false;
+        }
+
+        private float GetTimePerProductWasImprove()
+        {
+            var toolImprovePercent = DependencyProvider.Instance.GetDependency<ToolManager>().GetPercentPerLevel;
+            return (float)Crop.Item.TimePerProduct * (toolImprovePercent / 100f);
         }
 
     }

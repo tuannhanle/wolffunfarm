@@ -28,5 +28,7 @@ namespace App.Scripts.Domains.Core
         }
 
         public int? GetToolLevel => _tool.Level;
+
+        public float GetPercentPerLevel => _tool.GetPercentPerLevel;
     }
 }

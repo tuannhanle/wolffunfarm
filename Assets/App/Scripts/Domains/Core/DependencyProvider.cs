@@ -26,7 +26,7 @@ namespace App.Scripts.Domains.Core
             return _dependencies.ContainsKey(contract);
         }
         
-        public T GetDependency<T>()
+        public T GetDependency<T>() where T : IDependency
         {
             Type type = typeof (T);
 
