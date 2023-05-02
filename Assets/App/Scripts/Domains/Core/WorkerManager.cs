@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using App.Scripts.Domains.Models;
-using App.Scripts.Mics;
 using Cysharp.Threading.Tasks;
 
 namespace App.Scripts.Domains.Core
@@ -10,136 +9,137 @@ namespace App.Scripts.Domains.Core
     {
         private readonly Queue<Worker> _idleWorkers = new();
         private readonly Queue<Worker> _workingWorkers = new();
-        private Stack<Job> _jobs { get; set; } = new();
-
 
         private bool isWorkerExecutable => _idleWorkers.Count > 0;
-        private const int AMOUNT_EACH_WORKER_FOR_RENT = 1;
-        private const float DURATION_WORKER = 120f;
-
-
+        private const string WORKER = "Worker";
 
         public void Init()
         {
             base.Init();
-            for (int i = 0; i < _statManager.Stat.IdleWorkerAmount; i++)
+            foreach (var worker in _dataLoader.WorkerStorage)
             {
-                _idleWorkers.Enqueue(new ());
-            }
-            for (int i = 0; i < _statManager.Stat.WorkingWorkerAmount; i++)
-            {
-                _workingWorkers.Enqueue(new ());
+                if (worker.Value.IsUsing)
+                {
+                    _workingWorkers.Enqueue(new Worker(worker.Value.Id, worker.Value.IsUsing));
+                }
+                else
+                {
+                    _idleWorkers.Enqueue(new Worker(worker.Value.Id, worker.Value.IsUsing));
+                }
             }
         }
         
+        
+        //TODO: do not use async to remvoe job, use date time onlhy
         public async UniTask ExecuteAsync()
         {
-            if (_jobs.Count <= 0)
+            if (_dataLoader.JobStorage.Count == 0)
                 return;
-            var job = _jobs.Pop();
-            await UniTask.WaitUntil(() => isWorkerExecutable == true);
+            if (isWorkerExecutable == false) // next frame, it will be back here to check
+                return;
             var idleWorker = GetIdleWorker();
-            var hasExecuted = idleWorker.Execute(job);
-            
+            if (idleWorker == null)
+            {
+                ReturnIdleWorker();
+                return;
+            }
+            var job = _jobManager.GetJob(idleWorker.Id) ?? _jobManager.GetJob(-1);
+            if (job == null) // not any job!
+            {
+                ReturnIdleWorker();
+                return;
+            }
+            var hasExecuted = idleWorker.Execute();
             if (hasExecuted)
             {
-                if (job.EJob == JobType.PutIn)
-                    _plotManager.Attach(job.EItemType);
-                if (job.EJob == JobType.Harvesting)
-                    _plotManager.Collect(job.EItemType);
-                var delayTime = TimeSpan.FromSeconds(DURATION_WORKER);
+                // executing delay time
+                if (job.JobType == JobType.PutIn)
+                {
+                    if (_plotManager.IsPutInable(job.PlotId, job.ItemName) == false)
+                    {
+                        ReturnIdleWorker();
+                        return;
+                    }
+                }
+                else
+                {
+                    if (_plotManager.IsHarvastable(job.PlotId, job.ItemName) == false)
+                    {
+                        ReturnIdleWorker();
+                        return;
+                    }
+                }
+
+                var durationWork = _dataLoader.stat.JobDuration;
+                var delayTime = TimeSpan.FromSeconds(durationWork);
                 await UniTask.Delay(delayTime);
+                
+                // after that
+                if (job.JobType == JobType.PutIn)
+                    _plotManager.PutIn(job.PlotId, job.ItemName);
+                if (job.JobType == JobType.Harvasting)
+                    _plotManager.Harvast(job.PlotId, job.ItemName);
+        
+                _jobManager.RemoveJob(job.JobId);
             }
             ReturnIdleWorker();
         }
         
-        public async UniTask Assign(Job job)
+        public void Assign(JobType jobType, string itemName)
         {
-            // dieu kien seeding
-            // seed > 0 với loại seed muốn seeding
-            // unused plot > 0
-            
-            if (job.EJob == JobType.PutIn)
+            var idleWorker = GetIdleWorker();
+            if (idleWorker == null)
+                return;
+            var plots = _plotManager.GetPlots(jobType, itemName);
+            if (plots == null)
+                return;
+            // if (jobType == JobType.PutIn)
+            // {
+            //     int workerId = idleWorker != null ? idleWorker.Id : -1;
+            //     var job = _jobManager.CreateJob( workerId, plots[0].Id, jobType, itemName);
+            //     return;
+            // }
+            foreach (var plot in plots)
             {
-                var isCow = job.EItemType == ItemType.Cow && _statManager.Stat.UnusedCowAmount > 0;
-                var isTomato = job.EItemType == ItemType.Tomato && _statManager.Stat.UnusedTomatoAmount > 0;
-                var isBlueberry = job.EItemType == ItemType.BlueBerry && _statManager.Stat.UnusedBlueberryAmount > 0;
-                var isStrawberry = job.EItemType == ItemType.StrawBerry && _statManager.Stat.UnusedStrawberryAmount > 0;
-                if (isCow || isTomato || isBlueberry || isStrawberry)
-                {
-                    _jobs.Push(job);
-                }
-            }
-            else if(job.EJob == JobType.Harvesting)
-            {
-                // TODO: this is being wrong, fix later
-                // check for each plot on field
-                var isCow = job.EItemType == ItemType.Cow && _statManager.Stat.MilkProductAmount > 0;
-                var isTomato = job.EItemType == ItemType.Tomato && _statManager.Stat.TomotoProductAmount > 0;
-                var isBlueberry = job.EItemType == ItemType.BlueBerry && _statManager.Stat.BlueberryProductAmount > 0;
-                var isStrawberry = job.EItemType == ItemType.StrawBerry && _statManager.Stat.StrawberryProductAmount > 0;
-                if (isCow || isTomato || isBlueberry || isStrawberry)
-                {
-                    _jobs.Push(job);
-                }
+                // if workerId = -1 => no ready worker for this job
+                int workerId = idleWorker != null ? idleWorker.Id : -1;
+                var job = _jobManager.CreateJob( workerId, plot.Id, jobType, itemName);
             }
         }
         
         public void RentWorker()
         {
-            var worker = Define.WorkerItem;
-            var isPayable = _paymentService.Buy(worker);
-            if (isPayable)
-            {
-                _idleWorkers.Enqueue(worker);
-                _statManager.Gain<Worker>(AMOUNT_EACH_WORKER_FOR_RENT);
-            }
+            var workerItem = _dataLoader.ItemCollection[WORKER];
+            var isPayable = _paymentService.Buy(workerItem);
+            if (isPayable == false)
+                return;
+            var id = _dataLoader.WorkerStorage.Count;
+            var worker = new Worker(id, false);
+            _idleWorkers.Enqueue(worker);
+            _dataLoader.WorkerStorage.Add(id, worker);
+            _dataLoader.Push<Worker>();
         }
 
         private Worker GetIdleWorker()
         {
+            if (_idleWorkers.Count <= 0)
+                return null;
             var worker = _idleWorkers.Dequeue();
             _workingWorkers.Enqueue(worker);
-            _statManager.Gain<Worker>(-1);
+            worker.IsUsing = true;
+            _dataLoader.Push<Worker>();
             return worker;
         }
 
         private void ReturnIdleWorker()
         {
+            if (_workingWorkers.Count <= 0)
+                return;
             var worker = _workingWorkers.Dequeue();
             _idleWorkers.Enqueue(worker);
-            _statManager.Gain<Worker>(1);
+            _dataLoader.Push<Worker>();
+            worker.IsUsing = false;
         }
-        
-        // private async UniTask TakeProgressAsync()
-        // {
-        //     while (_jobs.Count > 0)
-        //     {
-        //         var proceeding = _jobs.Pop();
-        //         if (await WorkerExecuteAsync(proceeding) == false)
-        //         {
-        //             _jobs.Push(proceeding);
-        //         }
-        //         await UniTask.Yield();
-        //     }
-        //     
-        // }
-
-        //TODO: worker has still not execute the proceed
-        // private async UniTask<bool> WorkerExecuteAsync(Job job)
-        // {
-        //     var numberOfProceed = 0;
-        //     if (isWorkerExecutable == false)
-        //         return false;
-        //
-        //     if (numberOfProceed == 0)   
-        //         return false;
-        //     var delayTime = TimeSpan.FromSeconds(DURATION_WORKER * numberOfProceed) ;
-        //     return true;
-        // }
-
-
-
     }
     
 }

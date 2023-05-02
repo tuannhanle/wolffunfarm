@@ -3,33 +3,27 @@ using System.Collections.Generic;
 using App.Scripts.Domains.Core;
 using App.Scripts.Domains.Models;
 using App.Scripts.Domains.Services;
-using UnityEditor.Experimental.GraphView;
 
 namespace App.Scripts.Domains.GameObjects
 {
-    public class Plot : IHasItemName, IBuyable
+    public class Plot : IBuyable
     {
         public int Id;
-        public string ItemName { get; set; }
+        public string ItemName = null;
         public int ProductAmount;
-        public long? CreateAt { get; set; } 
-        public long? UpdatedAt { get; set; }
-        public Item Item { get; set; }
-
-        public Queue<DateTime> CollectTimeQueue = new();
+        public long? CreateAt;
+        public long? UpdatedAt;
         public int Price { get; set; }
-        public long TimeUntilHarvest { get; set; } // millisecond
+        public long TimeUntilHarvest; // millisecond
+        public bool IsUsing;
         
         // override int Price { get; private set; } = 500;
+        
+        public bool IsHarvastable(string itemName) => ItemName.Equals(itemName) && ProductAmount > 0;
 
-
-        private bool _isGrowable => ItemName == null;
-        public bool IsCollectable(ItemType? itemType) =>Item?.ItemType == itemType;
-
-        private const int EXTEND_TIME_TO_SELF_DESTROY = 3600; // second
         public Plot() { }
 
-        public Plot(int Id,string ItemName,int ProductAmount,long TimeUntilHarvest,long CreateAt,long? UpdatedAt)
+        public Plot(int Id,string ItemName,int ProductAmount,long TimeUntilHarvest,long? CreateAt,long? UpdatedAt, bool isUsing)
         {
             this.Id = Id;
             this.ItemName = ItemName;
@@ -37,31 +31,18 @@ namespace App.Scripts.Domains.GameObjects
             this.TimeUntilHarvest = TimeUntilHarvest;
             this.CreateAt=CreateAt;
             this.UpdatedAt = UpdatedAt;
+            this.IsUsing = isUsing;
         }
-        
-        public Plot(int priceAmount) 
-        {
-            Price = priceAmount;
-            ItemName = null;
-            TimeUntilHarvest = 0;
-        }
-
-        public Plot(string itemName, int priceAmount = 500) 
-        {
-            Price = priceAmount;
-            ItemName = itemName;
-        }
-
 
         public void TakeAmountProduct()
         {
-            var item = Item;
-            var timePerProductWasImproved = GetTimePerProductWasImprove();
-            var deltaTime = TimeStamp.Second(DateTime.UtcNow) - UpdatedAt??CreateAt;
-            var productHasBeenCollectable = (int) ((float)deltaTime / timePerProductWasImproved);
-            var realProductAmount = productHasBeenCollectable > item.ProductCapacity
-                ? item.ProductCapacity
-                : productHasBeenCollectable;
+            // var item = Item;
+            // var timePerProductWasImproved = GetTimePerProductWasImprove();
+            // var deltaTime = TimeStamp.Second(DateTime.UtcNow) - UpdatedAt??CreateAt;
+            // var productHasBeenCollectable = (int) ((float)deltaTime / timePerProductWasImproved);
+            // var realProductAmount = productHasBeenCollectable > item.ProductCapacity
+            //     ? item.ProductCapacity
+            //     : productHasBeenCollectable;
             // this.Product = new Product()
             // {
             //     ItemType = item.ItemType, 
@@ -70,39 +51,35 @@ namespace App.Scripts.Domains.GameObjects
             // Crop.UpdatedAt = DateTime.UtcNow;
         }
 
-        public bool PlantCrop(ItemType? itemType)
+        public bool IsPutInable()
         {
-            if (itemType == null)
-                return false;
-            if (_isGrowable && TimeUntilHarvest == 0)
-            {
-                var item = Item.ConvertItemType(itemType);
-                if (itemType == null)
-                    return false;
-                var timePerProductWasImproved = GetTimePerProductWasImprove();
-                TimeUntilHarvest = (long)(timePerProductWasImproved * (float)item.ProductCapacity + (float)EXTEND_TIME_TO_SELF_DESTROY);
-                return true;
-            }
-            return false;
+            return TimeUntilHarvest == 0 && (ItemName == null || ItemName.Equals(""));
         }
         
-        public bool Harvest(ItemType? itemType)
+        public void PutIn(int productCapacity, int extendTime)
         {
-            if (itemType == null)
-                return false;
-            if (!_isGrowable && TimeUntilHarvest == 0)
-            {
-                ItemName = null;
-                TimeUntilHarvest = 0;
-                return true;
-            }
-            return false;
+            if (TimeUntilHarvest != 0)
+                return;
+            var timePerProductWasImproved = GetTimePerProductWasImprove();
+            TimeUntilHarvest = (long)(timePerProductWasImproved * (float) productCapacity + (float)extendTime);
+        }
+        
+        public void Harvest(string itemName)
+        {
+            if (itemName == null)
+                return;
+            if (TimeUntilHarvest != 0)
+                return;
+            ProductAmount = 0;
+            ItemName = null;
+            TimeUntilHarvest = 0;
         }
 
         private float GetTimePerProductWasImprove()
         {
-            var toolImprovePercent = DependencyProvider.Instance.GetDependency<ToolManager>().GetPercentPerLevel;
-            return (float)Item.TimePerProduct * (toolImprovePercent / 100f);
+            // var toolImprovePercent = DependencyProvider.Instance.GetDependency<ToolManager>().GetPercentPerLevel;
+            // return (float)Item.TimePerProduct * (toolImprovePercent / 100f);
+            return 0;
         }
 
     }

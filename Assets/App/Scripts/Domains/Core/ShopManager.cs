@@ -1,23 +1,18 @@
-using System.Collections.Generic;
 using App.Scripts.Domains.Models;
-using App.Scripts.Mics;
 using App.Scripts.UI;
-using Cysharp.Threading.Tasks;
 
 namespace App.Scripts.Domains.Core
 {
     public class ShopManager : Dependency<ShopManager>, IDependency
     {
         private Cart _cart = new();
-        private const int AMOUNT_EACH_COW = 1;
 
-        
-        public void OnShopUIEventRaised(ShopEventType eShopEvent, ItemType? eItemType =null)
+        public void OnShopUIEventRaised(ShopEventType eShopEvent, string itemName =null)
         {
             switch (eShopEvent)
             {
                 case ShopEventType.Buy:
-                    this.PickItem(eItemType);
+                    this.PickItem(itemName);
                     break;
                 case ShopEventType.BuySeedInCart:
                     this.BuySeedInCart();
@@ -33,59 +28,57 @@ namespace App.Scripts.Domains.Core
             _cart = new();
         }
 
-        private void PickItem(ItemType? eItemType)
+        private void PickItem(string itemName)
         {
-            if (eItemType == null)
+            if (itemName == null || itemName.Equals(""))
                 return;
-            if (eItemType == ItemType.UnusedPlot)
+            if (_dataLoader.ItemCollection.TryGetValue(itemName, out var item))
             {
-                _plotManager.ExtendPlot();
-            }
-            else if (eItemType == ItemType.Cow)
-            {
-                this.BuyCow();
-            }
-            else
-            {
-                this.PickSeed(eItemType);
+                if (itemName.Equals("Plot"))  
+                    _plotManager.ExtendPlot();            
+                else if (itemName.Equals("Cow"))  
+                    this.BuyCow(itemName);
+                else
+                    this.PickSeed(itemName);
             }
         }
         
-        private void PickSeed(ItemType? eItemType)
+        private void PickSeed(string itemName)
         {
-            var amount = eItemType == ItemType.StrawBerry ? 10 : 1;
-            var item = Item.ConvertItemType(eItemType);
-            if (_cart.IsPickSeedable(amount) == false)
-                return;
-            for (int i = 0; i < amount; i++)
+            if (_dataLoader.ItemCollection.TryGetValue(itemName, out var item))
             {
-                _cart.Pick(item);
+                if (_cart.IsPickSeedable(item.BuyUnit) == false)
+                    return;
+                for (int i = 0; i < item.BuyUnit; i++)
+                {
+                    _cart.Pick(item);
+                }
             }
         }
 
-        private void BuyCow()
+        private void BuyCow(string itemName)
         {
-            var cowItem = Define.CowItem;
+            var cowItem = _dataLoader.ItemCollection[itemName];
             if (_paymentService.Buy(cowItem))
             {
-                _statManager.GainUsing(cowItem.ItemType, AMOUNT_EACH_COW);
-                _workerManager.Assign(new ()
+                if (_dataLoader.ItemStorage.TryGetValue(itemName, out var itemStorage))
                 {
-                    EJob = JobType.PutIn,
-                    EItemType = ItemType.Cow
-                }).Forget();
+                    itemStorage.UnusedAmount++;
+                    _dataLoader.Push<ItemStorage>();
+                }
             }
+            // {
+            //     _workerManager.Assign(JobType.PutIn, itemName);
+            // }
         }
 
         private void BuySeedInCart()
         {
             if (_cart.IsCartBuyable == false)
                 return; //TODO: notify
-
             var isPayable = _paymentService.Buy(_cart);
             if (isPayable)
             {
-
                 _cart.StorageItems();
                 _cart = new();
             }

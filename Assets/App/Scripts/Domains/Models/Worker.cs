@@ -1,26 +1,31 @@
-using System;
 using App.Scripts.Domains.Services;
 
 namespace App.Scripts.Domains.Models
 {
-    public class Worker : Unit, IBuyable
+    public class Worker : IBuyable
     {
+        public int Id;
         public string Name = "Worker";
         // public long RemainTime { get; set; } = 0;// second
         public int Price { get; set; }
 
-        private DateTime StartExecuteAt;
-        private DateTime EndExecuteAt;
+        // private DateTime StartExecuteAt;
+        // private DateTime EndExecuteAt;
+        public bool IsUsing;
 
-        public Worker(int priceAmount=500) : base(priceAmount)
+        public Worker() { }
+
+        public Worker(int id, bool isUsing)
         {
-            Price = priceAmount;
+            Id = id;
+            IsUsing = isUsing;
         }
 
-        public bool Execute(Job job)
+        public bool Execute()
         {
-            StartExecuteAt = DateTime.UtcNow;
-            EndExecuteAt = TimeStamp.DateTimeFromSeconds(StartExecuteAt.Second + 60 * 2);
+            IsUsing = true;
+            // StartExecuteAt = DateTime.UtcNow;
+            // EndExecuteAt = TimeStamp.DateTimeFromSeconds(StartExecuteAt.Second + 60 * 2);
             return true;
         }
     }

@@ -1,7 +1,5 @@
 using App.Scripts.Domains.Core;
 using App.Scripts.Domains.Models;
-using App.Scripts.Mics;
-using UnityEngine.Playables;
 
 namespace App.Scripts.Domains.Services
 {
@@ -11,48 +9,39 @@ namespace App.Scripts.Domains.Services
     }
     public class PaymentService : Dependency<PaymentService>, IDependency
     {
-        private Gold Gold { get; set; }
 
-        private long GoldAmount => Gold.Amount;
-
-        public void Init()
+        public void SellProducts()
         {
-            base.Init();
-            Gold = new Gold()
-            {
-                Amount = _statManager.Stat.GoldAmount,
-                Name = "Gold"
-            };
+            // var blueberryStockAmount = _statManager.Stat.BlueberryProductAmount * _dataLoader.ItemCollection["Blueberry"].Stock;
+            // var tomatoStockAmount = _statManager.Stat.TomotoProductAmount * _dataLoader.ItemCollection["Tomato"].Stock;
+            // var strawberryStockAmount = _statManager.Stat.StrawberryProductAmount * _dataLoader.ItemCollection["Strawberry"].Stock;
+            // var milkStockAmount = _statManager.Stat.MilkProductAmount * _dataLoader.ItemCollection["Cow"].Stock;
+            // var sum = blueberryStockAmount + tomatoStockAmount + strawberryStockAmount + milkStockAmount;
+            // _statManager.SellAllProduct(sum);
+            // Earn(sum);
+            Earn(0);
         }
 
-        public void Earn(int amount)
-        {
-            Gold.Amount += amount;
-        }
 
         public bool Buy(IBuyable iBuyable)
         {
             var price = iBuyable.Price;
             if (IsPayable(price) == false)
                 return false;
-            Gold.Amount -= price;
+            _statManager.Pay(price);
             return true;
         }
 
         private bool IsPayable(int amount)
         {
-            return Gold.Amount - amount >= 0;
+            var result =  _dataLoader.stat.GoldAmount - amount >= 0;
+            _dataLoader.Push<Stat>();
+            return result;
         }
-
-        public void SellProducts()
+        
+        private void Earn(int amount)
         {
-            var blueberryStockAmount = _statManager.Stat.BlueberryProductAmount * Define.BlueBerryItem.Stock;
-            var tomatoStockAmount = _statManager.Stat.TomotoProductAmount * Define.TomatoItem.Stock;
-            var strawberryStockAmount = _statManager.Stat.StrawberryProductAmount * Define.StrawBerryItem.Stock;
-            var milkStockAmount = _statManager.Stat.MilkProductAmount * Define.CowItem.Stock;
-            var sum = blueberryStockAmount + tomatoStockAmount + strawberryStockAmount + milkStockAmount;
-            _statManager.SellAllProduct(sum);
-            Earn(sum);
+            _statManager.Gain(amount);
         }
     }
 }

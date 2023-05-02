@@ -12,29 +12,31 @@ namespace App.Scripts.Domains.Core
         protected StatManager _statManager;
         protected PaymentService _paymentService;
         protected DataLoader _dataLoader;
+        protected JobManager _jobManager;
         
         public Dependency()
         {
             DependencyProvider.Instance.RegisterDependency(typeof(T), this);
-            Debug.Log($"[{typeof(T)}] has been RegisterDependency");
+            // Debug.Log($"[{typeof(T)}] has been RegisterDependency");
 
         }
 
         public void Init()
         {
             InjectDependencies();
-            Debug.Log($"[{typeof(T)}] has been Initialized");
+            // Debug.Log($"[{typeof(T)}] has been Initialized");
         }
 
         protected void InjectDependencies()
         {
+            if(_dataLoader == null) _dataLoader = DependencyProvider.Instance.GetDependency<DataLoader>();
             if(_statManager == null) _statManager =  DependencyProvider.Instance.GetDependency<StatManager>();
             if(_plotManager == null) _plotManager = DependencyProvider.Instance.GetDependency<PlotManager>();
             if(_workerManager == null) _workerManager = DependencyProvider.Instance.GetDependency<WorkerManager>();
             if(_toolManager == null) _toolManager = DependencyProvider.Instance.GetDependency<ToolManager>();
             if(_shopManager == null) _shopManager = DependencyProvider.Instance.GetDependency<ShopManager>();
             if(_paymentService == null) _paymentService = DependencyProvider.Instance.GetDependency<PaymentService>();
-            if(_dataLoader == null) _dataLoader = DependencyProvider.Instance.GetDependency<DataLoader>();
+            if(_jobManager == null) _jobManager = DependencyProvider.Instance.GetDependency<JobManager>();
 
         }
     }

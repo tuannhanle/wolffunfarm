@@ -1,4 +1,4 @@
-Id,ItemName,ProductAmount,TimeUntilHarvest,CreateAt,UpdatedAt
-0,,0,0,,
-1,,0,0,,
-2,,0,0,,
+Id,ItemName,ProductAmount,TimeUntilHarvest,CreateAt,UpdatedAt,IsUsing
+0,,0,0,,,FALSE
+1,,0,0,,,FALSE
+2,,0,0,,,FALSE

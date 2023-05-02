@@ -1,7 +1,7 @@
-ItemName,Price,Stock,TimePerProduct,ProductCapacity,UnusedAmount,UsingAmount,ProductAmount
-Blueberry,50,8,900,40,0,0,0
-Tomato,30,5,60,40,0,0,0
-Strawberry,40,6,300,20,0,0,0
-Cow,100,15,1800,100,0,0,0
-Plot,500,0,0,0,0,0,0
-Worker,500,0,0,0,0,0,0
+ItemName,Price,Stock,TimePerProduct,ProductCapacity,IsSeedingable,IsAnimal,IsBuyInShop,BuyUnit
+Blueberry,50,8,900,40,TRUE,FALSE,TRUE,1
+Tomato,30,5,60,40,TRUE,FALSE,TRUE,1
+Strawberry,40,6,300,20,TRUE,FALSE,TRUE,10
+Cow,100,15,1800,100,TRUE,TRUE,TRUE,1
+Plot,500,0,0,0,FALSE,FALSE,TRUE,1
+Worker,500,0,0,0,FALSE,FALSE,FALSE,1

@@ -1,4 +1,3 @@
-using System;
 using App.Scripts.Domains.Core;
 using App.Scripts.Domains.Models;
 using App.Scripts.Domains.Services;
@@ -11,30 +10,34 @@ namespace App.Scripts.UI
 {
     public class InteractButtonsUI : MiddlewareBehaviour
     {
+        [Header("Refs")] 
+        [SerializeField] private Button _buttonPrefab;
+        [SerializeField] private Transform _root;
+
         [Header("Buttons")]
         [SerializeField] private Button _shopButton;
         [SerializeField] private Button _upgradeToolButton;
         [SerializeField] private Button _rentWorkerButton;
         [SerializeField] private Button _sellButton;
-
-        [Header("Seed Buttons")]
-        [SerializeField] private Button _seedBlueBerry;
-        [SerializeField] private Button _seedStrawBerry;
-        [SerializeField] private Button _seedTomato;
-        [SerializeField] private Button _breedCow;
-        [Header("Collect Buttons")]
-        [SerializeField] private Button _collectBlueBerry;
-        [SerializeField] private Button _collectStrawBerry;
-        [SerializeField] private Button _collectTomato;
-        [SerializeField] private Button _getMilkButton;
+        
 
         private WorkerManager _workerManager;
         private ToolManager _toolManager;
         private PaymentService _paymentService;
+        private DataLoader _dataLoader;
         
         private readonly LazyDataInlet<ShareData.OpenShopEvent> _shopEventInlet = new();
         
-        private void Awake()
+        private void Start()
+        {
+            _workerManager = DependencyProvider.Instance.GetDependency<WorkerManager>();
+            _toolManager = DependencyProvider.Instance.GetDependency<ToolManager>();
+            _paymentService = DependencyProvider.Instance.GetDependency<PaymentService>();
+            _dataLoader = DependencyProvider.Instance.GetDependency<DataLoader>();
+            Init();
+        }
+        
+        private void Init()
         {
             
             if(_shopButton) _shopButton.onClick.AddListener(
@@ -45,36 +48,32 @@ namespace App.Scripts.UI
                 delegate { OnUIButtonClicked(InteractEventType.RentWorker); });
             if(_sellButton) _sellButton.onClick.AddListener(
                 delegate { OnUIButtonClicked(InteractEventType.Sell); });
-            
-            if(_seedBlueBerry) _seedBlueBerry.onClick.AddListener(
-                delegate { OnUIButtonClicked(InteractEventType.Seeding, ItemType.BlueBerry); });
-            if(_seedStrawBerry) _seedStrawBerry.onClick.AddListener(
-                delegate { OnUIButtonClicked(InteractEventType.Seeding,ItemType.StrawBerry); });
-            if(_seedTomato) _seedTomato.onClick.AddListener(
-                delegate { OnUIButtonClicked(InteractEventType.Seeding, ItemType.Tomato); });
-            if(_breedCow) _breedCow.onClick.AddListener(
-                delegate { OnUIButtonClicked(InteractEventType.Seeding, ItemType.Cow); });
 
-            // collect product from plant or animal
-            if(_collectBlueBerry) _collectBlueBerry.onClick.AddListener(
-                delegate { OnUIButtonClicked(InteractEventType.CollectProduct, ItemType.BlueBerry); });
-            if(_collectStrawBerry) _collectStrawBerry.onClick.AddListener(
-                delegate { OnUIButtonClicked(InteractEventType.CollectProduct, ItemType.StrawBerry); });
-            if(_collectTomato) _collectTomato.onClick.AddListener(
-                delegate { OnUIButtonClicked(InteractEventType.CollectProduct, ItemType.Tomato); });
-            if(_getMilkButton) _getMilkButton.onClick.AddListener(
-                delegate { OnUIButtonClicked(InteractEventType.CollectProduct, ItemType.Cow); });
-
+            CreateButtonAsync("Seeding", InteractEventType.Seeding);
+            CreateButtonAsync("Harvest", InteractEventType.Harsvest);
         }
-
-        private void Start()
+        
+        private void CreateButtonAsync(string interactName, InteractEventType interactEventType)
         {
-            _workerManager = DependencyProvider.Instance.GetDependency<WorkerManager>();
-            _toolManager = DependencyProvider.Instance.GetDependency<ToolManager>();
-            _paymentService = DependencyProvider.Instance.GetDependency<PaymentService>();
+            var items = _dataLoader.ItemCollection;
+            foreach (var item in items)
+            {
+                if (item.Value.IsSeedingable == false)
+                    continue;
+                if (item.Value.IsAnimal && interactEventType == InteractEventType.Seeding)
+                {
+                    interactName = "Breed";
+                }
+                var button = Instantiate(_buttonPrefab, _root);
+                var name = interactName + " " + item.Key;
+                button.name = name;
+                button.GetComponentInChildren<Text>().text = name;
+                button.onClick.AddListener(
+                    delegate { OnUIButtonClicked(interactEventType, item.Key); });
+                button.gameObject.SetActive(true);
+            }
         }
-
-        private void OnUIButtonClicked(InteractEventType eInteractEvent, ItemType? eItemType = null)
+        private void OnUIButtonClicked(InteractEventType eInteractEvent, string itemName = null)
         {
             switch (eInteractEvent)
             {
@@ -85,30 +84,22 @@ namespace App.Scripts.UI
                     _shopEventInlet.UpdateValue(new());
                     break;
                 case InteractEventType.RentWorker:
-                    _workerManager.RentWorker( );
+                    _workerManager.RentWorker();
                     break;
                 case InteractEventType.UpgradeTool:
                     _toolManager.UpgradeTool();
                     break;
                 case InteractEventType.Seeding:
-                    if (eItemType == null)
+                    if (itemName == null)
                         break;
                     // execute here
-                    _workerManager.Assign(new ()
-                    {
-                        EJob = JobType.PutIn,
-                        EItemType = eItemType
-                    }).Forget();
+                    _workerManager.Assign(JobType.PutIn, itemName);
                     break;
-                case InteractEventType.CollectProduct:
-                    if (eItemType == null)
+                case InteractEventType.Harsvest:
+                    if (itemName == null)
                         break;
                     // execute here
-                    _workerManager.Assign(new ()
-                    {
-                        EJob = JobType.Harvesting,
-                        EItemType = eItemType
-                    }).Forget();
+                    _workerManager.Assign(JobType.Harvasting, itemName);
                     break;
             }
         }
@@ -122,7 +113,7 @@ namespace App.Scripts.UI
         UpgradeTool, 
         Sell,
         Seeding,
-        CollectProduct,
+        Harsvest,
  
     }
     

@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using App.Scripts.Domains.Models;
 using App.Scripts.Domains.Services;
 using App.Scripts.Mics;
 using Cysharp.Threading.Tasks;
@@ -21,13 +19,14 @@ namespace App.Scripts.Domains.Core
             
             _dependencies.AddRange(new List<IDependency>
             {
+                new DataLoader(),
                 new WorkerManager(),
                 new ToolManager(),
                 new PlotManager(),
                 new ShopManager(),
                 new StatManager(),
                 new PaymentService(),
-                new DataLoader(),
+                new JobManager()
                 // add more at above
             } );
      
@@ -39,21 +38,23 @@ namespace App.Scripts.Domains.Core
             _statManager = DependencyProvider.Instance.GetDependency<StatManager>();
             _workerManager = DependencyProvider.Instance.GetDependency<WorkerManager>();
             _dataLoader = DependencyProvider.Instance.GetDependency<DataLoader>();
+            // _statManager.PostcastData();
         }
 
         private void Start()
         {
-            _dataLoader.Fetch();
-            _statManager.PostcastData();
+
             MainFlow().Forget();
         }
 
         private async UniTask MainFlow()
         {
             // per frame
-            while (_statManager.Stat.GoldAmount == GOLD_TARGET)
+            while (_dataLoader.stat.GoldAmount < GOLD_TARGET)
             {
-                _workerManager.ExecuteAsync();
+                _workerManager.ExecuteAsync().Forget();
+                await UniTask.Yield();
+
             }
 
             Debug.Log("Game has been finished");

@@ -1,17 +1,15 @@
 using App.Scripts.Domains.Models;
-using App.Scripts.Mics;
-using UnityEngine;
 
 namespace App.Scripts.Domains.Core
 {
     public class ToolManager : Dependency<ToolManager>, IDependency
     {
         private Tool _tool = new();
-        private const int AMOUNT_EACH_UPDATE_TOOL_LEVEL = 1;
         public void Init()
         {
             base.Init();
-            _tool.Level = _statManager.Stat.ToolLevel;
+            _tool.Price = 500;
+            _tool.Level = _dataLoader.stat.ToolLevel;
         }
         
         
@@ -21,7 +19,7 @@ namespace App.Scripts.Domains.Core
             if (isPayable)
             {
                 _tool.UpLevel();
-                _statManager.Gain<Tool>(AMOUNT_EACH_UPDATE_TOOL_LEVEL);
+                _statManager.UpdateTool();
                 return true;
             }
             return false;

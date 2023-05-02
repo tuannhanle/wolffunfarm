@@ -1,10 +1,6 @@
-using System;
-using System.Text;
-using App.Scripts.Domains.Core;
 using App.Scripts.Domains.Models;
 using App.Scripts.Mics;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace App.Scripts.UI
@@ -27,22 +23,35 @@ namespace App.Scripts.UI
                 _texts[i] = textUI;
             }
             this.Subscribe<Stat>(OnDataUpdated);
-        }
+            this.Subscribe<ShareData.WorkerPassage>(OnDataUpdated);
+            this.Subscribe<ShareData.ItemStoragePassage>(OnDataUpdated);
+      }
 
-        private void OnDataUpdated(Stat Stat)
+        private void OnDataUpdated<T>(T data)
         {
-            _texts[0].text = $"Gold: {Stat.GoldAmount}";
-            _texts[1].text  = $"Tool Lv.{Stat.ToolLevel}";
-            _texts[2].text = $"Idle Worker: {Stat.IdleWorkerAmount}";
-            _texts[3].text = $"Working Worker: {Stat.WorkingWorkerAmount}";
-            _texts[4].text = $"Unused Seeds: {Stat.GetSumUnusedSeeds}";
-            _texts[5].text = $"Unused Plots: {Stat.UnusedPlotAmount}";
-            _texts[6].text = $"Using Plots: {Stat.UsingPlotAmount}";
-            _texts[7].text = $"Blueberries: {Stat.BlueberryProductAmount}";
-            _texts[8].text = $"Tomatoes: {Stat.TomotoProductAmount}";
-            _texts[9].text = $"Strawberries: {Stat.StrawberryProductAmount}";
-            _texts[10].text = $"Milk gallons: {Stat.MilkProductAmount}";
-
+            if (typeof(T) == typeof(Stat))
+            {
+                var passager =  data as Stat;
+                _texts[0].text = $"Gold: {passager.GoldAmount}";
+                _texts[1].text  = $"Tool Lv.{passager.ToolLevel}";
+            }
+            else if (typeof(T) == typeof(ShareData.WorkerPassage))
+            {
+                var passager =  data as ShareData.WorkerPassage;
+                _texts[2].text = $"Idle Worker: {passager.IdleWorkerAmount}";
+                _texts[3].text = $"Working Worker: {passager.WorkingWorkerAmount}";
+            }
+            else if (typeof(T) == typeof(ShareData.ItemStoragePassage))
+            {
+                var passager =  data as ShareData.ItemStoragePassage;
+                _texts[4].text = $"Unused Seeds: {passager.GetSumUnusedSeeds}";
+                _texts[5].text = $"Unused Plots: {passager.UnusedPlotAmount}";
+                _texts[6].text = $"Using Plots: {passager.UsingPlotAmount}";
+                _texts[7].text = $"Blueberries: {passager.BlueberryProductAmount}";
+                _texts[8].text = $"Tomatoes: {passager.TomotoProductAmount}";
+                _texts[9].text = $"Strawberries: {passager.StrawberryProductAmount}";
+                _texts[10].text = $"Milk gallons: {passager.MilkProductAmount}";
+            }
         }
 
     }

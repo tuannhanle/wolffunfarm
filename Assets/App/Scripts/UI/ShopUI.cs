@@ -1,7 +1,6 @@
-using System;
 using App.Scripts.Domains.Core;
-using App.Scripts.Domains.Models;
 using App.Scripts.Mics;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,14 +18,11 @@ namespace App.Scripts.UI
     {
         [Header("Refs")]
         [SerializeField] private CanvasGroup _canvasGroup;
-
+        [SerializeField] private Button _buttonPrefab;
+        [SerializeField] private Transform _root;
+        
         [Header("Buttons")]
         [SerializeField] private Button _closeButton;
-        [SerializeField] private Button _buyBlueberryButton;
-        [SerializeField] private Button _buyTomatoButton;
-        [SerializeField] private Button _buyStrawberry;
-        [SerializeField] private Button _buyCowButton;
-        [SerializeField] private Button _buyPlot;
         [SerializeField] private Button _buySeedInCart;
         [SerializeField] private Button _releaseSeedInCart;
 
@@ -36,40 +32,53 @@ namespace App.Scripts.UI
         private ShareData.OpenShopEvent _openShopEvent = new() { };
         
         private ShopManager _shopManager;
-
-        private void Awake()
-        {
-            OnUIOpenStateUpdate(_openShopEvent);
-            
-            if(_closeButton) _closeButton.onClick.AddListener(()=>OnUIOpenStateUpdate(_openShopEvent));
-            
-            if(_buyBlueberryButton)_buyBlueberryButton.onClick.AddListener(
-                delegate { OnUIButtonClicked(ShopEventType.Buy, ItemType.BlueBerry); });
-            if(_buyTomatoButton)_buyTomatoButton.onClick.AddListener(
-                delegate { OnUIButtonClicked(ShopEventType.Buy, ItemType.Tomato); });
-            if(_buyStrawberry)_buyStrawberry.onClick.AddListener(
-                delegate { OnUIButtonClicked(ShopEventType.Buy, ItemType.StrawBerry); });
-            if(_buyCowButton)_buyCowButton.onClick.AddListener(
-                delegate { OnUIButtonClicked(ShopEventType.Buy, ItemType.Cow); });
-            if(_buyPlot)_buyPlot.onClick.AddListener(
-                delegate { OnUIButtonClicked(ShopEventType.Buy, ItemType.UnusedPlot); });
-            if(_buySeedInCart)_buyPlot.onClick.AddListener(
-                delegate { OnUIButtonClicked(ShopEventType.BuySeedInCart); });
-            if(_releaseSeedInCart)_buyPlot.onClick.AddListener(
-                delegate { OnUIButtonClicked(ShopEventType.ReleaseSeedInCart); });
-
-            this.Subscribe<ShareData.OpenShopEvent>(OnUIOpenStateUpdate);
-
-        }
+        private DataLoader _dataLoader;
 
         private void Start()
         {
             _shopManager = DependencyProvider.Instance.GetDependency<ShopManager>();
+            _dataLoader = DependencyProvider.Instance.GetDependency<DataLoader>();
+            Init();
         }
         
-        private void OnUIButtonClicked(ShopEventType eShopEvent, ItemType? eItemType =null)
+        private void Init()
         {
-            _shopManager.OnShopUIEventRaised(eShopEvent, eItemType);
+            OnUIOpenStateUpdate(_openShopEvent);
+            
+            if(_closeButton) _closeButton.onClick.AddListener(
+                ()=>OnUIOpenStateUpdate(_openShopEvent));
+            if(_buySeedInCart)_buySeedInCart.onClick.AddListener(
+                delegate { OnUIButtonClicked(ShopEventType.BuySeedInCart); });
+            if(_releaseSeedInCart)_releaseSeedInCart.onClick.AddListener(
+                delegate { OnUIButtonClicked(ShopEventType.ReleaseSeedInCart); });
+
+            CreateButtonAsync("Buy");
+
+            this.Subscribe<ShareData.OpenShopEvent>(OnUIOpenStateUpdate);
+
+        }
+        
+        
+        private void CreateButtonAsync(string interactName)
+        {
+            var items = _dataLoader.ItemCollection;
+            foreach (var item in items)
+            {
+                if (item.Value.IsBuyInShop == false)
+                    continue;
+                var button = Instantiate(_buttonPrefab, _root);
+                var name = $"{interactName} {item.Value.BuyUnit}" + " " + item.Key;
+                button.name = name;
+                button.GetComponentInChildren<Text>().text = name;
+                button.onClick.AddListener(
+                    delegate { OnUIButtonClicked(ShopEventType.Buy, item.Key); });
+                button.gameObject.SetActive(true);
+            }
+        }
+        
+        private void OnUIButtonClicked(ShopEventType eShopEvent, string itemName = null)
+        {
+            _shopManager.OnShopUIEventRaised(eShopEvent, itemName);
         }
 
         private void OnUIOpenStateUpdate(ShareData.OpenShopEvent openShopEvent)

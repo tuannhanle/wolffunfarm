@@ -1,75 +1,88 @@
 using System.Collections.Generic;
 using App.Scripts.Domains.Models;
-using App.Scripts.Mics;
-using Cysharp.Threading.Tasks;
 using Plot = App.Scripts.Domains.GameObjects.Plot;
 
 namespace App.Scripts.Domains.Core
 {
     public class PlotManager : Dependency<PlotManager>, IDependency
     {
-        private readonly List<Plot> _plots = new();
-        private const int AMOUNT_EACH_PLOT = 1;
-        public void Init()
-        {
-            base.Init();
-            for (int i = 0; i < _statManager.Stat.UnusedPlotAmount  ; i++)
-            {
-                _plots.Add(Define.PlotItem);
-            }
-            for (int i = 0; i < _statManager.Stat.UsingPlotAmount ; i++)
-            {
-                _plots.Add(Define.PlotItem);
-            }
-        }
+        private const string PLOT = "Plot";
         
         public void ExtendPlot()
         {
-            var plot = Define.PlotItem;
+            var plot = _dataLoader.ItemCollection[PLOT];
             var isPayable = _paymentService.Buy(plot);
-            if(isPayable == false)
+            if( isPayable == false)
                 return;
-            _plots.Add(plot);
-            _statManager.GainUnused(ItemType.UnusedPlot, AMOUNT_EACH_PLOT);
+            var plotId = _dataLoader.PlotStorage.Count;
+            _dataLoader.PlotStorage.Add(plotId, new Plot(plotId,"",0,0,null,null,false));
+            _dataLoader.Push<Plot>();
         }
 
+        public bool IsPutInable(int plotId, string itemName)
+        {
+            if (_dataLoader.PlotStorage.TryGetValue(plotId, out var plot) == false)
+                return false;
+            if (_dataLoader.ItemCollection.TryGetValue(itemName, out var item) == false)
+                return false;
+            return plot.IsPutInable();
+        }
         
-        public void Attach(ItemType? itemType)
+        public void PutIn(int plotId, string itemName)
         {
-            if (itemType == null)
+            if (_dataLoader.PlotStorage.TryGetValue(plotId, out var plot) == false)
                 return;
-            foreach (var plot in _plots)
-            {
-                var isPlanCropable = plot.PlantCrop(itemType);
-                if (isPlanCropable)
-                { 
-                    _statManager.GainUsing(itemType, -1);
-                    _statManager.GainUsing(ItemType.UnusedPlot, -1);
-                    _workerManager.Assign(new Job() { EItemType = itemType, EJob = JobType.PutIn });
-                    break;
-                    
-                }
-            }
+            if (_dataLoader.ItemCollection.TryGetValue(itemName, out var item) == false)
+                return;
+            var extentTime = _dataLoader.stat.ExtentTimeToDestroy;
+            plot.PutIn(item.ProductCapacity, extentTime);
         }
 
-        /// <summary>
-         /// 
-         /// </summary>
-         /// <param name="itemType"></param>
-         /// <returns>Wait a time for each proceed for Worker</returns>
-        public void Collect(ItemType? itemType)
+        public bool IsHarvastable(int plotId, string itemName)
         {
-            if (itemType == null)
+            if (_dataLoader.PlotStorage.TryGetValue(plotId, out var plot) == false)
+                return false;
+            if (_dataLoader.ItemCollection.TryGetValue(itemName, out var item) == false)
+                return false;
+            return plot.IsHarvastable(itemName);
+        }
+        
+
+        public void Harvast(int plotId, string itemName)
+        {
+            if (_dataLoader.PlotStorage.TryGetValue(plotId, out var plot) == false)
                 return;
-            foreach (var plot in _plots)
+            if (_dataLoader.ItemCollection.TryGetValue(itemName, out var item) == false)
+                return;
+            plot.Harvest(itemName);
+        }
+
+        public List<Plot> GetPlots(JobType jobType, string itemName)
+        {
+            List<Plot> plots = new();
+            if (jobType == JobType.Harvasting)
             {
-                var isCollectable = plot.IsCollectable(itemType);
-                if (isCollectable)
+                foreach (var plot in _dataLoader.PlotStorage)
                 {
-                    plot.Harvest(itemType);
-                    break;
+                    if (plot.Value.IsUsing == false)
+                        continue;
+                    if (plot.Value.ItemName.Equals(itemName) == false)
+                        continue;
+                    plots.Add(plot.Value);
                 }
             }
+            else
+            {
+                foreach (var plot in _dataLoader.PlotStorage)
+                {
+                    if (plot.Value.IsUsing)
+                        continue;
+                    plots.Add(plot.Value);
+                }
+            }
+            return plots.Count != 0 ? plots : null;
         }
+
+
     }
 }

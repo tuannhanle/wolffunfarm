@@ -1,72 +1,238 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using App.Scripts.Domains.GameObjects;
 using App.Scripts.Domains.Models;
+using App.Scripts.Mics;
 using Sinbad;
-using UnityEditor;
 using UnityEngine;
 
 namespace App.Scripts.Domains.Core
  {
-    public interface IHasItemName 
-    {
-        string ItemName { get; set; }
-    }
-    public class DataLoader : Dependency<DataLoader>, IDependency
+   public class DataLoader : Dependency<DataLoader>, IDependency
     {
         public const string ITEM_DATA_FILE = "ItemData.csv";
-        public const string UNUSED_DATA_FILE = "UnusedData.csv";
-        public const string USING_DATA_FILE = "UsingData.csv";
+        public const string ITEM_STORAGE_DATA_FILE = "ItemStorageData.csv";
         public const string PLOT_DATA_FILE = "PlotData.csv";
+        public const string WORKER_DATA_FILE = "WorkerData.csv";
         public const string STAT_DATA_FILE = "StatData.csv";
-        public const string CONTAIN_DATA_FILE = "ContainData.csv";
+        public const string CONTAIN_DATA_FILE = "ConstantData.csv";
+        public const string JOB_DATA_FILE = "JobData.csv";
         public Dictionary<string, Item> ItemCollection = new ();
-        public Dictionary<string, Unused> UnusedCollection = new ();
-        public Dictionary<string, Using> UsingCollection = new ();
-        public Dictionary<string, Plot> PlotCollection = new ();
-        public Stat stat = new Stat();
-        public Constant constant = new Constant();
+        public Dictionary<string, ItemStorage> ItemStorage = new();
+        public Dictionary<int, Plot> PlotStorage = new ();
+        public Dictionary<int, Worker> WorkerStorage = new();
+        public Dictionary<long, Job> JobStorage = new();
+        public Stat stat => _stats[0];
+        public Constant constant => _constants[0];
+        private List<Stat> _stats = new ();
+        private List<Constant> _constants = new ();
 
         private const string DATA_FOLDER_PREFIX = "Data/{0}";
+
+        public void Init()
+        {
+            base.Init();
+            Fetch();
+            BroadcastData(stat);
+            BroadcastWorkerPassager();
+            BroadcastItemStoragePassager();
+        }
+        
+        public void BroadcastItemStoragePassager()
+        {
+            var itemStoragePassenger = new ShareData.ItemStoragePassage();
+            foreach (var pair in ItemStorage)
+            {
+                if (pair.Key.Equals("Blueberry"))
+                {
+                    itemStoragePassenger.GetSumUnusedSeeds += pair.Value.UnusedAmount;
+                    itemStoragePassenger.BlueberryProductAmount += pair.Value.ProductAmount;
+                }
+                if (pair.Key.Equals("Tomato"))
+                {
+                    itemStoragePassenger.GetSumUnusedSeeds += pair.Value.UnusedAmount;
+                    itemStoragePassenger.TomotoProductAmount += pair.Value.ProductAmount;
+                }
+                if (pair.Key.Equals("Strawberry"))
+                {
+                    itemStoragePassenger.GetSumUnusedSeeds += pair.Value.UnusedAmount;
+                    itemStoragePassenger.StrawberryProductAmount += pair.Value.ProductAmount;
+                }
+                if (pair.Key.Equals("Cow"))
+                {
+                    itemStoragePassenger.MilkProductAmount += pair.Value.ProductAmount;
+                }
+                if (pair.Key.Equals("Plot"))
+                {
+                    itemStoragePassenger.UsingPlotAmount += pair.Value.UsingAmount;
+                    itemStoragePassenger.UnusedPlotAmount += pair.Value.UnusedAmount;
+                }
+            }
+            BroadcastData(itemStoragePassenger);
+        }
+
+        public void BroadcastWorkerPassager()
+        {
+            var workerPassager = new ShareData.WorkerPassage();
+            foreach (var pair in WorkerStorage)
+            {
+                workerPassager.IdleWorkerAmount += pair.Value.IsUsing ? 0 : 1;
+                workerPassager.WorkingWorkerAmount += pair.Value.IsUsing ? 1 : 0;
+            }
+            BroadcastData(workerPassager);
+        }
+        
+        public void BroadcastData<T>(T data) where T : class
+        { 
+            LazyDataInlet<T> _inlet = new();
+            _inlet.UpdateValue(data);
+        }
+
         public void Fetch()
         {
-            _dataLoader.LoadObjects(String.Format(DATA_FOLDER_PREFIX,ITEM_DATA_FILE), _dataLoader.ItemCollection);
-            _dataLoader.LoadObjects(String.Format(DATA_FOLDER_PREFIX,UNUSED_DATA_FILE), _dataLoader.UnusedCollection);
-            _dataLoader.LoadObjects(String.Format(DATA_FOLDER_PREFIX,USING_DATA_FILE), _dataLoader.UsingCollection);
-            _dataLoader.LoadObjects(String.Format(DATA_FOLDER_PREFIX,PLOT_DATA_FILE), _dataLoader.PlotCollection);
-            LoadObject(String.Format(DATA_FOLDER_PREFIX,STAT_DATA_FILE), ref stat);
-            LoadObject(String.Format(DATA_FOLDER_PREFIX,CONTAIN_DATA_FILE), ref constant);
+            List<Item> objs1 = new ();
+            objs1 = CsvUtil.LoadObjects<Item>(String.Format(DATA_FOLDER_PREFIX,ITEM_DATA_FILE));
+            foreach (var obj in objs1)
+            {
+                if (ItemCollection.ContainsKey(obj.ItemName))
+                    continue;
+                ItemCollection.Add(obj.ItemName, obj);
+   
+            }
+            
+            List<ItemStorage> objs2 = new ();
+            objs2 = CsvUtil.LoadObjects<ItemStorage>(String.Format(DATA_FOLDER_PREFIX,ITEM_STORAGE_DATA_FILE));
+            foreach (var obj in objs2)
+            {
+                if (ItemStorage.ContainsKey(obj.ItemName))
+                    continue;
+                ItemStorage.Add(obj.ItemName, obj);
+   
+            }
+
+            // _dataLoader.LoadObjects(String.Format(DATA_FOLDER_PREFIX,ITEM_DATA_FILE), _dataLoader.ItemCollection);
+            // _dataLoader.LoadObjects(String.Format(DATA_FOLDER_PREFIX,ITEM_STORAGE_DATA_FILE), _dataLoader.ItemStorage);
+            // _dataLoader.LoadObjects(String.Format(DATA_FOLDER_PREFIX,UNUSED_DATA_FILE), _dataLoader.UnusedCollection);
+            // _dataLoader.LoadObjects(String.Format(DATA_FOLDER_PREFIX,USING_DATA_FILE), _dataLoader.UsingCollection);
+            _dataLoader.LoadPlotStorage();
+            _dataLoader.LoadWorkerStorage();
+            _dataLoader.LoadJobStorage();
+            _stats = CsvUtil.LoadObjects<Stat>(String.Format(DATA_FOLDER_PREFIX,STAT_DATA_FILE));
+            _constants = CsvUtil.LoadObjects<Constant>(String.Format(DATA_FOLDER_PREFIX,CONTAIN_DATA_FILE));
+
         }
 
         public void Push()
         {
-            _dataLoader.SaveObjects(_dataLoader.ItemCollection,String.Format(DATA_FOLDER_PREFIX,ITEM_DATA_FILE));
-            _dataLoader.SaveObjects(_dataLoader.UnusedCollection,String.Format(DATA_FOLDER_PREFIX,UNUSED_DATA_FILE));
-            _dataLoader.SaveObjects(_dataLoader.UsingCollection,String.Format(DATA_FOLDER_PREFIX,USING_DATA_FILE));
-            _dataLoader.SaveObjects(_dataLoader.PlotCollection,String.Format(DATA_FOLDER_PREFIX,PLOT_DATA_FILE));
+            _dataLoader.SaveObjects(_dataLoader.PlotStorage,String.Format(DATA_FOLDER_PREFIX,PLOT_DATA_FILE));
+            _dataLoader.SaveObjects(_dataLoader.WorkerStorage,String.Format(DATA_FOLDER_PREFIX,WORKER_DATA_FILE));
+            _dataLoader.SaveObjects(_dataLoader.JobStorage,String.Format(DATA_FOLDER_PREFIX,JOB_DATA_FILE));
+            _dataLoader.SaveObjects(_dataLoader.ItemStorage,String.Format(DATA_FOLDER_PREFIX,ITEM_STORAGE_DATA_FILE));
+            _dataLoader.SaveObjects(_dataLoader._stats,String.Format(DATA_FOLDER_PREFIX,STAT_DATA_FILE));
+        }
 
+        public void Push<T>()
+        {
+            if (typeof(T) == typeof(Worker))
+            {
+                _dataLoader.SaveObjects(_dataLoader.WorkerStorage,String.Format(DATA_FOLDER_PREFIX,WORKER_DATA_FILE));
+                BroadcastWorkerPassager();
+            }         
+            if(typeof(T) == typeof(Plot))             
+                _dataLoader.SaveObjects(_dataLoader.PlotStorage,String.Format(DATA_FOLDER_PREFIX,PLOT_DATA_FILE));
+            if(typeof(T) == typeof(Job))             
+                _dataLoader.SaveObjects(_dataLoader.JobStorage,String.Format(DATA_FOLDER_PREFIX,JOB_DATA_FILE));           
+            if(typeof(T) == typeof(Stat))             
+                _dataLoader.SaveObjects(_dataLoader._stats,String.Format(DATA_FOLDER_PREFIX,STAT_DATA_FILE));
+            if (typeof(T) == typeof(ItemStorage))
+            {
+                _dataLoader.SaveObjects(_dataLoader.ItemStorage,String.Format(DATA_FOLDER_PREFIX,ITEM_STORAGE_DATA_FILE));
+                BroadcastItemStoragePassager();
+            }             
         }
         
-        private void LoadObjects<T>(string filename, Dictionary<string,T> maps) where T: new()
+        private void LoadJobStorage()
         {
-            List<T> objs = new List<T>();
+            var filename = String.Format(DATA_FOLDER_PREFIX, JOB_DATA_FILE);
+            List<Job> objs = new List<Job>();
             try
-            {
-                objs = CsvUtil.LoadObjects<T>(filename);
-                foreach (IHasItemName obj in objs)
+            { 
+                objs = CsvUtil.LoadObjects<Job>(filename);
+                foreach (var obj in objs)
                 {
-                    if (maps.ContainsKey(obj.ItemName))
+                    if (_dataLoader.JobStorage.ContainsKey(obj.JobId))
                         continue;
-                    maps.Add(obj.ItemName, (T)obj);
+                    _dataLoader.JobStorage.Add(obj.JobId, obj);
                 }
             }
             catch (Exception e)
             {
-                CsvUtil.SaveObjects(objs, filename);
+                Debug.Log("[LoadJobStorage]: "+e);
             }
-
         }
+        
+        private void LoadWorkerStorage()
+        {
+            var filename = String.Format(DATA_FOLDER_PREFIX, WORKER_DATA_FILE);
+            List<Worker> objs = new List<Worker>();
+            try
+            { 
+                objs = CsvUtil.LoadObjects<Worker>(filename);
+                foreach (var obj in objs)
+                {
+                    if (_dataLoader.WorkerStorage.ContainsKey(obj.Id))
+                        continue;
+                    _dataLoader.WorkerStorage.Add(obj.Id, obj);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.Log("[LoadWorkerStorage]: "+e);
+
+            }
+        }
+
+        private void LoadPlotStorage()
+        {
+            var filename = String.Format(DATA_FOLDER_PREFIX, PLOT_DATA_FILE);
+            List<Plot> objs = new List<Plot>();
+            try
+            { 
+                objs = CsvUtil.LoadObjects<Plot>(filename);
+                foreach (var obj in objs)
+                {
+                    if (_dataLoader.PlotStorage.ContainsKey(obj.Id))
+                        continue;
+                    _dataLoader.PlotStorage.Add(obj.Id, obj);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.Log("[LoadPlotStorage]: "+e);
+
+            }
+        }
+        
+        // private void LoadObjects<T>(string filename, Dictionary<string,T> maps) where T: new()
+        // {
+        //     List<T> objs = new List<T>();
+        //     try
+        //     {
+        //         objs = CsvUtil.LoadObjects<T>(filename);
+        //         foreach (var obj in objs)
+        //         {
+        //             if (maps.ContainsKey(obj.ItemName))
+        //                 continue;
+        //             maps.Add(obj.ItemName, (T)obj);
+        //
+        //         }
+        //     }
+        //     catch (Exception e)
+        //     {
+        //         Debug.Log("[LoadObjects]: "+filename+e);
+        //     }
+        //
+        // }
 
         private void LoadObject<T>(string filename, ref T destObject)
         {
@@ -76,8 +242,7 @@ namespace App.Scripts.Domains.Core
             }
             catch (Exception e)
             {
-                CsvUtil.SaveObject(destObject, filename);
-
+                Debug.Log("[LoadObject]: "+filename+e);
             }
         }
 
@@ -91,7 +256,7 @@ namespace App.Scripts.Domains.Core
             CsvUtil.SaveObjects(objs, filename);
         }
         
-        private void SaveObjects<T>(Dictionary<string,T> maps, string filename)
+        private void SaveObjects<Y,T>(Dictionary<Y,T> maps, string filename)
         {
             List<T> objs = new List<T>();
             foreach (var pair in maps)
