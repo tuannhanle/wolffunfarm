@@ -38,6 +38,15 @@ namespace App.Scripts.Domains.Core
             LoadObject(String.Format(DATA_FOLDER_PREFIX,STAT_DATA_FILE), ref stat);
             LoadObject(String.Format(DATA_FOLDER_PREFIX,CONTAIN_DATA_FILE), ref constant);
         }
+
+        public void Push()
+        {
+            _dataLoader.SaveObjects(_dataLoader.ItemCollection,String.Format(DATA_FOLDER_PREFIX,ITEM_DATA_FILE));
+            _dataLoader.SaveObjects(_dataLoader.UnusedCollection,String.Format(DATA_FOLDER_PREFIX,UNUSED_DATA_FILE));
+            _dataLoader.SaveObjects(_dataLoader.UsingCollection,String.Format(DATA_FOLDER_PREFIX,USING_DATA_FILE));
+            _dataLoader.SaveObjects(_dataLoader.PlotCollection,String.Format(DATA_FOLDER_PREFIX,PLOT_DATA_FILE));
+
+        }
         
         private void LoadObjects<T>(string filename, Dictionary<string,T> maps) where T: new()
         {
@@ -79,6 +88,16 @@ namespace App.Scripts.Domains.Core
 
         private void SaveObjects<T>(IEnumerable<T> objs, string filename)
         {
+            CsvUtil.SaveObjects(objs, filename);
+        }
+        
+        private void SaveObjects<T>(Dictionary<string,T> maps, string filename)
+        {
+            List<T> objs = new List<T>();
+            foreach (var pair in maps)
+            {
+                objs.Add(pair.Value);
+            }
             CsvUtil.SaveObjects(objs, filename);
         }
 
