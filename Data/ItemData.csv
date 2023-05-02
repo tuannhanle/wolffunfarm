@@ -1,0 +1,7 @@
+ItemName,Price,Stock,TimePerProduct,ProductCapacity,UnusedAmount,UsingAmount,ProductAmount
+Blueberry,50,8,900,40,0,0,0
+Tomato,30,5,60,40,0,0,0
+Strawberry,40,6,300,20,0,0,0
+Cow,100,15,1800,100,0,0,0
+Plot,500,0,0,0,0,0,0
+Worker,500,0,0,0,0,0,0

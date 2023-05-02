@@ -13,7 +13,7 @@ namespace App.Scripts.Domains.Services
     {
         private Gold Gold { get; set; }
 
-        private int GoldAmount => Gold.Amount;
+        private long GoldAmount => Gold.Amount;
 
         public void Init()
         {

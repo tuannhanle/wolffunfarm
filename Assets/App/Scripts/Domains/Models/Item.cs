@@ -1,4 +1,5 @@
 using System;
+using App.Scripts.Domains.Core;
 using App.Scripts.Domains.Services;
 using App.Scripts.Mics;
 
@@ -8,18 +9,27 @@ namespace App.Scripts.Domains.Models
         StrawBerry, BlueBerry, Tomato, Cow, 
         UnusedPlot, UsingPlot
     }
-    public class Item : IBuyable
+    [System.Serializable]
+    public class Item : IBuyable, IHasItemName
     {
-        public int Name { get; set; }
-        public ItemType ItemType { get; set; }
+        public string ItemName { get; set; }
+        public ItemType ItemType;
         public int Price { get; set; }
-        public int Stock { get; set; }
-        public Category Category { get; set; }
+        public int Stock;
+        public Category Category;
 
+        public int TimePerProduct; // (second) time for each product
+        public int ProductCapacity; // (second) total product for each item could be collected
 
-        public long TimePerProduct { get; set; } // (second) time for each product
-        public int ProductCapacity { get; set; } // (second) total product for each item could be collected
-        
+        public Item(){}
+        public Item(string itemName, int price, int stock, int time, int productCapacity)
+        {
+            ItemName = itemName;
+            Price = price;
+            Stock = stock;
+            TimePerProduct = time;
+            ProductCapacity = productCapacity;
+        }
 
         public static Item ConvertItemType(ItemType? eItemType)
         {
@@ -33,7 +43,7 @@ namespace App.Scripts.Domains.Models
                 ItemType.Cow => Define.CowItem
             };
         }
-        
+
     }
     
 }

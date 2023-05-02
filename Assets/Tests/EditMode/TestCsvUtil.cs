@@ -37,7 +37,8 @@ namespace Sinbad {
                 Red = 1,
                 Green = 2,
                 Blue = 3,
-                Purple = 15
+                Purple = 15,
+                Black
             }
             public Colour EnumProperty { get; private set; }
 
@@ -396,6 +397,15 @@ Hello there,123,300.2,Blue
 				new TestObject("Steve", 20, 1002.5f, TestObject.Colour.Red),
 				new TestObject("Batman", 12, 600.6f, TestObject.Colour.Black),
 				new TestObject("Peewee Herman", 1, -2f, TestObject.Colour.Purple),
+			};
+			Sinbad.CsvUtil.SaveObjects(objs, "filename.csv");
+		}		[Test]
+		public void CreateCSVFile2()
+		{
+			var objs = new List<TestPropertiesObject>() {
+				new TestPropertiesObject("Steve", 20, 1002.5f, TestPropertiesObject.Colour.Red),
+				new TestPropertiesObject("Batman", 12, 600.6f, TestPropertiesObject.Colour.Black),
+				new TestPropertiesObject("Peewee Herman", 1, -2f, TestPropertiesObject.Colour.Purple),
 			};
 			Sinbad.CsvUtil.SaveObjects(objs, "filename.csv");
 		}

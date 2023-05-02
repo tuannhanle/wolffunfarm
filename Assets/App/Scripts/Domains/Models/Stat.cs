@@ -1,9 +1,11 @@
 namespace App.Scripts.Domains.Models
 {
-    public class Stat
+    public class Stat 
     {
-        public int GoldAmount { get;  set; }
+        public long GoldAmount { get;  set; }
         public int ToolLevel { get;  set; }
+        
+        public int PercentPerLevel { get;  set; }
         public int IdleWorkerAmount { get;  set; }
         public int WorkingWorkerAmount { get;  set; }
         public int UnusedBlueberryAmount { get;  set; }
@@ -19,5 +21,14 @@ namespace App.Scripts.Domains.Models
         
         public int GetSumUnusedSeeds => UnusedBlueberryAmount + UnusedTomatoAmount + UnusedStrawberryAmount;
 
+        
+        public Stat(){}
+
+        public Stat(long goldAmount, int toolLevel,int percentPerLevel)
+        {
+            GoldAmount = goldAmount;
+            ToolLevel = toolLevel;
+            PercentPerLevel = percentPerLevel;
+        }
     }
 }

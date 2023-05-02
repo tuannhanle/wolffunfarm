@@ -14,6 +14,8 @@ namespace App.Scripts.Domains.Core
         private const int  GOLD_TARGET = 1000000;
         private StatManager _statManager;
         private WorkerManager _workerManager;
+        private DataLoader _dataLoader;
+
         private void Awake()
         {
             
@@ -25,6 +27,7 @@ namespace App.Scripts.Domains.Core
                 new ShopManager(),
                 new StatManager(),
                 new PaymentService(),
+                new DataLoader(),
                 // add more at above
             } );
      
@@ -35,10 +38,12 @@ namespace App.Scripts.Domains.Core
             
             _statManager = DependencyProvider.Instance.GetDependency<StatManager>();
             _workerManager = DependencyProvider.Instance.GetDependency<WorkerManager>();
+            _dataLoader = DependencyProvider.Instance.GetDependency<DataLoader>();
         }
 
         private void Start()
         {
+            _dataLoader.Fetch();
             _statManager.PostcastData();
             MainFlow().Forget();
         }
