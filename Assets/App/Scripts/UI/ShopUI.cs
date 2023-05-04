@@ -5,6 +5,7 @@ using App.Scripts.Domains.Models;
 using App.Scripts.Mics;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace App.Scripts.UI
@@ -13,8 +14,8 @@ namespace App.Scripts.UI
     public enum ShopEventType
     {
         Buy,
-        BuySeedInCart,
-        ReleaseSeedInCart
+        BuyCart,
+        RenewCart
     }
     
     public class ShopUI : MiddlewareBehaviour
@@ -41,9 +42,11 @@ namespace App.Scripts.UI
         private ShopManager _shopManager;
         private DataLoader _dataLoader;
 
-        private Dictionary<string, Text> _textCartMaps = new();
-        private Dictionary<string, int> _amountCartMaps = new();
+        // private Dictionary<string, Text> _textCartMaps = new();
+        private Dictionary<string, CategoryUI> _categoryMaps = new();
+        private Text _sumCart;
 
+        private const string TOTAL = "Total seed amount: {0}";
         private void Start()
         {
             _shopManager = DependencyProvider.Instance.GetDependency<ShopManager>();
@@ -56,11 +59,20 @@ namespace App.Scripts.UI
             OnUIOpenStateUpdate(_openShopEvent);
             
             if(_closeButton) _closeButton.onClick.AddListener(
-                ()=>OnUIOpenStateUpdate(_openShopEvent));
+                delegate
+                {
+                    OnUIOpenStateUpdate(_openShopEvent);
+                    OnUIButtonClicked(ShopEventType.RenewCart);
+                    OnCartEventUpdated(new ShareData.CartEvent() { isRelease = true });
+                });
             if(_buySeedInCart)_buySeedInCart.onClick.AddListener(
-                delegate { OnUIButtonClicked(ShopEventType.BuySeedInCart); });
+                delegate { OnUIButtonClicked(ShopEventType.BuyCart); });
             if(_releaseSeedInCart)_releaseSeedInCart.onClick.AddListener(
-                delegate { OnUIButtonClicked(ShopEventType.ReleaseSeedInCart); });
+                delegate
+                {
+                    OnUIButtonClicked(ShopEventType.RenewCart);
+                    OnCartEventUpdated(new ShareData.CartEvent() { isRelease = true });
+                });
 
             CreateButtonAsync("Buy");
 
@@ -71,37 +83,42 @@ namespace App.Scripts.UI
 
         private void OnCartEventUpdated(ShareData.CartEvent cartEvent)
         {
-            if (cartEvent.isBuy)
+            if (cartEvent.isBuy || cartEvent.isRelease)
             {
-                
-            }
-            else if (cartEvent.isRelease)
-            {
-
+                foreach (var caterogy in _categoryMaps)
+                {
+                    caterogy.Value.Clear();
+                }
+                _sumCart.text = String.Format(TOTAL, cartEvent.amountTotalOrder);
             }
             else
             {
+                if(cartEvent.amountPick <= 0)
+                    return;
+                _sumCart.text = String.Format(TOTAL, cartEvent.amountTotalOrder);
                 var itemName = cartEvent.itemNamePicked;
-                var textUI = _textCartMaps[itemName];
-                textUI.text = String.Format(textUI.text, itemName, _amountCartMaps[itemName]++);
+                var textUI = _categoryMaps[itemName];
+                textUI.Gain(cartEvent.amountPick);
               
             }
         }
 
         private void CreateCartUI(Item item)
         {
-            if (item.IsSeedingable == false && item.IsAnimal)
-                return;
-            var text = Instantiate(_prefabText, _cartRoot);
-            text.text = String.Format("{0} amount: {1}", item.ItemName, 0);
-            _textCartMaps.Add(item.ItemName, text);
-            _amountCartMaps.Add(item.ItemName, 0);
+            if (item.IsSeedingable && item.IsAnimal == false)
+            {
+                var text = Instantiate(_prefabText, _cartRoot);
+                var cartTextComponent = text.gameObject.AddComponent<CategoryUI>();
+                cartTextComponent.SetUp(text, item.ItemName, item.BuyUnit);
+                _categoryMaps.Add(item.ItemName, cartTextComponent);
+            }
         }
 
         private void CreatSumPickUI()
         {
             var text = Instantiate(_prefabText, _cartRoot);
-            text.text = String.Format("Total seed amount: {0}",0);
+            text.text = String.Format(TOTAL,0);
+            _sumCart = text;
 
         }
         
@@ -143,9 +160,42 @@ namespace App.Scripts.UI
             _isClose = !_isClose;
             _canvasGroup.alpha = _isClose ? 1 : 0;
             _canvasGroup.interactable = _isClose;
-            _canvasGroup.blocksRaycasts = _isClose;        
+            _canvasGroup.blocksRaycasts = _isClose;
         }
 
   
+    }
+
+    public class CategoryUI : MiddlewareBehaviour
+    {
+
+        public string ItemName { get; set; }
+        public int Amount { get; set; }
+        public Text CategoryText { get; set; }
+
+        private const string ITEM_AMOUNT = "{0} amount: {1}";
+
+        public void SetUp(Text text, string itemName, int amount)
+        {
+            ItemName = itemName;
+            Amount = amount;
+            this.CategoryText = text;
+            CategoryText.text = String.Format(ITEM_AMOUNT, ItemName, Amount);
+
+        }
+        
+        public void Gain(int amount)
+        {
+            Amount += amount;
+            CategoryText.text = String.Format(ITEM_AMOUNT, ItemName, Amount);
+
+        }
+
+        public void Clear()
+        {
+            Amount = 0;
+            CategoryText.text = String.Format(ITEM_AMOUNT, ItemName, Amount);
+
+        }
     }
 }

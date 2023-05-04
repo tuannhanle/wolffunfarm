@@ -13,6 +13,8 @@ namespace App.Scripts.Mics
             public string itemNamePicked = null;
             public bool isBuy = false;
             public bool isRelease = false;
+            public int amountPick = 0;
+            public int amountTotalOrder = 0;
 
         }
 

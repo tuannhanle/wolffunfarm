@@ -14,30 +14,18 @@ namespace App.Scripts.Domains.Core
             switch (eShopEvent)
             {
                 case ShopEventType.Buy:
-                    _cartEventInlet.UpdateValue(new ShareData.CartEvent()
-                    {
-                        itemNamePicked = itemName
-                    });
                     this.PickItem(itemName);
                     break;
-                case ShopEventType.BuySeedInCart:
-                    _cartEventInlet.UpdateValue(new ShareData.CartEvent()
-                    {
-                        isBuy = true
-                    });
+                case ShopEventType.BuyCart:
                     this.BuySeedInCart();
                     break;
-                case ShopEventType.ReleaseSeedInCart:
-                    _cartEventInlet.UpdateValue(new ShareData.CartEvent()
-                    {
-                        isRelease = true
-                    });
-                    this.ReleaseSeedInCart();
+                case ShopEventType.RenewCart:
+                    this.RenewCart();
                     break;
             }
         }
 
-        private void ReleaseSeedInCart()
+        private void RenewCart()
         {
             _cart = new();
         }
@@ -48,6 +36,7 @@ namespace App.Scripts.Domains.Core
                 return;
             if (_dataLoader.ItemCollection.TryGetValue(itemName, out var item) == false)
                 return;
+
             if (itemName.Equals(Define.PLOT))  
                 _plotManager.ExtendPlot();
             else
@@ -57,44 +46,45 @@ namespace App.Scripts.Domains.Core
                 else
                     this.PickSeed(itemName);
             }
+
         }
         
         private void PickSeed(string itemName)
         {
-            if (_dataLoader.ItemCollection.TryGetValue(itemName, out var item))
+            if (_dataLoader.ItemCollection.TryGetValue(itemName, out var item) == false)
+                return;
+            if (_cart.IsPickSeedable(item.BuyUnit) == false)
+                return;
+            for (int i = 0; i < item.BuyUnit; i++) { _cart.Pick(item); }
+            _cartEventInlet.UpdateValue(new ShareData.CartEvent()
             {
-                if (_cart.IsPickSeedable(item.BuyUnit) == false)
-                    return;
-                for (int i = 0; i < item.BuyUnit; i++)
-                {
-                    _cart.Pick(item);
-                }
-            }
+                itemNamePicked = itemName,
+                amountPick = item.BuyUnit,
+                amountTotalOrder = _cart.GetAmountSeedOrdered
+            });
         }
 
         private void BuyCow(string itemName)
         {
             var cowItem = _dataLoader.ItemCollection[itemName];
-            if (_paymentService.Buy(cowItem))
-            {
-                if (_dataLoader.ItemStorage.TryGetValue(itemName, out var itemStorage))
-                {
-                    itemStorage.UnusedAmount++;
-                    _dataLoader.Push<ItemStorage>();
-                }
-            }
+            if (_paymentService.Buy(cowItem) == false)
+                return;
+            if (_dataLoader.ItemStorage.TryGetValue(itemName, out var itemStorage) == false)
+                return;
+            itemStorage.UnusedAmount++;
+            _dataLoader.Push<ItemStorage>();
         }
 
         private void BuySeedInCart()
         {
             if (_cart.IsCartBuyable == false)
-                return; //TODO: notify
+                return; 
             var isPayable = _paymentService.Buy(_cart);
-            if (isPayable)
-            {
-                _cart.StorageItems();
-                _cart = new();
-            }
+            if (isPayable == false)
+                return;
+            _cartEventInlet.UpdateValue(new ShareData.CartEvent() { isBuy = true });
+            _cart.StorageItems();
+            RenewCart();
         }
     }
 }

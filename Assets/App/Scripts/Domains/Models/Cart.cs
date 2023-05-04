@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using App.Scripts.Domains.Core;
 using App.Scripts.Domains.Services;
 
 namespace App.Scripts.Domains.Models
@@ -12,6 +13,8 @@ namespace App.Scripts.Domains.Models
 
         private List<Item> _items = new();
         private int _amountSeedOrder = 0;
+
+        public int GetAmountSeedOrdered => _amountSeedOrder;
         
         public void Pick(Item item)
         {
@@ -29,14 +32,15 @@ namespace App.Scripts.Domains.Models
             return false;
         }
 
-        // TODO: storage seeds in cart after pay
         public void StorageItems()
         {
-            // var statManager = DependencyProvider.Instance.GetDependency<StatManager>();
-            // foreach (var item in _items)
-            // {
-            //     // statManager.GainUsing(item.ItemName, AMOUNT_EACH_ITEM );
-            // }
+            var dataloader = DependencyProvider.Instance.GetDependency<DataLoader>();
+            var itemStorage =dataloader.ItemStorage;
+            foreach (var item in _items)
+            {
+                itemStorage[item.ItemName].UnusedAmount++;
+            }
+            dataloader.Push<ItemStorage>();
         }
     }
 }
