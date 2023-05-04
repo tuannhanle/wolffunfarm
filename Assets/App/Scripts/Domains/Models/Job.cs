@@ -2,7 +2,7 @@ using System;
 
 namespace App.Scripts.Domains.Models
 {
-    public enum JobType { PutIn, Harvasting}
+    public enum JobType { PutIn, PutOut}
     public class Job 
     {
         public long JobId;
@@ -10,11 +10,11 @@ namespace App.Scripts.Domains.Models
         public int PlotId;
         public JobType JobType;
         public string ItemName;
-        public long TakenAt;
+        public DateTime TakenAt;
 
         public Job(){}
 
-        public Job(long jobId, int workerId, int plotId, JobType jobType, string itemName, long takenAt)
+        public Job(long jobId, int workerId, int plotId, JobType jobType, string itemName, DateTime takenAt)
         {
             JobId = jobId;
             WorkerId = workerId;

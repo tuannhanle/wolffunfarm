@@ -1,4 +1,7 @@
+using System;
+using System.Collections.Generic;
 using App.Scripts.Domains.Core;
+using App.Scripts.Domains.Models;
 using App.Scripts.Mics;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -26,6 +29,10 @@ namespace App.Scripts.UI
         [SerializeField] private Button _buySeedInCart;
         [SerializeField] private Button _releaseSeedInCart;
 
+        [Header("Display")] 
+        [SerializeField] private Text _prefabText;        
+        [SerializeField] private Transform _cartRoot;   
+        
         // State
         private bool _isClose = true;
         
@@ -33,6 +40,9 @@ namespace App.Scripts.UI
         
         private ShopManager _shopManager;
         private DataLoader _dataLoader;
+
+        private Dictionary<string, Text> _textCartMaps = new();
+        private Dictionary<string, int> _amountCartMaps = new();
 
         private void Start()
         {
@@ -55,6 +65,43 @@ namespace App.Scripts.UI
             CreateButtonAsync("Buy");
 
             this.Subscribe<ShareData.OpenShopEvent>(OnUIOpenStateUpdate);
+            this.Subscribe<ShareData.CartEvent>(OnCartEventUpdated);
+
+        }
+
+        private void OnCartEventUpdated(ShareData.CartEvent cartEvent)
+        {
+            if (cartEvent.isBuy)
+            {
+                
+            }
+            else if (cartEvent.isRelease)
+            {
+
+            }
+            else
+            {
+                var itemName = cartEvent.itemNamePicked;
+                var textUI = _textCartMaps[itemName];
+                textUI.text = String.Format(textUI.text, itemName, _amountCartMaps[itemName]++);
+              
+            }
+        }
+
+        private void CreateCartUI(Item item)
+        {
+            if (item.IsSeedingable == false && item.IsAnimal)
+                return;
+            var text = Instantiate(_prefabText, _cartRoot);
+            text.text = String.Format("{0} amount: {1}", item.ItemName, 0);
+            _textCartMaps.Add(item.ItemName, text);
+            _amountCartMaps.Add(item.ItemName, 0);
+        }
+
+        private void CreatSumPickUI()
+        {
+            var text = Instantiate(_prefabText, _cartRoot);
+            text.text = String.Format("Total seed amount: {0}",0);
 
         }
         
@@ -68,16 +115,26 @@ namespace App.Scripts.UI
                     continue;
                 var button = Instantiate(_buttonPrefab, _root);
                 var name = $"{interactName} {item.Value.BuyUnit}" + " " + item.Key;
+                if (item.Value.IsSeedingable  && item.Value.IsAnimal == false)
+                {
+                    name = $"Pick {item.Value.BuyUnit}" + " " + item.Key;
+                }
                 button.name = name;
                 button.GetComponentInChildren<Text>().text = name;
                 button.onClick.AddListener(
                     delegate { OnUIButtonClicked(ShopEventType.Buy, item.Key); });
                 button.gameObject.SetActive(true);
+
+                CreateCartUI(item.Value);
             }
+
+            CreatSumPickUI();
         }
         
         private void OnUIButtonClicked(ShopEventType eShopEvent, string itemName = null)
         {
+            Debug.Log($"InteractEvent: {eShopEvent} of {itemName} ");
+
             _shopManager.OnShopUIEventRaised(eShopEvent, itemName);
         }
 

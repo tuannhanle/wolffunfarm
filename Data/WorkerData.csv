@@ -1,8 +1,2 @@
 ﻿Id,Name,IsUsing
-0,Worker,False
-1,Worker,False
-2,Worker,False
-3,Worker,False
-4,Worker,False
-5,Worker,False
-6,Worker,False
+0,Worker,True

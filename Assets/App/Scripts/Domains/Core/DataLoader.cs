@@ -33,61 +33,8 @@ namespace App.Scripts.Domains.Core
         {
             base.Init();
             Fetch();
-            BroadcastData(stat);
-            BroadcastWorkerPassager();
-            BroadcastItemStoragePassager();
         }
         
-        public void BroadcastItemStoragePassager()
-        {
-            var itemStoragePassenger = new ShareData.ItemStoragePassage();
-            foreach (var pair in ItemStorage)
-            {
-                if (pair.Key.Equals("Blueberry"))
-                {
-                    itemStoragePassenger.GetSumUnusedSeeds += pair.Value.UnusedAmount;
-                    itemStoragePassenger.BlueberryProductAmount += pair.Value.ProductAmount;
-                }
-                if (pair.Key.Equals("Tomato"))
-                {
-                    itemStoragePassenger.GetSumUnusedSeeds += pair.Value.UnusedAmount;
-                    itemStoragePassenger.TomotoProductAmount += pair.Value.ProductAmount;
-                }
-                if (pair.Key.Equals("Strawberry"))
-                {
-                    itemStoragePassenger.GetSumUnusedSeeds += pair.Value.UnusedAmount;
-                    itemStoragePassenger.StrawberryProductAmount += pair.Value.ProductAmount;
-                }
-                if (pair.Key.Equals("Cow"))
-                {
-                    itemStoragePassenger.MilkProductAmount += pair.Value.ProductAmount;
-                }
-                if (pair.Key.Equals("Plot"))
-                {
-                    itemStoragePassenger.UsingPlotAmount += pair.Value.UsingAmount;
-                    itemStoragePassenger.UnusedPlotAmount += pair.Value.UnusedAmount;
-                }
-            }
-            BroadcastData(itemStoragePassenger);
-        }
-
-        public void BroadcastWorkerPassager()
-        {
-            var workerPassager = new ShareData.WorkerPassage();
-            foreach (var pair in WorkerStorage)
-            {
-                workerPassager.IdleWorkerAmount += pair.Value.IsUsing ? 0 : 1;
-                workerPassager.WorkingWorkerAmount += pair.Value.IsUsing ? 1 : 0;
-            }
-            BroadcastData(workerPassager);
-        }
-        
-        public void BroadcastData<T>(T data) where T : class
-        { 
-            LazyDataInlet<T> _inlet = new();
-            _inlet.UpdateValue(data);
-        }
-
         public void Fetch()
         {
             List<Item> objs1 = new ();
@@ -136,10 +83,14 @@ namespace App.Scripts.Domains.Core
             if (typeof(T) == typeof(Worker))
             {
                 _dataLoader.SaveObjects(_dataLoader.WorkerStorage,String.Format(DATA_FOLDER_PREFIX,WORKER_DATA_FILE));
-                BroadcastWorkerPassager();
-            }         
-            if(typeof(T) == typeof(Plot))             
+                _broadcastService.BroadcastWorkerPassager();
+            }
+
+            if (typeof(T) == typeof(Plot))
+            {
+                _broadcastService.BroadcastPlotPassager();
                 _dataLoader.SaveObjects(_dataLoader.PlotStorage,String.Format(DATA_FOLDER_PREFIX,PLOT_DATA_FILE));
+            }             
             if(typeof(T) == typeof(Job))             
                 _dataLoader.SaveObjects(_dataLoader.JobStorage,String.Format(DATA_FOLDER_PREFIX,JOB_DATA_FILE));           
             if(typeof(T) == typeof(Stat))             
@@ -147,7 +98,7 @@ namespace App.Scripts.Domains.Core
             if (typeof(T) == typeof(ItemStorage))
             {
                 _dataLoader.SaveObjects(_dataLoader.ItemStorage,String.Format(DATA_FOLDER_PREFIX,ITEM_STORAGE_DATA_FILE));
-                BroadcastItemStoragePassager();
+                _broadcastService.BroadcastItemStoragePassager();
             }             
         }
         

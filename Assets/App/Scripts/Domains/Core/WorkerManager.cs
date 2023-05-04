@@ -1,109 +1,70 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Xml.Linq;
+using App.Scripts.Domains.GameObjects;
 using App.Scripts.Domains.Models;
 using Cysharp.Threading.Tasks;
+using UnityEngine;
 
 namespace App.Scripts.Domains.Core
 {
     public class WorkerManager : Dependency<WorkerManager>, IDependency
     {
-        private readonly Queue<Worker> _idleWorkers = new();
-        private readonly Queue<Worker> _workingWorkers = new();
-
-        private bool isWorkerExecutable => _idleWorkers.Count > 0;
         private const string WORKER = "Worker";
 
-        public void Init()
+        private async UniTask Execute(Job job, Worker worker)
         {
-            base.Init();
-            foreach (var worker in _dataLoader.WorkerStorage)
-            {
-                if (worker.Value.IsUsing)
-                {
-                    _workingWorkers.Enqueue(new Worker(worker.Value.Id, worker.Value.IsUsing));
-                }
-                else
-                {
-                    _idleWorkers.Enqueue(new Worker(worker.Value.Id, worker.Value.IsUsing));
-                }
-            }
-        }
-        
-        
-        //TODO: do not use async to remvoe job, use date time onlhy
-        public async UniTask ExecuteAsync()
-        {
-            if (_dataLoader.JobStorage.Count == 0)
-                return;
-            if (isWorkerExecutable == false) // next frame, it will be back here to check
-                return;
-            var idleWorker = GetIdleWorker();
-            if (idleWorker == null)
-            {
-                ReturnIdleWorker();
-                return;
-            }
-            var job = _jobManager.GetJob(idleWorker.Id) ?? _jobManager.GetJob(-1);
-            if (job == null) // not any job!
-            {
-                ReturnIdleWorker();
-                return;
-            }
-            var hasExecuted = idleWorker.Execute();
-            if (hasExecuted)
-            {
-                // executing delay time
-                if (job.JobType == JobType.PutIn)
-                {
-                    if (_plotManager.IsPutInable(job.PlotId, job.ItemName) == false)
-                    {
-                        ReturnIdleWorker();
-                        return;
-                    }
-                }
-                else
-                {
-                    if (_plotManager.IsHarvastable(job.PlotId, job.ItemName) == false)
-                    {
-                        ReturnIdleWorker();
-                        return;
-                    }
-                }
-
-                var durationWork = _dataLoader.stat.JobDuration;
-                var delayTime = TimeSpan.FromSeconds(durationWork);
-                await UniTask.Delay(delayTime);
+            // executing delay time
+            if (job.JobType == JobType.PutIn)
+                _plotManager.PutIn(true, job.PlotId, job.ItemName);
+            if (job.JobType == JobType.PutOut)
+                _plotManager.PutOut(true, job.PlotId, job.ItemName);
+            // wait
+            var durationWork = _dataLoader.stat.JobDuration;
+            var delayTime = TimeSpan.FromSeconds(durationWork);
+            await UniTask.Delay(delayTime);
                 
-                // after that
-                if (job.JobType == JobType.PutIn)
-                    _plotManager.PutIn(job.PlotId, job.ItemName);
-                if (job.JobType == JobType.Harvasting)
-                    _plotManager.Harvast(job.PlotId, job.ItemName);
-        
-                _jobManager.RemoveJob(job.JobId);
-            }
-            ReturnIdleWorker();
+            // after that
+            if (job.JobType == JobType.PutIn)
+                _plotManager.PutIn(false, job.PlotId, job.ItemName);
+            if (job.JobType == JobType.PutOut)
+                _plotManager.PutOut(false, job.PlotId, job.ItemName);
+            ReturnIdleWorker(worker);
+            _jobManager.RemoveJob(job.JobId);
         }
         
+        /// <summary> This method assigns a worker to a specific task. </summary>
         public void Assign(JobType jobType, string itemName)
         {
-            var idleWorker = GetIdleWorker();
-            if (idleWorker == null)
-                return;
+            // Get a list of plots that match the given jobType and itemName.
             var plots = _plotManager.GetPlots(jobType, itemName);
+
+            // If no matching plots are found, return without assigning the task.
             if (plots == null)
                 return;
-            // if (jobType == JobType.PutIn)
-            // {
-            //     int workerId = idleWorker != null ? idleWorker.Id : -1;
-            //     var job = _jobManager.CreateJob( workerId, plots[0].Id, jobType, itemName);
-            //     return;
-            // }
+            
+            // For each matching plot, create a job and assign it to the idle worker.
             foreach (var plot in plots)
             {
-                // if workerId = -1 => no ready worker for this job
-                int workerId = idleWorker != null ? idleWorker.Id : -1;
-                var job = _jobManager.CreateJob( workerId, plot.Id, jobType, itemName);
+                if(_dataLoader.ItemStorage.TryGetValue(itemName, out var itemStorage) ==false)
+                    return;
+                if (jobType == JobType.PutIn && itemStorage.UnusedAmount <= 0)
+                    return;
+                // Get an idle worker.
+                var idleWorker = GetIdleWorker();
+
+                // If no idle worker is available, return without assigning the task.
+                if (idleWorker == null)
+                    return;
+                
+                // Create a job for the current plot.
+                var job = _jobManager.CreateJob(idleWorker.Id, plot.Id, jobType, itemName);
+                Execute(job, idleWorker).Forget();
+                
+                if (jobType == JobType.PutIn)
+                    break;
+                
             }
         }
         
@@ -113,32 +74,40 @@ namespace App.Scripts.Domains.Core
             var isPayable = _paymentService.Buy(workerItem);
             if (isPayable == false)
                 return;
-            var id = _dataLoader.WorkerStorage.Count;
-            var worker = new Worker(id, false);
-            _idleWorkers.Enqueue(worker);
-            _dataLoader.WorkerStorage.Add(id, worker);
-            _dataLoader.Push<Worker>();
+            var isSuccess = GainIdleWorker();
         }
-
+        
         private Worker GetIdleWorker()
         {
-            if (_idleWorkers.Count <= 0)
-                return null;
-            var worker = _idleWorkers.Dequeue();
-            _workingWorkers.Enqueue(worker);
-            worker.IsUsing = true;
-            _dataLoader.Push<Worker>();
-            return worker;
+            foreach (var pair in _dataLoader.WorkerStorage)
+            {
+                var worker = pair.Value;
+                if (worker.IsUsing == false)
+                {
+                    worker.IsUsing = true;
+                    _dataLoader.Push<Worker>();
+                    return worker;
+                }
+            }
+            return null;
         }
 
-        private void ReturnIdleWorker()
+
+        private void ReturnIdleWorker(Worker workingWorker)
         {
-            if (_workingWorkers.Count <= 0)
-                return;
-            var worker = _workingWorkers.Dequeue();
-            _idleWorkers.Enqueue(worker);
+            workingWorker.IsUsing = false;
             _dataLoader.Push<Worker>();
-            worker.IsUsing = false;
+        }
+        
+        private bool GainIdleWorker()
+        {
+            var workerId = _dataLoader.WorkerStorage.Count;
+            var worker = new Worker(workerId, false);
+            if (_dataLoader.WorkerStorage.ContainsKey(workerId))
+                return false;
+            _dataLoader.WorkerStorage.Add(workerId, worker);
+            ReturnIdleWorker(worker);
+            return true;
         }
     }
     

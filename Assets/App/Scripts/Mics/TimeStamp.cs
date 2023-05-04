@@ -6,7 +6,26 @@ public static class TimeStamp
 {
     public static DateTime EpochUTC   = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
     public static DateTime EpochLocal = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Local);
+    public static DateTime FirstDay = new DateTime(0001, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
+    /// <summary>
+    /// 1/1/0001 12:00:00 AM
+    /// 0001-01-01 00:00:00
+    /// start of the Gregorian calendar
+    /// </summary>
+    /// <param name="time"></param>
+    /// <returns></returns>
+    public static bool IsFirstDay(DateTime time)
+    {
+        return (new DateTime(0001, 1, 1, 0, 0, 0, DateTimeKind.Utc) - time).TotalSeconds == 0;
+    }
+    
+    public static bool IsFirstDay(string time)
+    {
+        var firstDayDT = DateTime.Parse(time);
+        return IsFirstDay(firstDayDT);
+    }
+    
     public static long SecondUTC()
     {
         return (long) (DateTime.UtcNow - EpochUTC).TotalSeconds;

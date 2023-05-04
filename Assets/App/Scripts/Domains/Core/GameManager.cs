@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using App.Scripts.Domains.Services;
 using App.Scripts.Mics;
@@ -13,6 +14,9 @@ namespace App.Scripts.Domains.Core
         private StatManager _statManager;
         private WorkerManager _workerManager;
         private DataLoader _dataLoader;
+        private PlotManager _plotMananger;
+        
+        private LazyDataInlet<ShareData.PlotUIPassage> _plotInlet = new();
 
         private void Awake()
         {
@@ -26,6 +30,7 @@ namespace App.Scripts.Domains.Core
                 new ShopManager(),
                 new StatManager(),
                 new PaymentService(),
+                new BroadcastService(),
                 new JobManager()
                 // add more at above
             } );
@@ -36,6 +41,7 @@ namespace App.Scripts.Domains.Core
             }
             
             _statManager = DependencyProvider.Instance.GetDependency<StatManager>();
+            _plotMananger = DependencyProvider.Instance.GetDependency<PlotManager>();
             _workerManager = DependencyProvider.Instance.GetDependency<WorkerManager>();
             _dataLoader = DependencyProvider.Instance.GetDependency<DataLoader>();
             // _statManager.PostcastData();
@@ -49,15 +55,35 @@ namespace App.Scripts.Domains.Core
 
         private async UniTask MainFlow()
         {
+            UpdateUIPerSecond().Forget();
             // per frame
             while (_dataLoader.stat.GoldAmount < GOLD_TARGET)
             {
-                _workerManager.ExecuteAsync().Forget();
                 await UniTask.Yield();
+            }
+            _isEnd = true;
+            Debug.Log("Game has been finished");
+        }
 
+        private bool _isEnd = false;
+        private async UniTask UpdateUIPerSecond()
+        {
+            while (_isEnd == false)
+            {
+                var plots = _plotMananger.GetUsingPlots();
+                foreach (var plot in plots)
+                {
+                    plot.SelfCheck();
+                    _plotInlet.UpdateValue(new ShareData.PlotUIPassage(){Plot = plot});
+                }
+                await UniTask.Delay(TimeSpan.FromSeconds(1));
             }
 
-            Debug.Log("Game has been finished");
+        }
+
+        private void OnApplicationQuit()
+        {
+            _dataLoader.Push();
         }
     }
 }

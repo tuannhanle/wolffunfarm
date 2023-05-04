@@ -9,36 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 1
-  m_Script: {fileID: 12004, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_PixelRect:
-    serializedVersion: 2
-    x: 0
-    y: 28
-    width: 1680
-    height: 1022
-  m_ShowMode: 4
-  m_Title: Game
-  m_RootView: {fileID: 6}
-  m_MinSize: {x: 875, y: 300}
-  m_MaxSize: {x: 10000, y: 10000}
-  m_Maximized: 1
---- !u!114 &2
-MonoBehaviour:
-  m_ObjectHideFlags: 52
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 1
   m_Script: {fileID: 12010, guid: 0000000000000000e000000000000000, type: 0}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Children:
-  - {fileID: 9}
   - {fileID: 3}
+  - {fileID: 13}
   m_Position:
     serializedVersion: 2
     x: 0
@@ -48,236 +24,8 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 200}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 90
---- !u!114 &3
-MonoBehaviour:
-  m_ObjectHideFlags: 52
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 1
-  m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: InspectorWindow
-  m_EditorClassIdentifier: 
-  m_Children: []
-  m_Position:
-    serializedVersion: 2
-    x: 1365.5
-    y: 0
-    width: 314.5
-    height: 972
-  m_MinSize: {x: 276, y: 71}
-  m_MaxSize: {x: 4001, y: 4021}
-  m_ActualView: {fileID: 14}
-  m_Panes:
-  - {fileID: 14}
-  m_Selected: 0
-  m_LastSelected: 0
---- !u!114 &4
-MonoBehaviour:
-  m_ObjectHideFlags: 52
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 1
-  m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Children: []
-  m_Position:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 331.5
-    height: 691.5
-  m_MinSize: {x: 201, y: 221}
-  m_MaxSize: {x: 4001, y: 4021}
-  m_ActualView: {fileID: 15}
-  m_Panes:
-  - {fileID: 15}
-  m_Selected: 0
-  m_LastSelected: 0
---- !u!114 &5
-MonoBehaviour:
-  m_ObjectHideFlags: 52
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 1
-  m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: ConsoleWindow
-  m_EditorClassIdentifier: 
-  m_Children: []
-  m_Position:
-    serializedVersion: 2
-    x: 0
-    y: 691.5
-    width: 1365.5
-    height: 280.5
-  m_MinSize: {x: 101, y: 121}
-  m_MaxSize: {x: 4001, y: 4021}
-  m_ActualView: {fileID: 18}
-  m_Panes:
-  - {fileID: 13}
-  - {fileID: 18}
-  m_Selected: 1
-  m_LastSelected: 1
---- !u!114 &6
-MonoBehaviour:
-  m_ObjectHideFlags: 52
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 1
-  m_Script: {fileID: 12008, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Children:
-  - {fileID: 7}
-  - {fileID: 2}
-  - {fileID: 8}
-  m_Position:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1680
-    height: 1022
-  m_MinSize: {x: 875, y: 300}
-  m_MaxSize: {x: 10000, y: 10000}
-  m_UseTopView: 1
-  m_TopViewHeight: 30
-  m_UseBottomView: 1
-  m_BottomViewHeight: 20
---- !u!114 &7
-MonoBehaviour:
-  m_ObjectHideFlags: 52
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 1
-  m_Script: {fileID: 12011, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Children: []
-  m_Position:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1680
-    height: 30
-  m_MinSize: {x: 0, y: 0}
-  m_MaxSize: {x: 0, y: 0}
-  m_LastLoadedLayoutName: 
---- !u!114 &8
-MonoBehaviour:
-  m_ObjectHideFlags: 52
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 1
-  m_Script: {fileID: 12042, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Children: []
-  m_Position:
-    serializedVersion: 2
-    x: 0
-    y: 1002
-    width: 1680
-    height: 20
-  m_MinSize: {x: 0, y: 0}
-  m_MaxSize: {x: 0, y: 0}
---- !u!114 &9
-MonoBehaviour:
-  m_ObjectHideFlags: 52
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 1
-  m_Script: {fileID: 12010, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Children:
-  - {fileID: 10}
-  - {fileID: 5}
-  m_Position:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1365.5
-    height: 972
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 16192, y: 16192}
-  vertical: 1
-  controlID: 91
---- !u!114 &10
-MonoBehaviour:
-  m_ObjectHideFlags: 52
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 1
-  m_Script: {fileID: 12010, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Children:
-  - {fileID: 4}
-  - {fileID: 11}
-  m_Position:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1365.5
-    height: 691.5
-  m_MinSize: {x: 200, y: 100}
-  m_MaxSize: {x: 16192, y: 8096}
-  vertical: 0
-  controlID: 92
---- !u!114 &11
-MonoBehaviour:
-  m_ObjectHideFlags: 52
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 1
-  m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: GameView
-  m_EditorClassIdentifier: 
-  m_Children: []
-  m_Position:
-    serializedVersion: 2
-    x: 331.5
-    y: 0
-    width: 1034
-    height: 691.5
-  m_MinSize: {x: 202, y: 221}
-  m_MaxSize: {x: 4002, y: 4021}
-  m_ActualView: {fileID: 17}
-  m_Panes:
-  - {fileID: 16}
-  - {fileID: 17}
-  - {fileID: 12}
-  m_Selected: 1
-  m_LastSelected: 0
---- !u!114 &12
+  controlID: 81
+--- !u!114 &2
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -297,21 +45,21 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 331.5
+    x: 330.5
     y: 58
-    width: 1032
-    height: 572.5
+    width: 1033
+    height: 626.5
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
     m_SaveData: []
   m_Spl:
-    ID: 664
+    ID: 1335
     splitterInitialOffset: 171
     currentActiveSplitter: -1
     realSizes:
-    - 208.5
-    - 293.5
+    - 231
+    - 325
     relativeSizes:
     - 0.41563785
     - 0.58436215
@@ -321,7 +69,7 @@ MonoBehaviour:
     maxSizes:
     - 0
     - 0
-    lastTotalSize: 502
+    lastTotalSize: 556
     splitSize: 6
     xOffset: 0
     m_Version: 1
@@ -331,15 +79,15 @@ MonoBehaviour:
     oldSplitSize: 0
   m_TestTypeToolbarIndex: 0
   m_PlayModeTestListGUI:
-    m_Window: {fileID: 12}
+    m_Window: {fileID: 2}
     m_NewResultList:
     - id: 1004
       uniqueId: '[game][suite]'
       name: game
       fullName: game
-      resultStatus: 1
-      duration: 0.0608207
-      messages: 
+      resultStatus: 2
+      duration: 0.6651285
+      messages: One or more child tests had errors
       output: 
       stacktrace: 
       notRunnable: 0
@@ -353,9 +101,9 @@ MonoBehaviour:
       uniqueId: '[PlayMode.dll][suite]'
       name: PlayMode.dll
       fullName: /Users/lemarc/Git/wolffunfarm/Library/ScriptAssemblies/PlayMode.dll
-      resultStatus: 1
-      duration: 0.0471718
-      messages: 
+      resultStatus: 2
+      duration: 0.649828
+      messages: One or more child tests had errors
       output: 
       stacktrace: 
       notRunnable: 0
@@ -369,9 +117,9 @@ MonoBehaviour:
       uniqueId: PlayMode.dll/[Tests][suite]
       name: Tests
       fullName: Tests
-      resultStatus: 1
-      duration: 0.0435271
-      messages: 
+      resultStatus: 2
+      duration: 0.5320764
+      messages: One or more child tests had errors
       output: 
       stacktrace: 
       notRunnable: 0
@@ -385,9 +133,9 @@ MonoBehaviour:
       uniqueId: PlayMode.dll/Tests/[PlayMode][suite]
       name: PlayMode
       fullName: Tests.PlayMode
-      resultStatus: 1
-      duration: 0.0425508
-      messages: 
+      resultStatus: 2
+      duration: 0.5306606
+      messages: One or more child tests had errors
       output: 
       stacktrace: 
       notRunnable: 0
@@ -401,9 +149,9 @@ MonoBehaviour:
       uniqueId: PlayMode.dll/Tests/PlayMode/[PlayMode][Tests.PlayMode.GameTest][suite]
       name: GameTest
       fullName: Tests.PlayMode.GameTest
-      resultStatus: 1
-      duration: 0.0410442
-      messages: 
+      resultStatus: 2
+      duration: 0.5478662
+      messages: One or more child tests had errors
       output: 
       stacktrace: 
       notRunnable: 0
@@ -418,37 +166,9 @@ MonoBehaviour:
       name: Test_1_CheckDependencyProviderExist
       fullName: Tests.PlayMode.GameTest.Test_1_CheckDependencyProviderExist
       resultStatus: 1
-      duration: 0.0289485
+      duration: 0.3473745
       messages: 
-      output: '[App.Scripts.Domains.Core.WorkerManager] has been RegisterDependency
-
-        [App.Scripts.Domains.Core.ToolManager]
-        has been RegisterDependency
-
-        [App.Scripts.Domains.Core.PlotManager]
-        has been RegisterDependency
-
-        [App.Scripts.Domains.Core.ShopManager]
-        has been RegisterDependency
-
-        [App.Scripts.Domains.Core.StatManager]
-        has been RegisterDependency
-
-        [App.Scripts.Domains.Core.WorkerManager]
-        has been Initialized
-
-        [App.Scripts.Domains.Core.ToolManager] has
-        been Initialized
-
-        [App.Scripts.Domains.Core.PlotManager] has been
-        Initialized
-
-        [App.Scripts.Domains.Core.ShopManager] has been Initialized
-
-        [App.Scripts.Domains.Core.StatManager]
-        has been Initialized
-
-'
+      output: 
       stacktrace: 
       notRunnable: 0
       ignoredOrSkipped: 0
@@ -463,37 +183,9 @@ MonoBehaviour:
       name: Test_2_CheckStatManagerExist
       fullName: Tests.PlayMode.GameTest.Test_2_CheckStatManagerExist
       resultStatus: 1
-      duration: 0.008193
+      duration: 0.0080133
       messages: 
-      output: '[App.Scripts.Domains.Core.WorkerManager] has been RegisterDependency
-
-        [App.Scripts.Domains.Core.ToolManager]
-        has been RegisterDependency
-
-        [App.Scripts.Domains.Core.PlotManager]
-        has been RegisterDependency
-
-        [App.Scripts.Domains.Core.ShopManager]
-        has been RegisterDependency
-
-        [App.Scripts.Domains.Core.StatManager]
-        has been RegisterDependency
-
-        [App.Scripts.Domains.Core.WorkerManager]
-        has been Initialized
-
-        [App.Scripts.Domains.Core.ToolManager] has
-        been Initialized
-
-        [App.Scripts.Domains.Core.PlotManager] has been
-        Initialized
-
-        [App.Scripts.Domains.Core.ShopManager] has been Initialized
-
-        [App.Scripts.Domains.Core.StatManager]
-        has been Initialized
-
-'
+      output: 
       stacktrace: 
       notRunnable: 0
       ignoredOrSkipped: 0
@@ -508,37 +200,9 @@ MonoBehaviour:
       name: Test_3_CheckStatInStatManagerCheating
       fullName: Tests.PlayMode.GameTest.Test_3_CheckStatInStatManagerCheating
       resultStatus: 1
-      duration: 0.0107426
+      duration: 0.0054369
       messages: 
-      output: '[App.Scripts.Domains.Core.WorkerManager] has been RegisterDependency
-
-        [App.Scripts.Domains.Core.ToolManager]
-        has been RegisterDependency
-
-        [App.Scripts.Domains.Core.PlotManager]
-        has been RegisterDependency
-
-        [App.Scripts.Domains.Core.ShopManager]
-        has been RegisterDependency
-
-        [App.Scripts.Domains.Core.StatManager]
-        has been RegisterDependency
-
-        [App.Scripts.Domains.Core.WorkerManager]
-        has been Initialized
-
-        [App.Scripts.Domains.Core.ToolManager] has
-        been Initialized
-
-        [App.Scripts.Domains.Core.PlotManager] has been
-        Initialized
-
-        [App.Scripts.Domains.Core.ShopManager] has been Initialized
-
-        [App.Scripts.Domains.Core.StatManager]
-        has been Initialized
-
-'
+      output: 
       stacktrace: 
       notRunnable: 0
       ignoredOrSkipped: 0
@@ -553,39 +217,9 @@ MonoBehaviour:
       name: Test_4_TestToolManagerExist
       fullName: Tests.PlayMode.GameTest.Test_4_TestToolManagerExist
       resultStatus: 1
-      duration: 0.0071532
+      duration: 0.0100405
       messages: 
-      output: '[App.Scripts.Domains.Core.WorkerManager] has been RegisterDependency
-
-        [App.Scripts.Domains.Core.ToolManager]
-        has been RegisterDependency
-
-        [App.Scripts.Domains.Core.PlotManager]
-        has been RegisterDependency
-
-        [App.Scripts.Domains.Core.ShopManager]
-        has been RegisterDependency
-
-        [App.Scripts.Domains.Core.StatManager]
-        has been RegisterDependency
-
-        [App.Scripts.Domains.Core.WorkerManager]
-        has been Initialized
-
-        [App.Scripts.Domains.Core.ToolManager] has
-        been Initialized
-
-        [App.Scripts.Domains.Core.PlotManager] has been
-        Initialized
-
-        [App.Scripts.Domains.Core.ShopManager] has been Initialized
-
-        [App.Scripts.Domains.Core.StatManager]
-        has been Initialized
-
-        GOLD: 0
-
-'
+      output: 
       stacktrace: 
       notRunnable: 0
       ignoredOrSkipped: 0
@@ -599,39 +233,18 @@ MonoBehaviour:
       uniqueId: PlayMode.dll/Tests/PlayMode/GameTest/[PlayMode][Tests.PlayMode.GameTest.Test_5_TestUpgradeToolToLevel2]
       name: Test_5_TestUpgradeToolToLevel2
       fullName: Tests.PlayMode.GameTest.Test_5_TestUpgradeToolToLevel2
-      resultStatus: 1
-      duration: 0.0290341
-      messages: 
-      output: '[App.Scripts.Domains.Core.WorkerManager] has been RegisterDependency
+      resultStatus: 2
+      duration: 0.0661511
+      messages: "  Expected: 2\n  But was:  6\n"
+      output: 
+      stacktrace: 'at Tests.PlayMode.GameTest+<Test_5_TestUpgradeToolToLevel2>d__7.MoveNext
+        () [0x00071] in /Users/lemarc/Git/wolffunfarm/Assets/Tests/PlayMode/GameTest.cs:70
 
-        [App.Scripts.Domains.Core.ToolManager]
-        has been RegisterDependency
-
-        [App.Scripts.Domains.Core.PlotManager]
-        has been RegisterDependency
-
-        [App.Scripts.Domains.Core.ShopManager]
-        has been RegisterDependency
-
-        [App.Scripts.Domains.Core.StatManager]
-        has been RegisterDependency
-
-        [App.Scripts.Domains.Core.WorkerManager]
-        has been Initialized
-
-        [App.Scripts.Domains.Core.ToolManager] has
-        been Initialized
-
-        [App.Scripts.Domains.Core.PlotManager] has been
-        Initialized
-
-        [App.Scripts.Domains.Core.ShopManager] has been Initialized
-
-        [App.Scripts.Domains.Core.StatManager]
-        has been Initialized
+        at
+        UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0004e]
+        in /Users/lemarc/Git/wolffunfarm/Library/PackageCache/com.unity.test-framework@1.1.31/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:46
 
 '
-      stacktrace: 
       notRunnable: 0
       ignoredOrSkipped: 0
       description: 
@@ -640,43 +253,54 @@ MonoBehaviour:
       - Uncategorized
       parentId: 1001
       parentUniqueId: PlayMode.dll/Tests/PlayMode/[PlayMode][Tests.PlayMode.GameTest][suite]
-    m_ResultText: 'Test_5_TestUpgradeToolToLevel2 (0.029s)
+    - id: 1007
+      uniqueId: PlayMode.dll/Tests/PlayMode/[PlayMode][Tests.PlayMode.GameTest2][suite]
+      name: GameTest2
+      fullName: Tests.PlayMode.GameTest2
+      resultStatus: 2
+      duration: 0.529029
+      messages: One or more child tests had errors
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 1
+      categories: []
+      parentId: 1010
+      parentUniqueId: PlayMode.dll/Tests/[PlayMode][suite]
+    - id: 1008
+      uniqueId: PlayMode.dll/Tests/PlayMode/GameTest2/[PlayMode][Tests.PlayMode.GameTest2.Test_1_SeedingStrawberry]
+      name: Test_1_SeedingStrawberry
+      fullName: Tests.PlayMode.GameTest2.Test_1_SeedingStrawberry
+      resultStatus: 2
+      duration: 0.414484
+      messages: "  Expected: True\n  But was:  False\n"
+      output: 
+      stacktrace: 'at Tests.PlayMode.GameTest2.Test_1_SeedingStrawberry () [0x00052]
+        in /Users/lemarc/Git/wolffunfarm/Assets/Tests/PlayMode/GameTest2.cs:33
 
-      ---
+'
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1007
+      parentUniqueId: PlayMode.dll/Tests/PlayMode/[PlayMode][Tests.PlayMode.GameTest2][suite]
+    m_ResultText: "Test_1_SeedingStrawberry (0.414s)\n---\nExpected: True\n  But
+      was:  False\n---\nat Tests.PlayMode.GameTest2.Test_1_SeedingStrawberry () [0x00052]
+      in /Users/lemarc/Git/wolffunfarm/Assets/Tests/PlayMode/GameTest2.cs:33"
+    m_ResultStacktrace: 'at Tests.PlayMode.GameTest2.Test_1_SeedingStrawberry ()
+      [0x00052] in /Users/lemarc/Git/wolffunfarm/Assets/Tests/PlayMode/GameTest2.cs:33
 
-      [App.Scripts.Domains.Core.WorkerManager]
-      has been RegisterDependency
-
-      [App.Scripts.Domains.Core.ToolManager] has
-      been RegisterDependency
-
-      [App.Scripts.Domains.Core.PlotManager] has been
-      RegisterDependency
-
-      [App.Scripts.Domains.Core.ShopManager] has been RegisterDependency
-
-      [App.Scripts.Domains.Core.StatManager]
-      has been RegisterDependency
-
-      [App.Scripts.Domains.Core.WorkerManager]
-      has been Initialized
-
-      [App.Scripts.Domains.Core.ToolManager] has been
-      Initialized
-
-      [App.Scripts.Domains.Core.PlotManager] has been Initialized
-
-      [App.Scripts.Domains.Core.ShopManager]
-      has been Initialized
-
-      [App.Scripts.Domains.Core.StatManager] has been
-      Initialized'
-    m_ResultStacktrace: 
+'
     m_TestListState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 14408cef
-      m_LastClickedID: -276021228
-      m_ExpandedIDs: 9f5c62b61e2461b7956d57cacd3ce90545d21e3f27c15264ffffff7f
+      m_SelectedIDs: 79ccdf73
+      m_LastClickedID: 1944046713
+      m_ExpandedIDs: 9f5c62b61e2461b77b2c89fdcd3ce90545d21e3f27c15264ffffff7f
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -704,14 +328,14 @@ MonoBehaviour:
       - Uncategorized
     m_SelectedOption: 0
   m_EditModeTestListGUI:
-    m_Window: {fileID: 12}
+    m_Window: {fileID: 2}
     m_NewResultList:
     - id: 1000
       uniqueId: '[game][suite]'
       name: game
       fullName: game
       resultStatus: 1
-      duration: 0.0285914
+      duration: 0.1712245
       messages: 
       output: 
       stacktrace: 
@@ -727,7 +351,7 @@ MonoBehaviour:
       name: EditMode.dll
       fullName: /Users/lemarc/Git/wolffunfarm/Library/ScriptAssemblies/EditMode.dll
       resultStatus: 1
-      duration: 0.0136255
+      duration: 0.1220061
       messages: 
       output: 
       stacktrace: 
@@ -771,12 +395,282 @@ MonoBehaviour:
       - Uncategorized
       parentId: 1001
       parentUniqueId: EditMode.dll/[EditMode][GameManagerTests][suite]
+    - id: 1045
+      uniqueId: EditMode.dll/[EditMode][Sinbad][suite]
+      name: Sinbad
+      fullName: Sinbad
+      resultStatus: 1
+      duration: 0.0086073
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 1
+      categories: []
+      parentId: 1042
+      parentUniqueId: '[EditMode][/Users/lemarc/Git/wolffunfarm/Library/ScriptAssemblies/EditMode.dll][suite]'
+    - id: 1027
+      uniqueId: EditMode.dll/Sinbad/[EditMode][Sinbad.TestCsv][suite]
+      name: TestCsv
+      fullName: Sinbad.TestCsv
+      resultStatus: 1
+      duration: 0.0049186
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 1
+      categories: []
+      parentId: 1045
+      parentUniqueId: EditMode.dll/[EditMode][Sinbad][suite]
+    - id: 1040
+      uniqueId: EditMode.dll/Sinbad/TestCsv/[EditMode][Sinbad.TestCsv.CreateCSVFile]
+      name: CreateCSVFile
+      fullName: Sinbad.TestCsv.CreateCSVFile
+      resultStatus: 1
+      duration: 0.0010679
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1027
+      parentUniqueId: EditMode.dll/Sinbad/[EditMode][Sinbad.TestCsv][suite]
+    - id: 1041
+      uniqueId: EditMode.dll/Sinbad/TestCsv/[EditMode][Sinbad.TestCsv.CreateCSVFile2]
+      name: CreateCSVFile2
+      fullName: Sinbad.TestCsv.CreateCSVFile2
+      resultStatus: 1
+      duration: 0.0003113
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1027
+      parentUniqueId: EditMode.dll/Sinbad/[EditMode][Sinbad.TestCsv][suite]
+    - id: 1032
+      uniqueId: EditMode.dll/Sinbad/TestCsv/[EditMode][Sinbad.TestCsv.TestLoadMulti]
+      name: TestLoadMulti
+      fullName: Sinbad.TestCsv.TestLoadMulti
+      resultStatus: 1
+      duration: 0.0122081
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1027
+      parentUniqueId: EditMode.dll/Sinbad/[EditMode][Sinbad.TestCsv][suite]
+    - id: 1033
+      uniqueId: EditMode.dll/Sinbad/TestCsv/[EditMode][Sinbad.TestCsv.TestLoadMultiWithSpacesInHeader]
+      name: TestLoadMultiWithSpacesInHeader
+      fullName: Sinbad.TestCsv.TestLoadMultiWithSpacesInHeader
+      resultStatus: 1
+      duration: 0.000573
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1027
+      parentUniqueId: EditMode.dll/Sinbad/[EditMode][Sinbad.TestCsv][suite]
+    - id: 1034
+      uniqueId: EditMode.dll/Sinbad/TestCsv/[EditMode][Sinbad.TestCsv.TestLoadProperties]
+      name: TestLoadProperties
+      fullName: Sinbad.TestCsv.TestLoadProperties
+      resultStatus: 1
+      duration: 0.0006939
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1027
+      parentUniqueId: EditMode.dll/Sinbad/[EditMode][Sinbad.TestCsv][suite]
+    - id: 1035
+      uniqueId: EditMode.dll/Sinbad/TestCsv/[EditMode][Sinbad.TestCsv.TestLoadPropertiesAndFieldsSameName]
+      name: TestLoadPropertiesAndFieldsSameName
+      fullName: Sinbad.TestCsv.TestLoadPropertiesAndFieldsSameName
+      resultStatus: 1
+      duration: 0.0005735
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1027
+      parentUniqueId: EditMode.dll/Sinbad/[EditMode][Sinbad.TestCsv][suite]
+    - id: 1028
+      uniqueId: EditMode.dll/Sinbad/TestCsv/[EditMode][Sinbad.TestCsv.TestLoadSingle]
+      name: TestLoadSingle
+      fullName: Sinbad.TestCsv.TestLoadSingle
+      resultStatus: 1
+      duration: 0.0002327
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1027
+      parentUniqueId: EditMode.dll/Sinbad/[EditMode][Sinbad.TestCsv][suite]
+    - id: 1030
+      uniqueId: EditMode.dll/Sinbad/TestCsv/[EditMode][Sinbad.TestCsv.TestLoadSingleEmbeddedCommas]
+      name: TestLoadSingleEmbeddedCommas
+      fullName: Sinbad.TestCsv.TestLoadSingleEmbeddedCommas
+      resultStatus: 1
+      duration: 0.0002284
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1027
+      parentUniqueId: EditMode.dll/Sinbad/[EditMode][Sinbad.TestCsv][suite]
+    - id: 1029
+      uniqueId: EditMode.dll/Sinbad/TestCsv/[EditMode][Sinbad.TestCsv.TestLoadSingleWithHeader]
+      name: TestLoadSingleWithHeader
+      fullName: Sinbad.TestCsv.TestLoadSingleWithHeader
+      resultStatus: 1
+      duration: 0.0002203
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1027
+      parentUniqueId: EditMode.dll/Sinbad/[EditMode][Sinbad.TestCsv][suite]
+    - id: 1031
+      uniqueId: EditMode.dll/Sinbad/TestCsv/[EditMode][Sinbad.TestCsv.TestLoadSingleWithSpacesInHeader]
+      name: TestLoadSingleWithSpacesInHeader
+      fullName: Sinbad.TestCsv.TestLoadSingleWithSpacesInHeader
+      resultStatus: 1
+      duration: 0.0002366
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1027
+      parentUniqueId: EditMode.dll/Sinbad/[EditMode][Sinbad.TestCsv][suite]
+    - id: 1039
+      uniqueId: EditMode.dll/Sinbad/TestCsv/[EditMode][Sinbad.TestCsv.TestLoadStruct]
+      name: TestLoadStruct
+      fullName: Sinbad.TestCsv.TestLoadStruct
+      resultStatus: 1
+      duration: 0.0002838
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1027
+      parentUniqueId: EditMode.dll/Sinbad/[EditMode][Sinbad.TestCsv][suite]
+    - id: 1038
+      uniqueId: EditMode.dll/Sinbad/TestCsv/[EditMode][Sinbad.TestCsv.TestSaveMulti]
+      name: TestSaveMulti
+      fullName: Sinbad.TestCsv.TestSaveMulti
+      resultStatus: 1
+      duration: 0.0006765
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1027
+      parentUniqueId: EditMode.dll/Sinbad/[EditMode][Sinbad.TestCsv][suite]
+    - id: 1036
+      uniqueId: EditMode.dll/Sinbad/TestCsv/[EditMode][Sinbad.TestCsv.TestSaveSingle]
+      name: TestSaveSingle
+      fullName: Sinbad.TestCsv.TestSaveSingle
+      resultStatus: 1
+      duration: 0.0004517
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1027
+      parentUniqueId: EditMode.dll/Sinbad/[EditMode][Sinbad.TestCsv][suite]
+    - id: 1037
+      uniqueId: EditMode.dll/Sinbad/TestCsv/[EditMode][Sinbad.TestCsv.TestSaveSingleQuoted]
+      name: TestSaveSingleQuoted
+      fullName: Sinbad.TestCsv.TestSaveSingleQuoted
+      resultStatus: 1
+      duration: 0.0001384
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1027
+      parentUniqueId: EditMode.dll/Sinbad/[EditMode][Sinbad.TestCsv][suite]
     - id: 1006
       uniqueId: EditMode.dll/[Tests][suite]
       name: Tests
       fullName: Tests
       resultStatus: 1
-      duration: 0.0111959
+      duration: 0.1213838
       messages: 
       output: 
       stacktrace: 
@@ -792,7 +686,7 @@ MonoBehaviour:
       name: EditMode
       fullName: Tests.EditMode
       resultStatus: 1
-      duration: 0.0076095
+      duration: 0.117734
       messages: 
       output: 
       stacktrace: 
@@ -808,7 +702,7 @@ MonoBehaviour:
       name: TimeTests
       fullName: Tests.EditMode.TimeTests
       resultStatus: 1
-      duration: 0.0039736
+      duration: 0.1135681
       messages: 
       output: 
       stacktrace: 
@@ -824,7 +718,7 @@ MonoBehaviour:
       name: TestProductCouldBeCollectedAfterTime
       fullName: Tests.EditMode.TimeTests.TestProductCouldBeCollectedAfterTime
       resultStatus: 1
-      duration: 0.0001533
+      duration: 0.0531238
       messages: 
       output: 
       stacktrace: 
@@ -836,13 +730,13 @@ MonoBehaviour:
       - Uncategorized
       parentId: 1003
       parentUniqueId: EditMode.dll/Tests/EditMode/[EditMode][Tests.EditMode.TimeTests][suite]
-    m_ResultText: TestProductCouldBeCollectedAfterTime (0.000s)
+    m_ResultText: Tests (0.121s)
     m_ResultStacktrace: 
     m_TestListState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 4dce48e6
-      m_LastClickedID: -431436211
-      m_ExpandedIDs: 1e2461b75e3aebc2f1b531ef356abd054d6b1050993e8864ffffff7f
+      m_SelectedIDs: 993e8864
+      m_LastClickedID: 1686650521
+      m_ExpandedIDs: 1e2461b75e3aebc2f1b531efc82f7af7356abd054d6b1050993e8864ffffff7f
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -868,7 +762,7 @@ MonoBehaviour:
       selectedCategoryMask: 0
       availableCategories:
       - Uncategorized
---- !u!114 &13
+--- !u!114 &3
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -877,138 +771,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 1
-  m_Script: {fileID: 12014, guid: 0000000000000000e000000000000000, type: 0}
+  m_Script: {fileID: 12010, guid: 0000000000000000e000000000000000, type: 0}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_MinSize: {x: 230, y: 250}
-  m_MaxSize: {x: 10000, y: 10000}
-  m_TitleContent:
-    m_Text: Project
-    m_Image: {fileID: -2032128904892744680, guid: 0000000000000000d000000000000000, type: 0}
-    m_Tooltip: 
-  m_Pos:
+  m_Children:
+  - {fileID: 4}
+  - {fileID: 10}
+  m_Position:
     serializedVersion: 2
     x: 0
-    y: 634.5
-    width: 1114.5
-    height: 374.5
-  m_ViewDataDictionary: {fileID: 0}
-  m_OverlayCanvas:
-    m_LastAppliedPresetName: Default
-    m_SaveData: []
-  m_SearchFilter:
-    m_NameFilter: 
-    m_ClassNames: []
-    m_AssetLabels: []
-    m_AssetBundleNames: []
-    m_VersionControlStates: []
-    m_SoftLockControlStates: []
-    m_ReferencingInstanceIDs: 
-    m_SceneHandles: 
-    m_ShowAllHits: 0
-    m_SkipHidden: 0
-    m_SearchArea: 1
-    m_Folders:
-    - Assets/Tests/PlayMode
-    m_Globs: []
-    m_OriginalText: 
-  m_ViewMode: 1
-  m_StartGridSize: 64
-  m_LastFolders:
-  - Assets/Tests/PlayMode
-  m_LastFoldersGridSize: -1
-  m_LastProjectPath: /Users/lemarc/Git/wolffunfarm
-  m_LockTracker:
-    m_IsLocked: 0
-  m_FolderTreeState:
-    scrollPos: {x: 0, y: 114.99939}
-    m_SelectedIDs: 6a600000
-    m_LastClickedID: 24682
-    m_ExpandedIDs: 00000000ea5f0000ec5f0000ee5f0000f05f0000f25f0000
-    m_RenameOverlay:
-      m_UserAcceptedRename: 0
-      m_Name: 
-      m_OriginalName: 
-      m_EditFieldRect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 0
-        height: 0
-      m_UserData: 0
-      m_IsWaitingForDelay: 0
-      m_IsRenaming: 0
-      m_OriginalEventType: 11
-      m_IsRenamingFilename: 1
-      m_ClientGUIView: {fileID: 5}
-    m_SearchString: 
-    m_CreateAssetUtility:
-      m_EndAction: {fileID: 0}
-      m_InstanceID: 0
-      m_Path: 
-      m_Icon: {fileID: 0}
-      m_ResourceFile: 
-  m_AssetTreeState:
-    scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 
-    m_LastClickedID: 0
-    m_ExpandedIDs: 00000000ea5f0000ec5f0000ee5f0000f05f0000f25f0000
-    m_RenameOverlay:
-      m_UserAcceptedRename: 0
-      m_Name: 
-      m_OriginalName: 
-      m_EditFieldRect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 0
-        height: 0
-      m_UserData: 0
-      m_IsWaitingForDelay: 0
-      m_IsRenaming: 0
-      m_OriginalEventType: 11
-      m_IsRenamingFilename: 1
-      m_ClientGUIView: {fileID: 0}
-    m_SearchString: 
-    m_CreateAssetUtility:
-      m_EndAction: {fileID: 0}
-      m_InstanceID: 0
-      m_Path: 
-      m_Icon: {fileID: 0}
-      m_ResourceFile: 
-  m_ListAreaState:
-    m_SelectedInstanceIDs: 
-    m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 1
-    m_ExpandedInstanceIDs: c623000000000000
-    m_RenameOverlay:
-      m_UserAcceptedRename: 0
-      m_Name: 
-      m_OriginalName: 
-      m_EditFieldRect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 0
-        height: 0
-      m_UserData: 0
-      m_IsWaitingForDelay: 0
-      m_IsRenaming: 0
-      m_OriginalEventType: 11
-      m_IsRenamingFilename: 1
-      m_ClientGUIView: {fileID: 0}
-    m_CreateAssetUtility:
-      m_EndAction: {fileID: 0}
-      m_InstanceID: 0
-      m_Path: 
-      m_Icon: {fileID: 0}
-      m_ResourceFile: 
-    m_NewAssetIndexInList: -1
-    m_ScrollPosition: {x: 0, y: 0}
-    m_GridSize: 64
-  m_SkipHiddenPackages: 0
-  m_DirectoriesAreaWidth: 207
---- !u!114 &14
+    y: 0
+    width: 1365.5
+    height: 972
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 16192, y: 16192}
+  vertical: 1
+  controlID: 82
+--- !u!114 &4
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1017,39 +796,49 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 1
-  m_Script: {fileID: 12019, guid: 0000000000000000e000000000000000, type: 0}
+  m_Script: {fileID: 12010, guid: 0000000000000000e000000000000000, type: 0}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_MinSize: {x: 275, y: 50}
-  m_MaxSize: {x: 4000, y: 4000}
-  m_TitleContent:
-    m_Text: Inspector
-    m_Image: {fileID: 8356117983803934776, guid: 0000000000000000d000000000000000, type: 0}
-    m_Tooltip: 
-  m_Pos:
+  m_Children:
+  - {fileID: 5}
+  - {fileID: 7}
+  m_Position:
     serializedVersion: 2
-    x: 1365.5
-    y: 30
-    width: 313.5
-    height: 951
-  m_ViewDataDictionary: {fileID: 0}
-  m_OverlayCanvas:
-    m_LastAppliedPresetName: Default
-    m_SaveData: []
-  m_ObjectsLockedBeforeSerialization: []
-  m_InstanceIDsLockedBeforeSerialization: 
-  m_PreviewResizer:
-    m_CachedPref: 160
-    m_ControlHash: -371814159
-    m_PrefName: Preview_InspectorPreview
-  m_LastInspectedObjectInstanceID: -1
-  m_LastVerticalScrollValue: 0
-  m_GlobalObjectId: 
-  m_InspectorMode: 0
-  m_LockTracker:
-    m_IsLocked: 0
-  m_PreviewWindow: {fileID: 0}
---- !u!114 &15
+    x: 0
+    y: 0
+    width: 1365.5
+    height: 647.5
+  m_MinSize: {x: 200, y: 100}
+  m_MaxSize: {x: 16192, y: 8096}
+  vertical: 0
+  controlID: 83
+--- !u!114 &5
+MonoBehaviour:
+  m_ObjectHideFlags: 52
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 1
+  m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Children: []
+  m_Position:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 330.5
+    height: 647.5
+  m_MinSize: {x: 201, y: 221}
+  m_MaxSize: {x: 4001, y: 4021}
+  m_ActualView: {fileID: 6}
+  m_Panes:
+  - {fileID: 6}
+  m_Selected: 0
+  m_LastSelected: 0
+--- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1070,9 +859,9 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 0
-    y: 30
-    width: 330.5
-    height: 670.5
+    y: 58
+    width: 329.5
+    height: 626.5
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
@@ -1080,9 +869,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: b65e0000
-      m_LastClickedID: 24246
-      m_ExpandedIDs: 26fbffff
+      m_SelectedIDs: 
+      m_LastClickedID: 0
+      m_ExpandedIDs: ea9efeff209ffeff52a0feff2aa2feff60a2feffe0a3feff24a4feff344effff4e4effff944effff0e4fffff3c4fffff744fffffa650ffff1efbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -1098,7 +887,7 @@ MonoBehaviour:
         m_IsRenaming: 0
         m_OriginalEventType: 11
         m_IsRenamingFilename: 0
-        m_ClientGUIView: {fileID: 4}
+        m_ClientGUIView: {fileID: 5}
       m_SearchString: 
     m_ExpandedScenes: []
     m_CurrenRootInstanceID: 0
@@ -1106,7 +895,35 @@ MonoBehaviour:
       m_IsLocked: 0
     m_CurrentSortingName: TransformSorting
   m_WindowGUID: 4c969a2b90040154d917609493e03593
---- !u!114 &16
+--- !u!114 &7
+MonoBehaviour:
+  m_ObjectHideFlags: 52
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 1
+  m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: TestRunnerWindow
+  m_EditorClassIdentifier: 
+  m_Children: []
+  m_Position:
+    serializedVersion: 2
+    x: 330.5
+    y: 0
+    width: 1035
+    height: 647.5
+  m_MinSize: {x: 102, y: 121}
+  m_MaxSize: {x: 4002, y: 4021}
+  m_ActualView: {fileID: 2}
+  m_Panes:
+  - {fileID: 8}
+  - {fileID: 9}
+  - {fileID: 2}
+  m_Selected: 2
+  m_LastSelected: 1
+--- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1126,10 +943,10 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 331.5
+    x: 313.5
     y: 30
-    width: 1032
-    height: 670.5
+    width: 962
+    height: 555.5
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
@@ -1386,9 +1203,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: -5.1853147, y: 5.343917, z: 109.781845}
+    m_Target: {x: -5.0257907, y: 4.819263, z: 90}
     speed: 2
-    m_Value: {x: -5.1853147, y: 5.343917, z: 109.781845}
+    m_Value: {x: -5.0257907, y: 4.819263, z: 90}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -1439,9 +1256,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 12.931846
+    m_Target: 10
     speed: 2
-    m_Value: 12.931846
+    m_Value: 10
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -1466,7 +1283,7 @@ MonoBehaviour:
   m_SceneVisActive: 1
   m_LastLockedObject: {fileID: 0}
   m_ViewIsLockedToObject: 0
---- !u!114 &17
+--- !u!114 &9
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1486,10 +1303,10 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 331.5
-    y: 30
-    width: 1032
-    height: 670.5
+    x: 330.5
+    y: 58
+    width: 1033
+    height: 626.5
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
@@ -1500,7 +1317,7 @@ MonoBehaviour:
   m_ShowGizmos: 0
   m_TargetDisplay: 0
   m_ClearColor: {r: 0, g: 0, b: 0, a: 0}
-  m_TargetSize: {x: 1032, y: 649.5}
+  m_TargetSize: {x: 1033, y: 605.5}
   m_TextureFilterMode: 0
   m_TextureHideFlags: 61
   m_RenderIMGUI: 1
@@ -1515,10 +1332,10 @@ MonoBehaviour:
     m_VRangeLocked: 0
     hZoomLockedByDefault: 0
     vZoomLockedByDefault: 0
-    m_HBaseRangeMin: -258
-    m_HBaseRangeMax: 258
-    m_VBaseRangeMin: -162.375
-    m_VBaseRangeMax: 162.375
+    m_HBaseRangeMin: -258.25
+    m_HBaseRangeMax: 258.25
+    m_VBaseRangeMin: -151.375
+    m_VBaseRangeMax: 151.375
     m_HAllowExceedBaseRangeMin: 1
     m_HAllowExceedBaseRangeMax: 1
     m_VAllowExceedBaseRangeMin: 1
@@ -1536,29 +1353,196 @@ MonoBehaviour:
       serializedVersion: 2
       x: 0
       y: 21
-      width: 1032
-      height: 649.5
+      width: 1033
+      height: 605.5
     m_Scale: {x: 2, y: 2}
-    m_Translation: {x: 516, y: 324.75}
+    m_Translation: {x: 516.5, y: 302.75}
     m_MarginLeft: 0
     m_MarginRight: 0
     m_MarginTop: 0
     m_MarginBottom: 0
     m_LastShownAreaInsideMargins:
       serializedVersion: 2
-      x: -258
-      y: -162.375
-      width: 516
-      height: 324.75
+      x: -258.25
+      y: -151.375
+      width: 516.5
+      height: 302.75
     m_MinimalGUI: 1
   m_defaultScale: 2
-  m_LastWindowPixelSize: {x: 2064, y: 1341}
+  m_LastWindowPixelSize: {x: 2066, y: 1253}
   m_ClearInEditMode: 1
   m_NoCameraWarning: 1
   m_LowResolutionForAspectRatios: 01000000000000000000
   m_XRRenderMode: 0
   m_RenderTexture: {fileID: 0}
---- !u!114 &18
+--- !u!114 &10
+MonoBehaviour:
+  m_ObjectHideFlags: 52
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 1
+  m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: ConsoleWindow
+  m_EditorClassIdentifier: 
+  m_Children: []
+  m_Position:
+    serializedVersion: 2
+    x: 0
+    y: 647.5
+    width: 1365.5
+    height: 324.5
+  m_MinSize: {x: 100, y: 100}
+  m_MaxSize: {x: 4000, y: 4000}
+  m_ActualView: {fileID: 12}
+  m_Panes:
+  - {fileID: 11}
+  - {fileID: 12}
+  m_Selected: 1
+  m_LastSelected: 0
+--- !u!114 &11
+MonoBehaviour:
+  m_ObjectHideFlags: 52
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 1
+  m_Script: {fileID: 12014, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_MinSize: {x: 230, y: 250}
+  m_MaxSize: {x: 10000, y: 10000}
+  m_TitleContent:
+    m_Text: Project
+    m_Image: {fileID: -2032128904892744680, guid: 0000000000000000d000000000000000, type: 0}
+    m_Tooltip: 
+  m_Pos:
+    serializedVersion: 2
+    x: 0
+    y: 631.5
+    width: 1364.5
+    height: 377.5
+  m_ViewDataDictionary: {fileID: 0}
+  m_OverlayCanvas:
+    m_LastAppliedPresetName: Default
+    m_SaveData: []
+  m_SearchFilter:
+    m_NameFilter: 
+    m_ClassNames: []
+    m_AssetLabels: []
+    m_AssetBundleNames: []
+    m_VersionControlStates: []
+    m_SoftLockControlStates: []
+    m_ReferencingInstanceIDs: 
+    m_SceneHandles: 
+    m_ShowAllHits: 0
+    m_SkipHidden: 0
+    m_SearchArea: 1
+    m_Folders:
+    - Assets
+    m_Globs: []
+    m_OriginalText: 
+  m_ViewMode: 1
+  m_StartGridSize: 64
+  m_LastFolders:
+  - Assets
+  m_LastFoldersGridSize: -1
+  m_LastProjectPath: /Users/lemarc/Git/wolffunfarm
+  m_LockTracker:
+    m_IsLocked: 0
+  m_FolderTreeState:
+    scrollPos: {x: 0, y: 79}
+    m_SelectedIDs: 08600000
+    m_LastClickedID: 24584
+    m_ExpandedIDs: 00000000086000000a6000000c6000000e6000001060000000ca9a3bffffff7f
+    m_RenameOverlay:
+      m_UserAcceptedRename: 0
+      m_Name: 
+      m_OriginalName: 
+      m_EditFieldRect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 0
+        height: 0
+      m_UserData: 0
+      m_IsWaitingForDelay: 0
+      m_IsRenaming: 0
+      m_OriginalEventType: 11
+      m_IsRenamingFilename: 1
+      m_ClientGUIView: {fileID: 10}
+    m_SearchString: 
+    m_CreateAssetUtility:
+      m_EndAction: {fileID: 0}
+      m_InstanceID: 0
+      m_Path: 
+      m_Icon: {fileID: 0}
+      m_ResourceFile: 
+  m_AssetTreeState:
+    scrollPos: {x: 0, y: 0}
+    m_SelectedIDs: 
+    m_LastClickedID: 0
+    m_ExpandedIDs: 00000000086000000a6000000c6000000e60000010600000
+    m_RenameOverlay:
+      m_UserAcceptedRename: 0
+      m_Name: 
+      m_OriginalName: 
+      m_EditFieldRect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 0
+        height: 0
+      m_UserData: 0
+      m_IsWaitingForDelay: 0
+      m_IsRenaming: 0
+      m_OriginalEventType: 11
+      m_IsRenamingFilename: 1
+      m_ClientGUIView: {fileID: 0}
+    m_SearchString: 
+    m_CreateAssetUtility:
+      m_EndAction: {fileID: 0}
+      m_InstanceID: 0
+      m_Path: 
+      m_Icon: {fileID: 0}
+      m_ResourceFile: 
+  m_ListAreaState:
+    m_SelectedInstanceIDs: 
+    m_LastClickedInstanceID: 0
+    m_HadKeyboardFocusLastEvent: 1
+    m_ExpandedInstanceIDs: c623000000000000
+    m_RenameOverlay:
+      m_UserAcceptedRename: 0
+      m_Name: 
+      m_OriginalName: 
+      m_EditFieldRect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 0
+        height: 0
+      m_UserData: 0
+      m_IsWaitingForDelay: 0
+      m_IsRenaming: 0
+      m_OriginalEventType: 11
+      m_IsRenamingFilename: 1
+      m_ClientGUIView: {fileID: 0}
+    m_CreateAssetUtility:
+      m_EndAction: {fileID: 0}
+      m_InstanceID: 0
+      m_Path: 
+      m_Icon: {fileID: 0}
+      m_ResourceFile: 
+    m_NewAssetIndexInList: -1
+    m_ScrollPosition: {x: 0, y: 0}
+    m_GridSize: 64
+  m_SkipHiddenPackages: 0
+  m_DirectoriesAreaWidth: 207
+--- !u!114 &12
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1579,10 +1563,77 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 0
-    y: 721.5
+    y: 705.5
     width: 1364.5
-    height: 259.5
+    height: 303.5
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
     m_SaveData: []
+--- !u!114 &13
+MonoBehaviour:
+  m_ObjectHideFlags: 52
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 1
+  m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: InspectorWindow
+  m_EditorClassIdentifier: 
+  m_Children: []
+  m_Position:
+    serializedVersion: 2
+    x: 1365.5
+    y: 0
+    width: 314.5
+    height: 972
+  m_MinSize: {x: 276, y: 71}
+  m_MaxSize: {x: 4001, y: 4021}
+  m_ActualView: {fileID: 14}
+  m_Panes:
+  - {fileID: 14}
+  m_Selected: 0
+  m_LastSelected: 0
+--- !u!114 &14
+MonoBehaviour:
+  m_ObjectHideFlags: 52
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 1
+  m_Script: {fileID: 12019, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_MinSize: {x: 275, y: 50}
+  m_MaxSize: {x: 4000, y: 4000}
+  m_TitleContent:
+    m_Text: Inspector
+    m_Image: {fileID: 8356117983803934776, guid: 0000000000000000d000000000000000, type: 0}
+    m_Tooltip: 
+  m_Pos:
+    serializedVersion: 2
+    x: 1365.5
+    y: 58
+    width: 313.5
+    height: 951
+  m_ViewDataDictionary: {fileID: 0}
+  m_OverlayCanvas:
+    m_LastAppliedPresetName: Default
+    m_SaveData: []
+  m_ObjectsLockedBeforeSerialization: []
+  m_InstanceIDsLockedBeforeSerialization: 
+  m_PreviewResizer:
+    m_CachedPref: 160
+    m_ControlHash: -371814159
+    m_PrefName: Preview_InspectorPreview
+  m_LastInspectedObjectInstanceID: -1
+  m_LastVerticalScrollValue: 0
+  m_GlobalObjectId: 
+  m_InspectorMode: 0
+  m_LockTracker:
+    m_IsLocked: 0
+  m_PreviewWindow: {fileID: 0}

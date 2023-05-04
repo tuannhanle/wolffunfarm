@@ -6,19 +6,18 @@ namespace App.Scripts.Domains.Core
 {
     public class JobManager : Dependency<JobManager>, IDependency
     {
-        private List<long> _executingJobs = new();
-        private const string JOB = "Job";
+        private HashSet<long> _executingJobs = new();
 
         public Job CreateJob(int workerId, int plotId, JobType jobType, string itemName = null)
         {
             var jobId = TimeStamp.SecondUTC()+plotId;
-            var job = new Job(jobId, workerId, plotId, jobType, itemName, TimeStamp.SecondUTC());
+            var job = new Job(jobId, workerId, plotId, jobType, itemName, DateTime.UtcNow);
             if (_dataLoader.JobStorage.ContainsKey(jobId) == false)
             {
-                
                 _dataLoader.JobStorage.Add(jobId, job);
                 _dataLoader.Push<Job>();
             }
+            _executingJobs.Add(jobId);
             return job;
         }
 
@@ -30,13 +29,15 @@ namespace App.Scripts.Domains.Core
             return result;
         }
 
-        public Job GetJob(int workerId)
+        /// <summary>
+        /// Get a job that is excutable to work
+        /// </summary>
+        /// <returns>First job</returns>
+        public Job GetJob()
         {
             foreach (var job in _dataLoader.JobStorage)
             {
-                if (job.Value.WorkerId != workerId)
-                    continue;
-                if (IsExecutingJob(job.Value.JobId))
+                if (_executingJobs.Contains(job.Value.JobId))
                     continue;
                 _executingJobs.Add(job.Key);
                 return job.Value;
@@ -44,15 +45,19 @@ namespace App.Scripts.Domains.Core
             return null;
         }
 
-        private bool IsExecutingJob(long jobId)
+        public Job GetJob(int workerId)
         {
-            foreach (var executingJobId in _executingJobs)
+            foreach (var job in _dataLoader.JobStorage)
             {
-                if (jobId != executingJobId)
+                if (job.Value.WorkerId != workerId)
                     continue;
-                return true;
+                if (_executingJobs.Contains(job.Value.JobId))
+                    continue;
+                _executingJobs.Add(job.Key);
+                return job.Value;
             }
-            return false;
+            return null;
         }
+        
     }
 }

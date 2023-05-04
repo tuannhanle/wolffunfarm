@@ -1,4 +1,5 @@
-Id,ItemName,ProductAmount,TimeUntilHarvest,CreateAt,UpdatedAt,IsUsing
-0,,0,0,,,FALSE
-1,,0,0,,,FALSE
-2,,0,0,,,FALSE
+﻿Id,ItemName,HarvestedProduct,CreateAt,UpdatedAt,TimeUntilHarvest,IsUsing
+0,Cow,0,5/4/2023 9:27:53 AM,5/4/2023 9:27:53 AM,-24,True
+1,,0,1/1/0001 12:00:00 AM,1/1/0001 12:00:00 AM,-1,False
+2,,0,1/1/0001 12:00:00 AM,1/1/0001 12:00:00 AM,-1,False
+3,,0,1/1/0001 12:00:00 AM,1/1/0001 12:00:00 AM,-1,False

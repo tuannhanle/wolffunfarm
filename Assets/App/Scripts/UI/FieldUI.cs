@@ -1,4 +1,7 @@
+using System;
+using System.Collections.Generic;
 using App.Scripts.Domains.Core;
+using App.Scripts.Domains.GameObjects;
 using App.Scripts.Mics;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -12,29 +15,54 @@ namespace App.Scripts.UI
         [SerializeField] private Transform _root;
 
         private DataLoader _dataLoader;
+        private Dictionary<int, PlotUI> _plotUImaps = new();
 
-        private void Start()
+
+        
+        public void Start()
         {
             _dataLoader = DependencyProvider.Instance.GetDependency<DataLoader>();
-            CreateFieldAsync();
+            CreateField();
+            this.Subscribe<ShareData.PlotUIPassage>(o =>
+            {
+                var plot = o.Plot;
+                if (o.IsExtend)
+                {
+                    CreatePlot(plot);
+                }
+                else
+                {
+                    var plotUI = GetPlot(plot.Id);
+                    plotUI.SetUp(plot);
+                }
+
+            });
+        }
+
+        private PlotUI GetPlot(int plotId)
+        {
+            if (_plotUImaps.TryGetValue(plotId, out var plotUI) == false)
+                return null;
+            return plotUI;
         }
         
-        private void CreateFieldAsync()
+        private void CreateField()
         {
-            // var items = _dataLoader.ItemCollection;
-            // Item item = items["Plot"] ;
             var plots = _dataLoader.PlotStorage;
-            foreach (var plotPair in plots)
+            foreach (var plot in plots)
             {
-                var field = Instantiate(_plotPrefab, _root);
-                var name = $"<b>Plot {plotPair.Value.Id}</b>";
-                field.gameObject.name = name;
-                field.Id = name;
-                field.ItemName = plotPair.Value.IsUsing == false ? "<i>ready</i>":plotPair.Value.ItemName;
-                field.ProductAmount =  $"Product: {plotPair.Value.ProductAmount}";
-                field.TimeRemain = $"Next: {plotPair.Value.TimeUntilHarvest}s left";
-                field.gameObject.SetActive(true);
+                var plotUI = CreatePlot(plot.Value);
             }
-        }   
+        }
+
+        private PlotUI CreatePlot(Plot plot)
+        {
+            var plotUI = Instantiate(_plotPrefab, _root);
+            plotUI.SetUp(plot);
+            _plotUImaps.Add(plot.Id, plotUI);
+            return plotUI;
+        }
+        
+        
     }
 }

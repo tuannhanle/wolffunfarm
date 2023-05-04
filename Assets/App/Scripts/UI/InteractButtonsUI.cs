@@ -49,8 +49,8 @@ namespace App.Scripts.UI
             if(_sellButton) _sellButton.onClick.AddListener(
                 delegate { OnUIButtonClicked(InteractEventType.Sell); });
 
-            CreateButtonAsync("Seeding", InteractEventType.Seeding);
-            CreateButtonAsync("Harvest", InteractEventType.Harsvest);
+            CreateButtonAsync("Seeding", InteractEventType.PutIn);
+            CreateButtonAsync("Harvest", InteractEventType.PutOut);
         }
         
         private void CreateButtonAsync(string interactName, InteractEventType interactEventType)
@@ -60,7 +60,7 @@ namespace App.Scripts.UI
             {
                 if (item.Value.IsSeedingable == false)
                     continue;
-                if (item.Value.IsAnimal && interactEventType == InteractEventType.Seeding)
+                if (item.Value.IsAnimal && interactEventType == InteractEventType.PutIn)
                 {
                     interactName = "Breed";
                 }
@@ -69,12 +69,17 @@ namespace App.Scripts.UI
                 button.name = name;
                 button.GetComponentInChildren<Text>().text = name;
                 button.onClick.AddListener(
-                    delegate { OnUIButtonClicked(interactEventType, item.Key); });
+                    delegate
+                    {
+                        OnUIButtonClicked(interactEventType, item.Key);
+                    });
                 button.gameObject.SetActive(true);
             }
         }
         private void OnUIButtonClicked(InteractEventType eInteractEvent, string itemName = null)
         {
+            Debug.Log($"InteractEvent: {eInteractEvent} of {itemName} ");
+
             switch (eInteractEvent)
             {
                 case InteractEventType.Sell:
@@ -89,17 +94,17 @@ namespace App.Scripts.UI
                 case InteractEventType.UpgradeTool:
                     _toolManager.UpgradeTool();
                     break;
-                case InteractEventType.Seeding:
+                case InteractEventType.PutIn:
                     if (itemName == null)
                         break;
                     // execute here
                     _workerManager.Assign(JobType.PutIn, itemName);
                     break;
-                case InteractEventType.Harsvest:
+                case InteractEventType.PutOut:
                     if (itemName == null)
                         break;
                     // execute here
-                    _workerManager.Assign(JobType.Harvasting, itemName);
+                    _workerManager.Assign(JobType.PutOut, itemName);
                     break;
             }
         }
@@ -112,8 +117,8 @@ namespace App.Scripts.UI
         RentWorker, 
         UpgradeTool, 
         Sell,
-        Seeding,
-        Harsvest,
+        PutIn,
+        PutOut,
  
     }
     

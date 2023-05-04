@@ -9,15 +9,11 @@ namespace Tests.EditMode
     public class TimeTests
     {
         [Test]
-        public void TestProductCouldBeCollectedAfterTime()
+        public void TestDateTime()
         {
-            // var productAmountExpected = 3;
-            // var item = new Item() {ItemType = ItemType.BlueBerry, TimePerProduct = 60, ProductCapacity = 20 };
-            // var crop = new Crop(item);
-            // crop.CreateAt = TimeStamp.DateTimeFromSeconds(TimeStamp.Second(DateTime.UtcNow ) - (long)60*productAmountExpected) ;
-            // var plot = new Plot(crop);
-            // plot.TakeAmountProduct();
-            // Assert.AreEqual(productAmountExpected,plot.Crop.Product.Amount);
+            string dateString = "1/1/0001 12:00:00 AM";
+            var firstDayDT = DateTime.Parse(dateString);
+            Assert.AreEqual(true, TimeStamp.IsFirstDay(firstDayDT));
         }
     }
 }

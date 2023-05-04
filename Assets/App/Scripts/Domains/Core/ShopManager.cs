@@ -1,4 +1,5 @@
 using App.Scripts.Domains.Models;
+using App.Scripts.Mics;
 using App.Scripts.UI;
 
 namespace App.Scripts.Domains.Core
@@ -6,18 +7,31 @@ namespace App.Scripts.Domains.Core
     public class ShopManager : Dependency<ShopManager>, IDependency
     {
         private Cart _cart = new();
+        private LazyDataInlet<ShareData.CartEvent> _cartEventInlet = new();
 
         public void OnShopUIEventRaised(ShopEventType eShopEvent, string itemName =null)
         {
             switch (eShopEvent)
             {
                 case ShopEventType.Buy:
+                    _cartEventInlet.UpdateValue(new ShareData.CartEvent()
+                    {
+                        itemNamePicked = itemName
+                    });
                     this.PickItem(itemName);
                     break;
                 case ShopEventType.BuySeedInCart:
+                    _cartEventInlet.UpdateValue(new ShareData.CartEvent()
+                    {
+                        isBuy = true
+                    });
                     this.BuySeedInCart();
                     break;
                 case ShopEventType.ReleaseSeedInCart:
+                    _cartEventInlet.UpdateValue(new ShareData.CartEvent()
+                    {
+                        isRelease = true
+                    });
                     this.ReleaseSeedInCart();
                     break;
             }
@@ -32,11 +46,13 @@ namespace App.Scripts.Domains.Core
         {
             if (itemName == null || itemName.Equals(""))
                 return;
-            if (_dataLoader.ItemCollection.TryGetValue(itemName, out var item))
+            if (_dataLoader.ItemCollection.TryGetValue(itemName, out var item) == false)
+                return;
+            if (itemName.Equals(Define.PLOT))  
+                _plotManager.ExtendPlot();
+            else
             {
-                if (itemName.Equals("Plot"))  
-                    _plotManager.ExtendPlot();            
-                else if (itemName.Equals("Cow"))  
+                if (item.IsAnimal)  
                     this.BuyCow(itemName);
                 else
                     this.PickSeed(itemName);
@@ -67,9 +83,6 @@ namespace App.Scripts.Domains.Core
                     _dataLoader.Push<ItemStorage>();
                 }
             }
-            // {
-            //     _workerManager.Assign(JobType.PutIn, itemName);
-            // }
         }
 
         private void BuySeedInCart()

@@ -11,6 +11,7 @@ namespace App.Scripts.Domains.Core
         protected ShopManager _shopManager;
         protected StatManager _statManager;
         protected PaymentService _paymentService;
+        protected BroadcastService _broadcastService;
         protected DataLoader _dataLoader;
         protected JobManager _jobManager;
         
@@ -36,6 +37,7 @@ namespace App.Scripts.Domains.Core
             if(_toolManager == null) _toolManager = DependencyProvider.Instance.GetDependency<ToolManager>();
             if(_shopManager == null) _shopManager = DependencyProvider.Instance.GetDependency<ShopManager>();
             if(_paymentService == null) _paymentService = DependencyProvider.Instance.GetDependency<PaymentService>();
+            if(_broadcastService == null) _broadcastService = DependencyProvider.Instance.GetDependency<BroadcastService>();
             if(_jobManager == null) _jobManager = DependencyProvider.Instance.GetDependency<JobManager>();
 
         }
