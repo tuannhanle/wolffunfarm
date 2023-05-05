@@ -109,7 +109,7 @@ namespace App.Scripts.UI
             {
                 var text = Instantiate(_prefabText, _cartRoot);
                 var cartTextComponent = text.gameObject.AddComponent<CategoryUI>();
-                cartTextComponent.SetUp(text, item.ItemName, item.BuyUnit);
+                cartTextComponent.SetUp(text, item.ItemName, 0);
                 _categoryMaps.Add(item.ItemName, cartTextComponent);
             }
         }

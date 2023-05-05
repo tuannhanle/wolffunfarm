@@ -6,11 +6,12 @@ namespace App.Scripts.Domains.Models
     public class Job 
     {
         public long JobId;
+        public string ItemName;
         public int WorkerId;
         public int PlotId;
         public JobType JobType;
-        public string ItemName;
         public DateTime TakenAt;
+        // public bool IsDone;
 
         public Job(){}
 
@@ -22,6 +23,7 @@ namespace App.Scripts.Domains.Models
             JobType = jobType;
             ItemName = itemName;
             TakenAt = takenAt;
+            // IsDone = isDone;
         }
     }
     

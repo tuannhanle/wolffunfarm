@@ -1,2 +1,2 @@
-﻿GoldAmount,ToolLevel,PercentPerLevel,JobDuration,ExtentTimeToDestroy,ToolPrice
-63700,4,10,120,1200,500
+GoldAmount,ToolLevel,PercentPerLevel,JobDuration,ExtentTimeToDestroy,ToolPrice
+0,1,10,120,3600,500

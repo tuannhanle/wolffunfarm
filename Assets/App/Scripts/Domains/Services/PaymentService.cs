@@ -12,14 +12,26 @@ namespace App.Scripts.Domains.Services
 
         public void SellProducts()
         {
-            // var blueberryStockAmount = _statManager.Stat.BlueberryProductAmount * _dataLoader.ItemCollection["Blueberry"].Stock;
-            // var tomatoStockAmount = _statManager.Stat.TomotoProductAmount * _dataLoader.ItemCollection["Tomato"].Stock;
-            // var strawberryStockAmount = _statManager.Stat.StrawberryProductAmount * _dataLoader.ItemCollection["Strawberry"].Stock;
-            // var milkStockAmount = _statManager.Stat.MilkProductAmount * _dataLoader.ItemCollection["Cow"].Stock;
-            // var sum = blueberryStockAmount + tomatoStockAmount + strawberryStockAmount + milkStockAmount;
-            // _statManager.SellAllProduct(sum);
-            // Earn(sum);
-            Earn(0);
+            var stock = 0;
+            foreach (var pair in _dataLoader.ItemStorage)
+            {
+                var itemStorage = pair.Value;
+                if (itemStorage.HarvestedProduct == 0)
+                    continue;
+                stock += SellProduct(itemStorage);
+                itemStorage.HarvestedProduct = 0;
+            }
+            if (stock == 0)
+                return;
+            _dataLoader.Push<ItemStorage>();
+            _statManager.Gain(stock);
+        }
+
+        private int SellProduct(ItemStorage itemStorage)
+        {
+            var item = _dataLoader.ItemCollection[itemStorage.ItemName];
+            var productAmount = itemStorage.HarvestedProduct;
+            return productAmount * item.Stock;
         }
 
 
@@ -35,13 +47,9 @@ namespace App.Scripts.Domains.Services
         private bool IsPayable(int amount)
         {
             var result =  _dataLoader.stat.GoldAmount - amount >= 0;
-            _dataLoader.Push<Stat>();
             return result;
         }
         
-        private void Earn(int amount)
-        {
-            _statManager.Gain(amount);
-        }
+  
     }
 }

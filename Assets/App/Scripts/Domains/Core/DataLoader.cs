@@ -71,11 +71,11 @@ namespace App.Scripts.Domains.Core
 
         public void Push()
         {
-            _dataLoader.SaveObjects(_dataLoader.PlotStorage,String.Format(DATA_FOLDER_PREFIX,PLOT_DATA_FILE));
-            _dataLoader.SaveObjects(_dataLoader.WorkerStorage,String.Format(DATA_FOLDER_PREFIX,WORKER_DATA_FILE));
-            _dataLoader.SaveObjects(_dataLoader.JobStorage,String.Format(DATA_FOLDER_PREFIX,JOB_DATA_FILE));
-            _dataLoader.SaveObjects(_dataLoader.ItemStorage,String.Format(DATA_FOLDER_PREFIX,ITEM_STORAGE_DATA_FILE));
-            _dataLoader.SaveObjects(_dataLoader._stats,String.Format(DATA_FOLDER_PREFIX,STAT_DATA_FILE));
+            Push<Plot>();
+            Push<Worker>();
+            Push<Job>();
+            Push<ItemStorage>();
+            Push<Stat>();
         }
 
         public void Push<T>()
@@ -163,27 +163,6 @@ namespace App.Scripts.Domains.Core
 
             }
         }
-        
-        // private void LoadObjects<T>(string filename, Dictionary<string,T> maps) where T: new()
-        // {
-        //     List<T> objs = new List<T>();
-        //     try
-        //     {
-        //         objs = CsvUtil.LoadObjects<T>(filename);
-        //         foreach (var obj in objs)
-        //         {
-        //             if (maps.ContainsKey(obj.ItemName))
-        //                 continue;
-        //             maps.Add(obj.ItemName, (T)obj);
-        //
-        //         }
-        //     }
-        //     catch (Exception e)
-        //     {
-        //         Debug.Log("[LoadObjects]: "+filename+e);
-        //     }
-        //
-        // }
 
         private void LoadObject<T>(string filename, ref T destObject)
         {

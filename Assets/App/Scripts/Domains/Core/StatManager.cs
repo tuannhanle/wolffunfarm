@@ -43,17 +43,7 @@ namespace App.Scripts.Domains.Core
             _dataLoader.Push<Stat>();
             PostcastData();
         }
-        
-        
-        
-        public void SellAllProduct(int amountStock)
-        {
-            // _stat.BlueberryProductAmount = 0;
-            // _stat.TomotoProductAmount = 0;
-            // _stat.StrawberryProductAmount = 0;
-            // _stat.MilkProductAmount = 0;
-            // _stat.GoldAmount += amountStock;
-        }
+
     }
 
     public interface ICheat

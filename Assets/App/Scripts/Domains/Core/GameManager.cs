@@ -15,6 +15,7 @@ namespace App.Scripts.Domains.Core
         private WorkerManager _workerManager;
         private DataLoader _dataLoader;
         private PlotManager _plotMananger;
+        private JobManager _jobManager;
         
         private LazyDataInlet<ShareData.PlotUIPassage> _plotInlet = new();
 
@@ -44,7 +45,7 @@ namespace App.Scripts.Domains.Core
             _plotMananger = DependencyProvider.Instance.GetDependency<PlotManager>();
             _workerManager = DependencyProvider.Instance.GetDependency<WorkerManager>();
             _dataLoader = DependencyProvider.Instance.GetDependency<DataLoader>();
-            // _statManager.PostcastData();
+            _jobManager = DependencyProvider.Instance.GetDependency<JobManager>();
         }
 
         private void Start()
@@ -55,21 +56,10 @@ namespace App.Scripts.Domains.Core
 
         private async UniTask MainFlow()
         {
-            UpdateUIPerSecond().Forget();
-            // per frame
+            
             while (_dataLoader.stat.GoldAmount < GOLD_TARGET)
             {
-                await UniTask.Yield();
-            }
-            _isEnd = true;
-            Debug.Log("Game has been finished");
-        }
-
-        private bool _isEnd = false;
-        private async UniTask UpdateUIPerSecond()
-        {
-            while (_isEnd == false)
-            {
+                _jobManager.CheckJobToDo();
                 var plots = _plotMananger.GetUsingPlots();
                 foreach (var plot in plots)
                 {
@@ -78,12 +68,9 @@ namespace App.Scripts.Domains.Core
                 }
                 await UniTask.Delay(TimeSpan.FromSeconds(1));
             }
-
+            Debug.Log("Game has been finished");
         }
 
-        private void OnApplicationQuit()
-        {
-            _dataLoader.Push();
-        }
+ 
     }
 }

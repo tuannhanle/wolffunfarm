@@ -97,13 +97,11 @@ namespace App.Scripts.UI
                 case InteractEventType.PutIn:
                     if (itemName == null)
                         break;
-                    // execute here
                     _workerManager.Assign(JobType.PutIn, itemName);
                     break;
                 case InteractEventType.PutOut:
                     if (itemName == null)
                         break;
-                    // execute here
                     _workerManager.Assign(JobType.PutOut, itemName);
                     break;
             }

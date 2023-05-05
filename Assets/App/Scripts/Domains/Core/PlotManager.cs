@@ -8,8 +8,6 @@ namespace App.Scripts.Domains.Core
 {
     public class PlotManager : Dependency<PlotManager>, IDependency
     {
-        private HashSet<long> _executingHarvestPlots = new();
-        private HashSet<long> _executingPutInPlots = new();
         private LazyDataInlet<ShareData.PlotUIPassage> _plotInlet = new();
         public void ExtendPlot()
         {
@@ -18,7 +16,7 @@ namespace App.Scripts.Domains.Core
             if( isPayable == false)
                 return;
             var plotId = _dataLoader.PlotStorage.Count;
-            var plot = new Plot(plotId, "", 0, -1, TimeStamp.FirstDay, TimeStamp.FirstDay, false);
+            var plot = new Plot(plotId, "", 0, -1, TimeStamp.FirstDay, false);
             _dataLoader.PlotStorage.Add(plotId, plot);
             _dataLoader.Push<Plot>();
             _plotInlet.UpdateValue(new ShareData.PlotUIPassage()
@@ -38,13 +36,11 @@ namespace App.Scripts.Domains.Core
                 return;
             var extentTime = _dataLoader.stat.ExtentTimeToDestroy;
             plot.PutIn(item, extentTime);
-            _plotInlet.UpdateValue(new ShareData.PlotUIPassage()
-            {
-                Plot = plot
-            });
+            
+            _plotInlet.UpdateValue(new ShareData.PlotUIPassage() { Plot = plot });
+            
             if (isStart)
             {
-                _executingPutInPlots.Add(plotId);
                 if (_dataLoader
                     .ItemStorage
                     .TryGetValue(itemName, out ItemStorage itemStorage))
@@ -53,10 +49,7 @@ namespace App.Scripts.Domains.Core
                     _dataLoader.Push<ItemStorage>();
                 }
             }
-            else
-            {
-                _executingPutInPlots.Remove(plotId);
-            }
+    
             _dataLoader.Push<Plot>();
         }
         
@@ -68,26 +61,14 @@ namespace App.Scripts.Domains.Core
                 return;
             if (plot.IsPutOutable(itemName) == false)
                 return;
+            
+            _plotInlet.UpdateValue(new ShareData.PlotUIPassage() { Plot = plot });
 
-            var productHasBeenHarvest = plot.PutOut(itemName);
-            if (isStart)
+            if (isStart == false)
             {
-                _executingHarvestPlots.Add(plotId);
+                plot.PutOut();
             }
-            else
-            {
-                if (productHasBeenHarvest > 0)
-                {
-                    if (_dataLoader
-                        .ItemStorage
-                        .TryGetValue(itemName, out ItemStorage itemStorage))
-                    {
-                        itemStorage.HarvestedProduct += productHasBeenHarvest;
-                        _dataLoader.Push<ItemStorage>();
-                    }
-                }
-                _executingHarvestPlots.Remove(plotId);
-            }
+
             _dataLoader.Push<Plot>();
         }
 
@@ -119,31 +100,61 @@ namespace App.Scripts.Domains.Core
             // Iterate through all plots in the plot storage.
             foreach (var plot in _dataLoader.PlotStorage)
             {
+                var isExecutingPlot = false;
+
                 // If the job type is Harvasting, find plots that match the given item name and are currently in use.
                 if (jobType == JobType.PutOut)
                 {
-                    if (_executingHarvestPlots.Contains(plot.Value.Id))
-                        continue;
+                    foreach (var pair in _dataLoader.JobStorage)
+                    {
+                        var job = pair.Value;
+                        if (job.PlotId == plot.Value.Id)
+                        {
+                            isExecutingPlot = true;
+                            break;
+                        }
+                    }
 
                     // If the plot is not currently in use or does not contain the required item, skip it.
                     if (plot.Value.IsUsing == false || plot.Value.ItemName.Equals(itemName) == false)
                         continue;
                 }
+                
                 else if (jobType == JobType.PutIn)
                 {
-                    if (_executingPutInPlots.Contains(plot.Value.Id))
-                        continue;
+                    foreach (var pair in _dataLoader.JobStorage)
+                    {
+                        var job = pair.Value;
+                        if (job.PlotId == plot.Value.Id)
+                        {
+                            isExecutingPlot = true;
+                            break;
+                        }
+                    }
+                    
                     // If the plot is currently in use, skip it.
                     if (plot.Value.IsUsing)
                         continue;
 
                 }
+                if (isExecutingPlot)
+                    continue;
                 // If the plot is not in use, add it to the list of matching plots.
                 plots.Add(plot.Value);
             }
 
             // Return the list of matching plots, or null if no plots were found.
             return plots.Count > 0 ? plots : null;
+        }
+
+        public void ReturnUnusedPlot(int plotId)
+        {
+            if (_dataLoader.PlotStorage.TryGetValue(plotId, out Plot plot) == false)
+                return;
+            plot.Clear();
+            _dataLoader.Push<Plot>();
+            _plotInlet.UpdateValue(new ShareData.PlotUIPassage() { Plot = plot });
+
         }
     }
 }

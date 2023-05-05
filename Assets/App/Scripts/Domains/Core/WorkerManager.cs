@@ -13,25 +13,27 @@ namespace App.Scripts.Domains.Core
     {
         private const string WORKER = "Worker";
 
-        private async UniTask Execute(Job job, Worker worker)
+        private void Execute(long jobId)
         {
+            if(_dataLoader.JobStorage.TryGetValue(jobId, out var job)==false)
+                return;
             // executing delay time
             if (job.JobType == JobType.PutIn)
                 _plotManager.PutIn(true, job.PlotId, job.ItemName);
             if (job.JobType == JobType.PutOut)
                 _plotManager.PutOut(true, job.PlotId, job.ItemName);
-            // wait
-            var durationWork = _dataLoader.stat.JobDuration;
-            var delayTime = TimeSpan.FromSeconds(durationWork);
-            await UniTask.Delay(delayTime);
-                
+
+        }
+
+        public void Complete(long jobId)
+        {
+            if(_dataLoader.JobStorage.TryGetValue(jobId, out var job)==false)
+                return;
             // after that
             if (job.JobType == JobType.PutIn)
                 _plotManager.PutIn(false, job.PlotId, job.ItemName);
             if (job.JobType == JobType.PutOut)
                 _plotManager.PutOut(false, job.PlotId, job.ItemName);
-            ReturnIdleWorker(worker);
-            _jobManager.RemoveJob(job.JobId);
         }
         
         /// <summary> This method assigns a worker to a specific task. </summary>
@@ -60,7 +62,7 @@ namespace App.Scripts.Domains.Core
                 
                 // Create a job for the current plot.
                 var job = _jobManager.CreateJob(idleWorker.Id, plot.Id, jobType, itemName);
-                Execute(job, idleWorker).Forget();
+                Execute(job.JobId);
                 
                 if (jobType == JobType.PutIn)
                     break;
@@ -74,7 +76,7 @@ namespace App.Scripts.Domains.Core
             var isPayable = _paymentService.Buy(workerItem);
             if (isPayable == false)
                 return;
-            var isSuccess = GainIdleWorker();
+            GainIdleWorker();
         }
         
         private Worker GetIdleWorker()
@@ -93,21 +95,22 @@ namespace App.Scripts.Domains.Core
         }
 
 
-        private void ReturnIdleWorker(Worker workingWorker)
+        public void ReturnIdleWorker(int usingWorkerId)
         {
-            workingWorker.IsUsing = false;
+            if (_dataLoader.WorkerStorage.TryGetValue(usingWorkerId, out var worker) == false)
+                return;
+            worker.IsUsing = false;
             _dataLoader.Push<Worker>();
         }
         
-        private bool GainIdleWorker()
+        private void GainIdleWorker()
         {
             var workerId = _dataLoader.WorkerStorage.Count;
             var worker = new Worker(workerId, false);
             if (_dataLoader.WorkerStorage.ContainsKey(workerId))
-                return false;
+                return;
             _dataLoader.WorkerStorage.Add(workerId, worker);
-            ReturnIdleWorker(worker);
-            return true;
+            ReturnIdleWorker(workerId);
         }
     }
     
